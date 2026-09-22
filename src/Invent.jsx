@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
-import { addFood, bumpLine, fillRest, houseFor, leftoverOf, lineFrom, targetFor } from './inventMath.js'
+import { addFood, bumpLine, fillRest, houseFor, leftoverOf, lineFrom, shareKind, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
@@ -12,8 +12,14 @@ const TYPES = [
   { id: 'free', label: 'Free', line: 'Raw veg. No tomato, carrot, or pepper.' },
 ]
 
-function macrosLine(food) {
-  return `${Math.round(food.protein || 0)}g P · ${Math.round(food.carbs || 0)}g C · ${Math.round(food.fat || 0)}g F`
+function macrosBlock(food) {
+  return (
+    <div className="macro-gap">
+      <div>{Math.round(food.protein || 0)}g protein</div>
+      <div>{Math.round(food.carbs || 0)}g carbs</div>
+      <div>{Math.round(food.fat || 0)}g fat</div>
+    </div>
+  )
 }
 
 export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
@@ -31,6 +37,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     fat: target.fat - left.fat,
   }
   const picked = new Set(lines.map((l) => l.name))
+  const kindCount = lines.filter((l) => l.kind === kind).length
 
   function save() {
     if (!name.trim() || lines.length === 0) return
@@ -41,7 +48,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
       slot: SNACK_IDS.includes(slot) ? 'snack' : slot,
       custom: true,
       locked: true,
-      steps: lines.map((f) => f.house || `${Math.round(f.grams)} g ${f.name}`),
+      steps: lines.map((f) => `${f.house} · ${Math.round(f.grams)} g`),
       foods: lines,
     }, slot)
   }
@@ -57,6 +64,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <p className="plan-kicker">Invent a plate</p>
         <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
+        <p className="note">First food is one serving. The next protein, carb, or fat takes what is left. Split even if you want them to share.</p>
 
         <label className="goal-field">
           <span>Plate name</span>
@@ -71,13 +79,19 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         {lines.length > 0 && (
           <div className="card" style={{ margin: '12px 0' }}>
+            {kindCount > 1 && kind !== 'free' && (
+              <button className="change" type="button" style={{ margin: '0 0 8px' }} onClick={() => setLines((prev) => shareKind(prev, kind, target))}>
+                Split {kind} evenly
+              </button>
+            )}
             {lines.map((line, i) => (
               <div key={`${line.name}-${i}`} style={{ borderTop: i ? '1px solid var(--line)' : 0, padding: '8px 0' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
                   <div>
                     <strong>{line.name}</strong>
                     <div className="qty">{line.house}</div>
-                    <div className="qty macro-gap">{macrosLine(line)}</div>
+                    <div className="qty">{Math.round(line.grams)} g food</div>
+                    {macrosBlock(line)}
                   </div>
                   <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => prev.filter((_, idx) => idx !== i))}>Remove</button>
                 </div>
@@ -100,7 +114,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           </button>
         ))}
 
-        <p className="note">Grey foods are already on the plate. Tap again to add another serving.</p>
+        <p className="note">Grey foods are already on the plate.</p>
         {hits.map((item) => {
           const on = picked.has(item.name)
           const sample = lineFrom(item, item.base)
@@ -109,11 +123,12 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
               key={item.name}
               type="button"
               className={on ? 'option picked' : 'option'}
-              onClick={() => setLines((prev) => addFood(prev, item))}
+              onClick={() => setLines((prev) => addFood(prev, item, target))}
             >
               <strong>{on ? `✓ ${item.name}` : item.name}</strong>
               <span style={{ display: 'block' }}>{houseFor(item, item.base)}</span>
-              <span className="macro-gap">{macrosLine(sample)}</span>
+              <span style={{ display: 'block' }}>{item.base} g food</span>
+              {macrosBlock(sample)}
             </button>
           )
         })}
