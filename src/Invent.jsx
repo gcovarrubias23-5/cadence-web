@@ -50,27 +50,6 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
         <div className="plate-dock">
-          <p className="plan-kicker" style={{ marginBottom: 4 }}>On this plate</p>
-          {lines.length === 0 && <p className="note" style={{ margin: 0 }}>Empty. Tap foods below.</p>}
-          {lines.map((line, i) => (
-            <div key={`${line.name}-${i}`} style={{ borderTop: '1px solid var(--line)', padding: '8px 0' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                <div>
-                  <strong>{line.name}</strong>
-                  <div className="qty">{line.house}</div>
-                  <div className="qty">{macrosLine(line)}</div>
-                </div>
-                <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => prev.filter((_, idx) => idx !== i))}>Remove</button>
-              </div>
-              {line.kind !== 'free' && (
-                <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-                  <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => bumpLine(prev, i, -1))}>Less</button>
-                  <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => bumpLine(prev, i, 1))}>More</button>
-                  <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => fillRest(prev, i, target))}>Fill the rest</button>
-                </div>
-              )}
-            </div>
-          ))}
           <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
           <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
@@ -89,6 +68,30 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
             {SLOTS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
           </select>
         </label>
+
+        {lines.length > 0 && (
+          <div className="card" style={{ margin: '12px 0' }}>
+            {lines.map((line, i) => (
+              <div key={`${line.name}-${i}`} style={{ borderTop: i ? '1px solid var(--line)' : 0, padding: '8px 0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                  <div>
+                    <strong>{line.name}</strong>
+                    <div className="qty">{line.house}</div>
+                    <div className="qty">{macrosLine(line)}</div>
+                  </div>
+                  <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => prev.filter((_, idx) => idx !== i))}>Remove</button>
+                </div>
+                {line.kind !== 'free' && (
+                  <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+                    <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => bumpLine(prev, i, -1))}>Less</button>
+                    <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => bumpLine(prev, i, 1))}>More</button>
+                    <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => fillRest(prev, i, target))}>Fill the rest</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {TYPES.map((t) => (
           <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
