@@ -1,5 +1,6 @@
 import { DEFAULT_MARKS } from './checkin.js'
 import { PANTRY } from './pantry.js'
+import { FOOD_ALIAS } from './foodAlias.js'
 
 export { DEFAULT_MARKS }
 
@@ -16,9 +17,14 @@ export function kcalOf({ protein, carbs, fat }) {
   return protein * 4 + carbs * 4 + fat * 9
 }
 
+function pantryOf(name) {
+  const key = FOOD_ALIAS[name] || name
+  return PANTRY.find((p) => p.name === key)
+}
+
 export function resolveFood(food) {
   if (!food) return food
-  const src = PANTRY.find((p) => p.name === food.name)
+  const src = pantryOf(food.name)
   if (!src) return food
   const grams = Number(food.grams) || src.base || 100
   const n = grams / 100
@@ -91,8 +97,8 @@ export function mealsOf(day) {
     ['snack1', day.snack1],
     ['lunch', day.lunch],
     ['snack2', day.snack2],
-    ['snack3', day.snack3],
     ['dinner', day.dinner],
+    ['snack3', day.snack3],
   ].filter(([, meal]) => meal)
 }
 
@@ -150,9 +156,10 @@ export function groceryFromWeek(days, factorByDay) {
       const factor = factors[slot] || 1
       meal.foods.forEach((food) => {
         if (food.leftover || food.pantry) return
-        const key = `${food.aisle || 'Other'}:${food.name}`
-        const scaled = scaleFood(food, factor)
-        const prev = map.get(key) || { aisle: food.aisle || 'Other', name: food.name, grams: 0 }
+        const resolved = resolveFood(food)
+        const key = `${resolved.aisle || 'Other'}:${resolved.name}`
+        const scaled = scaleFood(resolved, factor)
+        const prev = map.get(key) || { aisle: resolved.aisle || 'Other', name: resolved.name, grams: 0 }
         prev.grams += scaled.grams
         map.set(key, prev)
       })
