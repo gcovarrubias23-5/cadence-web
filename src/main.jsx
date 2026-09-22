@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './styles.css'
 import './shop.css'
 import './canvas.css'
+import './track.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
