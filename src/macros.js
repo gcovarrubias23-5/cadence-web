@@ -86,6 +86,7 @@ export function dayTotals(day, factors) {
 
 export function scaleForSlot(meal, goalForSlot) {
   if (!meal) return 1
+  if (meal.locked) return 1
   const base = sumFoods(eatenFoods(meal.foods))
   const byKcal = goalForSlot.kcal / Math.max(kcalOf(base), 1)
   const byProtein = goalForSlot.protein / Math.max(base.protein, 0.5)
@@ -104,6 +105,7 @@ export function factorsForDay(day, goal) {
   if (shown > target) {
     const shrink = target / shown
     Object.keys(next).forEach((slot) => {
+      if (day[slot]?.locked) return
       next[slot] *= shrink
     })
   }
