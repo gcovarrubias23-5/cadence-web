@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Source+Sans+3:wght@400;600;700&display=swap");
+:root {
+  --bg: #f3eee4; --ink: #1a1714; --muted: #5e574e; --card: #fffcf6;
+  --accent: #215e4c; --accent-soft: #dce8e2; --line: #e2d6c4;
+  --serif: "Fraunces", Georgia, serif; --sans: "Source Sans 3", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--ink); }
+.app { max-width: 760px; margin: 0 auto; padding: 24px 18px 96px; }
+header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.brand { font-family: var(--serif); font-size: 30px; font-weight: 560; }
+.eyebrow { color: var(--muted); font-size: 13px; }
+nav { display: flex; gap: 6px; }
+nav button { background: transparent; border: 0; color: var(--muted); cursor: pointer; font: 600 14px var(--sans); padding: 8px 10px; border-radius: 999px; }
+nav button.nav-on { background: var(--accent-soft); color: var(--accent); }
+.hero { margin: 20px 0; }
+.hero h1 { font-family: var(--serif); font-weight: 560; font-size: 32px; line-height: 1.15; margin: 0 0 10px; }
+.hero p { color: var(--muted); max-width: 34em; line-height: 1.5; margin: 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
+.goal-title { font-family: var(--serif); font-size: 18px; margin-bottom: 10px; }
+.goal-grid, .metpro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.goal-field span { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.goal-field input, .kcal-readout { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 8px; font: 600 16px var(--sans); background: #fff; }
+.kcal-readout { min-height: 38px; display: flex; align-items: center; }
+.note { color: var(--muted); font-size: 13px; margin: 10px 0 0; line-height: 1.45; }
+.day-head { width: 100%; display: flex; justify-content: space-between; gap: 12px; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; font: inherit; color: inherit; }
+.day-name { font-family: var(--serif); font-size: 20px; display: block; }
+.macro-line, .meal-note { color: var(--muted); font-size: 13px; }
+.meals { margin-top: 14px; display: grid; gap: 14px; }
+.meal-row { display: grid; grid-template-columns: 88px 1fr; gap: 10px; }
+.meal-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 700; padding-top: 3px; }
+.meal-name { font-weight: 600; }
+.foods { list-style: none; padding: 8px 0 0; margin: 0; color: var(--muted); font-size: 13px; }
+.aisle h3 { font-family: var(--serif); margin: 0 0 8px; }
+.aisle ul { list-style: none; padding: 0; margin: 0; }
+.aisle li { border-top: 1px solid var(--line); }
+.aisle label { display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; }
+.qty { color: var(--muted); font-size: 13px; }
+.price-grid { display: grid; gap: 12px; }
+.price h3 { font-family: var(--serif); font-size: 36px; margin: 0 0 4px; }
+.price h3 span { font-size: 16px; color: var(--muted); }
+.plan-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; font-weight: 700; color: var(--accent); margin: 0 0 6px; }
+.fine { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+.features { padding-left: 18px; color: var(--muted); }
+.featured { border-color: var(--accent); }
+.btn { margin-top: 8px; font: 600 15px var(--sans); background: var(--accent); color: white; border: 0; border-radius: 999px; padding: 11px 16px; cursor: pointer; }
