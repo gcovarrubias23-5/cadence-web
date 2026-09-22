@@ -56,6 +56,25 @@ function loadJson(key, fallback) {
   }
 }
 
+function ProgressBars({ ate, drinks }) {
+  const platePct = Math.min(100, (ate / 6) * 100)
+  const waterPct = Math.min(100, (drinks / WATER_GOAL) * 100)
+  return (
+    <div className="bars">
+      <div className="bar-row">
+        <span>Plates</span>
+        <div className="bar-track"><div className="bar-fill" style={{ width: platePct + '%' }} /></div>
+        <span>{ate}/6</span>
+      </div>
+      <div className="bar-row">
+        <span>Water</span>
+        <div className="bar-track"><div className="bar-fill water" style={{ width: waterPct + '%' }} /></div>
+        <span>{drinks}/{WATER_GOAL}</span>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [tab, setTab] = useState('week')
   const [openDay, setOpenDay] = useState('mon')
@@ -176,7 +195,7 @@ export default function App() {
                     <span className="macro-line">
                       {Math.round(kcalOf(totals))} cal · {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F
                     </span>
-                    <span className="day-meta">{ate} of 6 plates · {drinks} of {WATER_GOAL} glasses</span>
+                    <ProgressBars ate={ate} drinks={drinks} />
                   </span>
                 </button>
                 {open && (
@@ -212,7 +231,8 @@ export default function App() {
                     })}
                     <div className="water">
                       <div className="water-label">Water · {drinks} of {WATER_GOAL}</div>
-                      <div className="glasses">
+                      <ProgressBars ate={ate} drinks={drinks} />
+                      <div className="glasses" style={{ marginTop: 10 }}>
                         {Array.from({ length: WATER_GOAL }, (_, i) => (
                           <button
                             key={i}
