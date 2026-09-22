@@ -19,6 +19,15 @@ import {
 import { applyPulse, PULSE_COPY } from './checkin.js'
 import { buildShopText, STORES } from './shopList.js'
 import { Meal } from './mealView.jsx'
+import {
+  WATER_GOAL,
+  addGlass,
+  dayEatenCount,
+  glassesFor,
+  removeGlass,
+  slotDone,
+  toggleEaten,
+} from './track.js'
 
 const TABS = [
   { id: 'week', label: 'Kitchen' },
@@ -38,6 +47,15 @@ function hydrate(picks) {
   })
 }
 
+function loadJson(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key)
+    return saved ? JSON.parse(saved) : fallback
+  } catch {
+    return fallback
+  }
+}
+
 export default function App() {
   const [tab, setTab] = useState('week')
   const [openDay, setOpenDay] = useState('mon')
@@ -45,38 +63,27 @@ export default function App() {
   const [copied, setCopied] = useState('')
   const [lastMove, setLastMove] = useState('')
   const [picking, setPicking] = useState(null)
+  const [eaten, setEaten] = useState(() => loadJson('cadence.eaten', {}))
+  const [water, setWater] = useState(() => loadJson('cadence.water', {}))
   const [picks, setPicks] = useState(() => {
-    try {
-      const saved = localStorage.getItem('cadence.week')
-      const parsed = saved ? JSON.parse(saved) : DEFAULT_WEEK
-      return parsed[0]?.snack3 ? parsed : DEFAULT_WEEK
-    } catch {
-      return DEFAULT_WEEK
-    }
+    const parsed = loadJson('cadence.week', DEFAULT_WEEK)
+    return parsed[0]?.snack3 ? parsed : DEFAULT_WEEK
   })
   const [marks, setMarks] = useState(() => {
-    try {
-      const saved = localStorage.getItem('cadence.marks')
-      return saved ? { ...DEFAULT_MARKS, ...JSON.parse(saved) } : DEFAULT_MARKS
-    } catch {
-      return DEFAULT_MARKS
-    }
+    const saved = loadJson('cadence.marks', null)
+    return saved ? { ...DEFAULT_MARKS, ...saved } : DEFAULT_MARKS
   })
 
-  useEffect(() => {
-    localStorage.setItem('cadence.marks', JSON.stringify(marks))
-  }, [marks])
-  useEffect(() => {
-    localStorage.setItem('cadence.week', JSON.stringify(picks))
-  }, [picks])
+  useEffect(() => { localStorage.setItem('cadence.marks', JSON.stringify(marks)) }, [marks])
+  useEffect(() => { localStorage.setItem('cadence.week', JSON.stringify(picks)) }, [picks])
+  useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
+  useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
 
   const DAYS = useMemo(() => hydrate(picks), [picks])
   const goal = useMemo(() => goalFromMarks(marks), [marks])
   const factors = useMemo(() => {
     const next = {}
-    DAYS.forEach((day) => {
-      next[day.id] = factorsForDay(day, goal)
-    })
+    DAYS.forEach((day) => { next[day.id] = factorsForDay(day, goal) })
     return next
   }, [goal, DAYS])
   const grocery = useMemo(() => groceryFromWeek(DAYS, factors), [DAYS, factors])
@@ -92,37 +99,22 @@ export default function App() {
     return left
   }, [checked, grocery])
 
-  function patch(field, value) {
-    setMarks((prev) => ({ ...prev, [field]: value }))
-  }
-  function pulse(move) {
-    setMarks((prev) => applyPulse(prev, move))
-    setLastMove(move)
-  }
+  function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
+  function pulse(move) { setMarks((prev) => applyPulse(prev, move)); setLastMove(move) }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
   }
-  function resetWeek() {
-    setPicks(DEFAULT_WEEK)
-    setPicking(null)
-  }
+  function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
 
   async function copyList() {
-    try {
-      await navigator.clipboard.writeText(shopText)
-      setCopied('copied')
-    } catch {
-      setCopied('failed')
-    }
+    try { await navigator.clipboard.writeText(shopText); setCopied('copied') }
+    catch { setCopied('failed') }
     setTimeout(() => setCopied(''), 2000)
   }
   async function shareList() {
     if (navigator.share) {
-      try {
-        await navigator.share({ title: 'Cadence list', text: shopText })
-        return
-      } catch {}
+      try { await navigator.share({ title: 'Cadence list', text: shopText }); return } catch {}
     }
     copyList()
   }
@@ -160,20 +152,21 @@ export default function App() {
             <div className="kcal-readout">{Math.round(goal.kcal)}</div>
           </div>
         </div>
-        <p className="note">Food amounts follow these numbers. Change protein, carbs, or fat and the plates move.</p>
       </section>
 
       {tab === 'week' && (
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Open a day. Each slot is sized to your daily numbers.</p>
+            <p>Mark a plate when you eat it. Tap a glass when you drink one.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
             const slotFactors = factors[d.id] || {}
             const totals = dayTotals(d, slotFactors)
             const pickRow = picks.find((p) => p.id === d.id)
+            const ate = dayEatenCount(eaten, d.id, SLOTS)
+            const drinks = glassesFor(water, d.id)
             return (
               <article className="card day" key={d.id}>
                 <button className="day-head" onClick={() => setOpenDay(open ? '' : d.id)}>
@@ -182,18 +175,41 @@ export default function App() {
                     <span className="macro-line">
                       {Math.round(kcalOf(totals))} cal · {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F
                     </span>
+                    <span className="day-meta">{ate} of 6 plates · {drinks} of {WATER_GOAL} glasses</span>
                   </span>
                 </button>
                 {open && (
                   <div className="plan-list">
-                    {SLOTS.map((slot) => (
-                      <div className="plan-slot" key={slot.id}>
-                        <Meal label={slot.label} meal={d[slot.id]} factor={slotFactors[slot.id] || 1} />
-                        <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
-                          Change
-                        </button>
+                    {SLOTS.map((slot) => {
+                      const done = slotDone(eaten, d.id, slot.id)
+                      return (
+                        <div className="plan-slot" key={slot.id}>
+                          <div className="slot-head">
+                            <Meal label={slot.label} meal={d[slot.id]} factor={slotFactors[slot.id] || 1} />
+                            <button className={done ? 'eat on' : 'eat'} type="button" onClick={() => setEaten((prev) => toggleEaten(prev, d.id, slot.id))}>
+                              {done ? 'Ate it' : 'Mark eaten'}
+                            </button>
+                          </div>
+                          <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
+                            Change
+                          </button>
+                        </div>
+                      )
+                    })}
+                    <div className="water">
+                      <div className="water-label">Water · {drinks} of {WATER_GOAL}</div>
+                      <div className="glasses">
+                        {Array.from({ length: WATER_GOAL }, (_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            className={i < drinks ? 'glass on' : 'glass'}
+                            onClick={() => setWater((prev) => (i < drinks ? removeGlass(prev, d.id) : addGlass(prev, d.id)))}
+                            aria-label={i < drinks ? 'Remove a glass' : 'Add a glass'}
+                          />
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 )}
               </article>
@@ -206,7 +222,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Build the week.</h1>
-            <p>Six slots a day. Tap one to swap it. Amounts still follow your daily numbers.</p>
+            <p>Six slots a day. Tap one to swap it.</p>
             <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
           </section>
           {picks.map((row) => (
@@ -269,24 +285,6 @@ export default function App() {
             </div>
             <pre className="shop-text">{shopText}</pre>
           </div>
-          {STORES.map((store) => (
-            <article className="card" key={store.id}>
-              <h3>{store.name}</h3>
-              <p className="meal-note">{store.blurb}</p>
-              <p className="note">{store.state}</p>
-              {store.id === 'instacart' && <a className="btn link-btn" href="https://www.instacart.com" target="_blank" rel="noreferrer">Open Instacart</a>}
-              {store.id === 'walmart' && <a className="btn link-btn" href="https://www.walmart.com/grocery" target="_blank" rel="noreferrer">Open Walmart</a>}
-            </article>
-          ))}
-        </>
-      )}
-
-      {tab === 'plus' && (
-        <>
-          <section className="hero">
-            <h1>Want next week written for you?</h1>
-            <p>After you say how this week felt, Plus can draft the next seven days.</p>
-          </section>
         </>
       )}
 
@@ -296,12 +294,7 @@ export default function App() {
             <p className="plan-kicker">Change this slot</p>
             <h2>What do you want instead?</h2>
             {optionsFor(picking.slot).map((meal) => (
-              <button
-                key={meal.id}
-                className={meal.id === picking.current ? 'option on' : 'option'}
-                type="button"
-                onClick={() => choose(picking.dayId, picking.slot, meal.id)}
-              >
+              <button key={meal.id} className={meal.id === picking.current ? 'option on' : 'option'} type="button" onClick={() => choose(picking.dayId, picking.slot, meal.id)}>
                 <strong>{meal.name}</strong>
                 <span>{meal.time}</span>
               </button>
