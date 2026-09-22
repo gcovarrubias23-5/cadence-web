@@ -1,13 +1,23 @@
 import { SLOTS, mealOf } from './plan.js'
 
-export function Build({ picks, onPick, onReset, onCopyDay, onRepeatSlot }) {
+export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot, onInvent }) {
   return (
     <>
       <section className="hero">
         <h1>Build your week.</h1>
-        <p>These are our plates. Tap a slot to swap it. Kitchen still sizes the food to your numbers. A scratch plate of your own comes later.</p>
-        <button className="btn" type="button" onClick={onReset}>Use the starter week</button>
+        <p>Pick our plates, or invent one from foods. Kitchen still sizes the grams to your numbers.</p>
+        <button className="btn" type="button" onClick={onInvent}>Invent a plate</button>
+        <button className="btn btn-ghost" type="button" onClick={onReset}>Use the starter week</button>
       </section>
+
+      {custom.length > 0 && (
+        <section className="card">
+          <div className="goal-title">Your plates</div>
+          {custom.map((meal) => (
+            <p key={meal.id} className="note" style={{ marginTop: 6 }}>{meal.name} · {meal.slot}</p>
+          ))}
+        </section>
+      )}
 
       {picks.map((row) => (
         <article className="card" key={row.id}>
@@ -18,7 +28,7 @@ export function Build({ picks, onPick, onReset, onCopyDay, onRepeatSlot }) {
             </button>
           </div>
           {SLOTS.map((slot) => {
-            const meal = mealOf(row[slot.id])
+            const meal = mealOf(row[slot.id], custom)
             return (
               <div key={slot.id}>
                 <button className="pick-row" type="button" onClick={() => onPick(row.id, slot.id, row[slot.id])}>

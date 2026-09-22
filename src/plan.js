@@ -12,15 +12,22 @@ export const SLOTS = [
   { id: 'snack3', label: 'Late snack' },
 ]
 
-export function mealOf(id) {
-  return MEALS[id] || SNACK_MEALS[id] || MEALS.yogurtGrapes
+const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
+
+export function mealOf(id, custom = []) {
+  return MEALS[id] || SNACK_MEALS[id] || custom.find((m) => m.id === id) || MEALS.yogurtGrapes
 }
 
-export function optionsFor(slot) {
-  if (slot === 'breakfast') return BREAKFASTS.map((id) => MEALS[id])
-  if (slot === 'lunch') return LUNCHES.map((id) => MEALS[id])
-  if (slot === 'dinner') return DINNERS.map((id) => MEALS[id])
-  return SNACKS.map((id) => SNACK_MEALS[id])
+export function optionsFor(slot, custom = []) {
+  let base = SNACKS.map((id) => SNACK_MEALS[id])
+  if (slot === 'breakfast') base = BREAKFASTS.map((id) => MEALS[id])
+  if (slot === 'lunch') base = LUNCHES.map((id) => MEALS[id])
+  if (slot === 'dinner') base = DINNERS.map((id) => MEALS[id])
+  const extras = custom.filter((m) => {
+    if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
+    return m.slot === slot
+  })
+  return [...extras, ...base]
 }
 
 export const DEFAULT_WEEK = [
