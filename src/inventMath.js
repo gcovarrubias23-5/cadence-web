@@ -22,16 +22,16 @@ export function houseFor(item, grams) {
 
 export function leftoverOf(lines, target) {
   const filled = { protein: 0, carbs: 0, fat: 0 }
-  lines.forEach((f) => {
-    if (f.kind === 'free') return
-    if (f.kind === 'protein') filled.protein += f.protein
-    if (f.kind === 'carbs') filled.carbs += f.carbs
-    if (f.kind === 'fat') filled.fat += f.fat
+  ;(lines || []).forEach((f) => {
+    if (!f || f.kind === 'free') return
+    if (f.kind === 'protein') filled.protein += Number(f.protein) || 0
+    if (f.kind === 'carbs') filled.carbs += Number(f.carbs) || 0
+    if (f.kind === 'fat') filled.fat += Number(f.fat) || 0
   })
   return {
-    protein: Math.max(0, target.protein - filled.protein),
-    carbs: Math.max(0, target.carbs - filled.carbs),
-    fat: Math.max(0, target.fat - filled.fat),
+    protein: Math.max(0, (target?.protein || 0) - filled.protein),
+    carbs: Math.max(0, (target?.carbs || 0) - filled.carbs),
+    fat: Math.max(0, (target?.fat || 0) - filled.fat),
   }
 }
 
@@ -40,12 +40,12 @@ export function gramsToHit(item, leftover) {
   if (!src || src.kind === 'free') return src?.base || 80
   const per100 = Number(src[src.kind]) || 0
   if (per100 < 0.2) return src.base || 80
-  return (Math.max(leftover, 0.5) / per100) * 100
+  return (Math.max(leftover, 0) / per100) * 100
 }
 
 export function lineFrom(item, grams) {
   const src = srcOf(item)
-  const g = Number(grams) || src.base
+  const g = Math.max(1, Number(grams) || src.base)
   return {
     ...portionFromPantry(src, g),
     kind: src.kind,
@@ -54,8 +54,23 @@ export function lineFrom(item, grams) {
   }
 }
 
-export function addServing(lines, item) {
-  return [...lines, lineFrom(item, item.base)]
+export function previewGrams(lines, item, target) {
+  const src = srcOf(item)
+  if (!src || src.kind === 'free') return src?.base || 80
+  const already = (lines || []).some((l) => l.kind === src.kind)
+  if (!already) return src.base
+  return gramsToHit(src, leftoverOf(lines, target)[src.kind])
+}
+
+export function addFood(lines, item, target) {
+  const src = srcOf(item)
+  const grams = previewGrams(lines, src, target)
+  if (src.kind !== 'free' && grams < 2) return lines
+  return [...lines, lineFrom(src, grams)]
+}
+
+export function addServing(lines, item, target) {
+  return addFood(lines, item, target)
 }
 
 export function bumpLine(lines, index, dir) {
@@ -75,8 +90,4 @@ export function fillRest(lines, index, target) {
 
 export function targetFor(goal, slotId) {
   return slotGoal(goal, slotId)
-}
-
-export function fitLinesToSlot(lines) {
-  return lines
 }
