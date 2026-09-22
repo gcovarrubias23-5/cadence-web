@@ -40,10 +40,11 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const kindCount = lines.filter((l) => l.kind === kind).length
 
   function save() {
-    if (!name.trim() || lines.length === 0) return
+    if (!lines.length) return
+    const title = name.trim() || `${lines[0].name} plate`
     onSave({
       id: `custom-${Date.now()}`,
-      name: name.trim(),
+      name: title,
       time: 'your plate',
       slot: SNACK_IDS.includes(slot) ? 'snack' : slot,
       custom: true,
@@ -68,7 +69,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <label className="goal-field">
           <span>Plate name</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Tuesday chicken bowl" />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder={lines[0] ? `${lines[0].name} plate` : 'Tuesday chicken bowl'} />
         </label>
         <label className="goal-field" style={{ marginTop: 8 }}>
           <span>Which meal</span>
@@ -133,7 +134,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           )
         })}
 
-        <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
+        <button className="btn" type="button" onClick={save} disabled={!lines.length}>Save this plate</button>
         <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
       </div>
     </div>
