@@ -77,7 +77,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
                   <div>
                     <strong>{line.name}</strong>
                     <div className="qty">{line.house}</div>
-                    <div className="qty">{macrosLine(line)}</div>
+                    <div className="qty" style={{ marginTop: 8 }}>{macrosLine(line)}</div>
                   </div>
                   <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => prev.filter((_, idx) => idx !== i))}>Remove</button>
                 </div>
@@ -112,8 +112,8 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
               onClick={() => setLines((prev) => addFood(prev, item))}
             >
               <strong>{on ? `✓ ${item.name}` : item.name}</strong>
-              <span>{houseFor(item, item.base)}</span>
-              <span>{macrosLine(sample)}</span>
+              <span style={{ display: 'block' }}>{houseFor(item, item.base)}</span>
+              <span style={{ display: 'block', marginTop: 8 }}>{macrosLine(sample)}</span>
             </button>
           )
         })}
@@ -134,7 +134,7 @@ function Meter({ label, need, have, left, padTop }) {
         <strong>{label}</strong>
         <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
       </div>
-      <div style={{ height: 8, background: 'var(--line)', borderRadius: 99, overflow: 'hidden', margin: '4px 0' }}>
+      <div className="meter-track">
         <div style={{ width: `${pct}%`, height: '100%', background: done ? 'var(--accent)' : '#c4a35a' }} />
       </div>
     </div>
