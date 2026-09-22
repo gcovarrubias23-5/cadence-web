@@ -25,7 +25,7 @@ import {
   addGlass,
   dayEatenCount,
   glassesFor,
-  removeGlass,
+  setGlasses,
   slotDone,
   toggleEaten,
 } from './track.js'
@@ -108,6 +108,7 @@ export default function App() {
     setPicking(null)
   }
   function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
+  function sip(dayId) { setWater((prev) => addGlass(prev, dayId)) }
 
   async function copyList() {
     try { await navigator.clipboard.writeText(shopText); setCopied('copied') }
@@ -160,7 +161,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Open a day. Tick the box when you eat. Tap the name to see the plate.</p>
+            <p>Tick a plate when you eat. Tap the water bar or a circle when you drink.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
@@ -180,7 +181,17 @@ export default function App() {
                   </span>
                 </button>
                 <div style={{ padding: '0 4px 12px' }}>
-                  <ProgressBars ate={ate} drinks={drinks} />
+                  <ProgressBars ate={ate} drinks={drinks} onAddWater={() => sip(d.id)} />
+                  <div className="glasses" style={{ marginTop: 10 }}>
+                    {Array.from({ length: WATER_GOAL }, (_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className={i < drinks ? 'glass on' : 'glass'}
+                        onClick={() => setWater((prev) => setGlasses(prev, d.id, i + 1 === drinks ? i : i + 1))}
+                      />
+                    ))}
+                  </div>
                 </div>
                 {open && (
                   <div className="plan-list">
@@ -213,19 +224,6 @@ export default function App() {
                         </div>
                       )
                     })}
-                    <div className="water">
-                      <div className="water-label">Water · {drinks} of {WATER_GOAL}</div>
-                      <div className="glasses">
-                        {Array.from({ length: WATER_GOAL }, (_, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            className={i < drinks ? 'glass on' : 'glass'}
-                            onClick={() => setWater((prev) => (i < drinks ? removeGlass(prev, d.id) : addGlass(prev, d.id)))}
-                          />
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 )}
               </article>
@@ -238,7 +236,6 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Build the week.</h1>
-            <p>Six slots a day. Tap one to swap it.</p>
             <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
           </section>
           {picks.map((row) => (
