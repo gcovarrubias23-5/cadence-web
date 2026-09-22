@@ -18,6 +18,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const [kind, setKind] = useState('protein')
   const [lines, setLines] = useState([])
   const hits = foodsOf(kind)
+  const slotMeta = SLOTS.find((s) => s.id === slot) || { label: 'This meal' }
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
   const left = leftoverOf(lines, target)
   const filled = {
@@ -57,14 +58,18 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
         <p className="plan-kicker">Invent a plate</p>
-        <h2 style={{ marginBottom: 8 }}>Fill the slot</h2>
+        <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
+        <p className="note" style={{ marginTop: 0 }}>
+          Day total is {Math.round(goal?.protein || 0)}P · {Math.round(goal?.carbs || 0)}C · {Math.round(goal?.fat || 0)}F.
+          This {slotMeta.label.toLowerCase()} gets {Math.round(target.protein)}P · {Math.round(target.carbs)}C · {Math.round(target.fat)}F. Food weights below fill this plate, not the whole day.
+        </p>
 
         <div className="card" style={{ marginBottom: 12 }}>
-          <div className="goal-title">Left to add</div>
+          <div className="goal-title">Left on this {slotMeta.label.toLowerCase()}</div>
           <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
           <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
-          <p className="note">Free raw veg does not subtract from this.</p>
+          <p className="note">Free raw veg does not subtract from this plate.</p>
         </div>
 
         <label className="goal-field">
@@ -72,7 +77,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Tuesday chicken bowl" />
         </label>
         <label className="goal-field" style={{ marginTop: 8 }}>
-          <span>Slot</span>
+          <span>Which meal</span>
           <select value={slot} onChange={(e) => changeSlot(e.target.value)} style={{ width: '100%', border: '1px solid var(--line)', borderRadius: 10, padding: 8, font: '600 16px var(--sans)', background: '#fff' }}>
             {SLOTS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
           </select>
@@ -82,13 +87,13 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         {TYPES.map((t) => (
           <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
             <strong>{t.label}</strong>
-            <span>{t.line}{t.id !== 'free' && left[t.id] > 0.5 ? ` · ${Math.round(left[t.id])}g left` : t.id !== 'free' ? ' · filled' : ''}</span>
+            <span>{t.line}{t.id !== 'free' && left[t.id] > 0.5 ? ` · ${Math.round(left[t.id])}g ${t.id} left on this plate` : t.id !== 'free' ? ' · this plate is filled' : ''}</span>
           </button>
         ))}
 
         <div className="card" style={{ margin: '12px 0' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Tap a food. We set the amount to fill what is left.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Tap a food. The amount is for this {slotMeta.label.toLowerCase()} only.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8, alignItems: 'center', borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div>
@@ -101,14 +106,19 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         </div>
 
         <p className="note" style={{ marginBottom: 4 }}>
-          {TYPES.find((t) => t.id === kind).label} foods · tap one and we portion it
+          Amount to put on this {slotMeta.label.toLowerCase()}
         </p>
         {hits.map((item) => {
           const g = item.kind === 'free' ? item.base : gramsToHit(item, left[item.kind] || 0)
+          const macroLeft = item.kind === 'free' ? 0 : left[item.kind]
           return (
             <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
               <strong>{item.name}</strong>
-              <span>Use {houseFor(item, g)}</span>
+              <span>
+                {item.kind === 'free'
+                  ? houseFor(item, g)
+                  : `${houseFor(item, g)} to hit ${Math.round(macroLeft)}g ${item.kind} on this plate`}
+              </span>
             </button>
           )
         })}
@@ -127,12 +137,12 @@ function Meter({ label, need, have, left }) {
     <div style={{ margin: '8px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
         <strong>{label}</strong>
-        <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
+        <span className="qty">{done ? 'This plate is filled' : `${Math.round(left)}g left on this plate`}</span>
       </div>
       <div style={{ height: 8, background: 'var(--line)', borderRadius: 99, overflow: 'hidden', margin: '4px 0' }}>
         <div style={{ width: `${pct}%`, height: '100%', background: done ? 'var(--accent)' : '#c4a35a' }} />
       </div>
-      <div className="qty">Need {Math.round(need)}g · on plate {Math.round(have)}g · still {Math.round(left)}g</div>
+      <div className="qty">This plate wants {Math.round(need)}g · on it {Math.round(have)}g · still {Math.round(left)}g</div>
     </div>
   )
 }
