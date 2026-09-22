@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
-import { PANTRY, foodsOf } from './pantry.js'
-import { formatMacro, kcalOf } from './macros.js'
+import { foodsOf } from './pantry.js'
 import { addFitted, fitLinesToSlot, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
@@ -21,14 +20,23 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const hits = foodsOf(kind)
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
 
-  const totals = lines.reduce(
-    (acc, f) => ({
-      protein: acc.protein + f.protein,
-      carbs: acc.carbs + f.carbs,
-      fat: acc.fat + f.fat,
-    }),
+  const filled = lines.reduce(
+    (acc, f) => {
+      if (f.kind === 'free') return acc
+      return {
+        protein: acc.protein + (f.kind === 'protein' ? f.protein : 0),
+        carbs: acc.carbs + (f.kind === 'carbs' ? f.carbs : 0),
+        fat: acc.fat + (f.kind === 'fat' ? f.fat : 0),
+      }
+    },
     { protein: 0, carbs: 0, fat: 0 },
   )
+
+  const left = {
+    protein: Math.max(0, target.protein - filled.protein),
+    carbs: Math.max(0, target.carbs - filled.carbs),
+    fat: Math.max(0, target.fat - filled.fat),
+  }
 
   function addItem(item) {
     setLines((prev) => addFitted(prev, item, target))
@@ -57,19 +65,19 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     }, slot)
   }
 
-  const missing = []
-  if (!lines.some((l) => l.kind === 'protein')) missing.push('protein')
-  if (!lines.some((l) => l.kind === 'carbs')) missing.push('carbs')
-  if (!lines.some((l) => l.kind === 'fat')) missing.push('fat')
-
   return (
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
         <p className="plan-kicker">Invent a plate</p>
-        <h2 style={{ marginBottom: 8 }}>Add a food</h2>
-        <p className="note" style={{ marginTop: 0 }}>
-          This slot wants {Math.round(target.protein)}g protein, {Math.round(target.carbs)}g carbs, {Math.round(target.fat)}g fat. We size what you add to that. Free veg stays extra.
-        </p>
+        <h2 style={{ marginBottom: 8 }}>Fill the slot</h2>
+
+        <div className="card" style={{ marginBottom: 12 }}>
+          <div className="goal-title">Left to add</div>
+          <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
+          <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
+          <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
+          <p className="note">Free veg does not subtract from this.</p>
+        </div>
 
         <label className="goal-field">
           <span>Plate name</span>
@@ -86,17 +94,13 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         {TYPES.map((t) => (
           <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
             <strong>{t.label}</strong>
-            <span>{t.line}</span>
+            <span>{t.line}{t.id !== 'free' && left[t.id] > 0.5 ? ` · ${Math.round(left[t.id])}g left` : t.id !== 'free' ? ' · filled' : ''}</span>
           </button>
         ))}
 
         <div className="card" style={{ margin: '12px 0' }}>
           <div className="goal-title">On this plate</div>
-          <p className="note" style={{ marginTop: 0 }}>
-            Target {Math.round(target.protein)}P {Math.round(target.carbs)}C {Math.round(target.fat)}F · now {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F · {Math.round(kcalOf(totals))} cal
-          </p>
-          {missing.length > 0 && <p className="note">Still need a {missing.join(', ')} food to fill the slot.</p>}
-          {lines.length === 0 && <p className="note">Pick Protein, Carbs, Fat, or Free, then tap a food.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Nothing yet. Tap a type, then a food.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8, alignItems: 'center', borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div>
@@ -119,6 +123,23 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
         <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
       </div>
+    </div>
+  )
+}
+
+function Meter({ label, need, have, left }) {
+  const pct = Math.min(100, Math.round((have / Math.max(need, 1)) * 100))
+  const done = left < 0.6
+  return (
+    <div style={{ margin: '8px 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+        <strong>{label}</strong>
+        <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
+      </div>
+      <div style={{ height: 8, background: 'var(--line)', borderRadius: 99, overflow: 'hidden', margin: '4px 0' }}>
+        <div style={{ width: `${pct}%`, height: '100%', background: done ? 'var(--accent)' : '#c4a35a' }} />
+      </div>
+      <div className="qty">Need {Math.round(need)}g · on plate {Math.round(have)}g · still {Math.round(left)}g</div>
     </div>
   )
 }
