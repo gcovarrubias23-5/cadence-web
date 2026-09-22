@@ -44,6 +44,8 @@ const TABS = [
   { id: 'shop', label: 'Shop' },
 ]
 
+const SNACK_IDS = ['snack1', 'snack2', 'snack3']
+
 function hydrate(picks, custom) {
   return picks.map((row) => {
     const day = { ...row }
@@ -141,9 +143,17 @@ export default function App() {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
   }
-  function savePlate(meal) {
-    setCustom((prev) => [meal, ...prev])
+  function savePlate(meal, slotId) {
+    const slot = slotId || picking?.slot || (SNACK_IDS.includes(meal.slot) ? 'lunch' : meal.slot)
+    setCustom((prev) => [meal, ...prev.filter((m) => m.id !== meal.id)])
+    if (picking?.dayId) {
+      setPicks((prev) => prev.map((row) => (row.id === picking.dayId ? { ...row, [picking.slot]: meal.id } : row)))
+    } else {
+      setPicks((prev) => prev.map((row) => ({ ...row, [slot]: meal.id })))
+    }
+    setPicking(null)
     setInventOpen(false)
+    setTab('build')
   }
   function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
   function copyDay(dayId) {
@@ -359,7 +369,14 @@ export default function App() {
         </div>
       )}
 
-      {inventOpen && <Invent goal={goal} onSave={savePlate} onClose={() => setInventOpen(false)} />}
+      {inventOpen && (
+        <Invent
+          goal={goal}
+          defaultSlot={picking?.slot || 'lunch'}
+          onSave={savePlate}
+          onClose={() => setInventOpen(false)}
+        />
+      )}
     </div>
   )
 }
