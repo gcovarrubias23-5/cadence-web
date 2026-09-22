@@ -70,6 +70,7 @@ export function portionFromPantry(item, grams) {
   return {
     name: item.name,
     aisle: item.aisle,
+    kind: item.kind,
     grams: g,
     protein: item.protein * n,
     carbs: item.carbs * n,
