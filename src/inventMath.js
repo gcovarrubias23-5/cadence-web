@@ -15,9 +15,9 @@ export function houseFor(item, grams) {
   if (m) {
     const n = Number(m[1]) * f
     const pretty = n >= 10 ? Math.round(n) : Math.round(n * 2) / 2
-    return `${pretty} ${m[2]} · ${Math.round(g)} g`
+    return `${pretty} ${m[2]}`
   }
-  return `${Math.round(g)} g · ${raw}`
+  return raw
 }
 
 export function leftoverOf(lines, target) {
@@ -50,18 +50,28 @@ export function lineFrom(item, grams) {
     ...portionFromPantry(src, g),
     kind: src.kind,
     house: houseFor(src, g),
+    grams: g,
     base: src.base,
   }
 }
 
-export function previewGrams(lines, item) {
-  const src = srcOf(item)
-  return src?.base || 80
+export function shareKind(lines, kind, target) {
+  if (kind === 'free') return lines
+  const idxs = lines.map((l, i) => (l.kind === kind ? i : -1)).filter((i) => i >= 0)
+  if (!idxs.length) return lines
+  const each = (target?.[kind] || 0) / idxs.length
+  return lines.map((line, i) => (idxs.includes(i) ? lineFrom(line, gramsToHit(line, each)) : line))
 }
 
-export function addFood(lines, item) {
+export function addFood(lines, item, target) {
   const src = srcOf(item)
-  return [...(lines || []), lineFrom(src, src.base)]
+  const prev = lines || []
+  if (src.kind === 'free') return [...prev, lineFrom(src, src.base)]
+  const same = prev.filter((l) => l.kind === src.kind)
+  if (!same.length) return [...prev, lineFrom(src, src.base)]
+  const left = leftoverOf(prev, target)[src.kind]
+  if (left > 2) return [...prev, lineFrom(src, gramsToHit(src, left))]
+  return shareKind([...prev, lineFrom(src, src.base)], src.kind, target)
 }
 
 export function bumpLine(lines, index, dir) {
