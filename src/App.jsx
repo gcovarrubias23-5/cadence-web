@@ -9,12 +9,12 @@ import {
 import {
   DEFAULT_MARKS,
   dayTotals,
+  factorsForDay,
   formatG,
   formatMacro,
   goalFromMarks,
   groceryFromWeek,
   kcalOf,
-  scaleForGoal,
 } from './macros.js'
 import { applyPulse, PULSE_COPY } from './checkin.js'
 import { buildShopText, STORES } from './shopList.js'
@@ -75,7 +75,7 @@ export default function App() {
   const factors = useMemo(() => {
     const next = {}
     DAYS.forEach((day) => {
-      next[day.id] = scaleForGoal(day, goal)
+      next[day.id] = factorsForDay(day, goal)
     })
     return next
   }, [goal, DAYS])
@@ -160,33 +160,35 @@ export default function App() {
             <div className="kcal-readout">{Math.round(goal.kcal)}</div>
           </div>
         </div>
-        <p className="note">Six slots: breakfast, morning snack, lunch, afternoon snack, dinner, late snack.</p>
+        <p className="note">Food amounts follow these numbers. Change protein, carbs, or fat and the plates move.</p>
       </section>
 
       {tab === 'week' && (
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Open a day. Each slot is a full plate. Tap Change if you want something else.</p>
+            <p>Open a day. Each slot is sized to your daily numbers.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
-            const factor = factors[d.id]
-            const totals = scaledDayTotals(d, factor)
+            const slotFactors = factors[d.id] || {}
+            const totals = dayTotals(d, slotFactors)
             const pickRow = picks.find((p) => p.id === d.id)
             return (
               <article className="card day" key={d.id}>
                 <button className="day-head" onClick={() => setOpenDay(open ? '' : d.id)}>
                   <span>
                     <span className="day-name">{d.day}</span>
-                    <span className="macro-line">about {Math.round(kcalOf(totals))} calories · {formatMacro(totals.protein)} protein</span>
+                    <span className="macro-line">
+                      {Math.round(kcalOf(totals))} cal · {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F
+                    </span>
                   </span>
                 </button>
                 {open && (
                   <div className="plan-list">
                     {SLOTS.map((slot) => (
                       <div className="plan-slot" key={slot.id}>
-                        <Meal label={slot.label} meal={d[slot.id]} factor={factor} />
+                        <Meal label={slot.label} meal={d[slot.id]} factor={slotFactors[slot.id] || 1} />
                         <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
                           Change
                         </button>
@@ -204,7 +206,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Build the week.</h1>
-            <p>Six slots a day. Tap one to swap it.</p>
+            <p>Six slots a day. Tap one to swap it. Amounts still follow your daily numbers.</p>
             <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
           </section>
           {picks.map((row) => (
@@ -283,7 +285,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Want next week written for you?</h1>
-            <p>After you say how this week felt, Plus can draft the next seven days. You can still swap meals.</p>
+            <p>After you say how this week felt, Plus can draft the next seven days.</p>
           </section>
         </>
       )}
@@ -328,9 +330,4 @@ function MarkInput({ label, value, onChange }) {
       <input type="number" min="0" value={value} onChange={(e) => onChange(e.target.value)} />
     </label>
   )
-}
-
-function scaledDayTotals(day, factor) {
-  const base = dayTotals(day)
-  return { protein: base.protein * factor, carbs: base.carbs * factor, fat: base.fat * factor }
 }
