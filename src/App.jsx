@@ -359,7 +359,7 @@ export default function App() {
         </div>
       )}
 
-      {inventOpen && <Invent onSave={savePlate} onClose={() => setInventOpen(false)} />}
+      {inventOpen && <Invent goal={goal} onSave={savePlate} onClose={() => setInventOpen(false)} />}
     </div>
   )
 }
