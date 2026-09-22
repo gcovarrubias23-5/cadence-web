@@ -18,7 +18,10 @@ export function Meal({ label, meal, factor }) {
       <div>
         <div className="meal-name">{meal.name}</div>
         <div className="meal-note">
-          {meal.time} · {Math.round(kcalOf(plateTotals))} calories · {formatMacro(plateTotals.protein)} protein
+          {meal.time} · {Math.round(kcalOf(plateTotals))} calories
+        </div>
+        <div className="meal-note">
+          {formatMacro(plateTotals.protein)} protein · {formatMacro(plateTotals.carbs)} carbs · {formatMacro(plateTotals.fat)} fat
         </div>
         {meal.steps?.length > 0 && (
           <ol className="steps">
@@ -32,6 +35,9 @@ export function Meal({ label, meal, factor }) {
             <li key={food.name + food.grams}>
               <strong>{lineLabel(food, factor)}</strong>
               <span className="food-sub"> · {food.name}</span>
+              <div className="qty" style={{ marginTop: 4 }}>
+                {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
+              </div>
             </li>
           ))}
         </ul>
