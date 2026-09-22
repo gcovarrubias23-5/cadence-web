@@ -4,11 +4,8 @@ function f(name, grams, protein, carbs, fat, aisle, extra = {}) {
 
 export const MEALS = {
   yogurtGrapes: {
-    id: 'yogurtGrapes',
-    name: 'Greek yogurt bowl',
-    time: '5 min',
-    slot: 'breakfast',
-    steps: ['Spoon yogurt. Add 15 grapes and granola.'],
+    id: 'yogurtGrapes', name: 'Yogurt bowl with grapes', time: '5 min', slot: 'breakfast',
+    steps: ['Put 3/4 cup Greek yogurt in a bowl.', 'Add 15 grapes and 3 Tbsp granola.'],
     foods: [
       f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
       f('Grapes', 80, 0.6, 14, 0.2, 'Produce', { house: '15 grapes' }),
@@ -16,23 +13,26 @@ export const MEALS = {
     ],
   },
   yogurtBanana: {
-    id: 'yogurtBanana',
-    name: 'Yogurt + banana',
-    time: '5 min',
-    slot: 'breakfast',
-    steps: ['Yogurt, half banana, 2 Tbsp granola.'],
+    id: 'yogurtBanana', name: 'Yogurt bowl with banana', time: '5 min', slot: 'breakfast',
+    steps: ['3/4 cup yogurt.', 'Slice 1/2 banana on top. Add 2 Tbsp granola.'],
     foods: [
       f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
       f('Banana', 60, 0.7, 14, 0.2, 'Produce', { house: '1/2 banana' }),
       f('Granola', 20, 2, 13, 3.3, 'Pantry', { house: '2 Tbsp granola' }),
     ],
   },
+  yogurtBerries: {
+    id: 'yogurtBerries', name: 'Yogurt bowl with berries', time: '5 min', slot: 'breakfast',
+    steps: ['3/4 cup yogurt.', 'Add 1/2 cup berries and 2 Tbsp granola.'],
+    foods: [
+      f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
+      f('Mixed berries', 70, 0.7, 9, 0.3, 'Produce', { house: '1/2 cup berries' }),
+      f('Granola', 20, 2, 13, 3.3, 'Pantry', { house: '2 Tbsp granola' }),
+    ],
+  },
   eggToast: {
-    id: 'eggToast',
-    name: 'Egg scramble + toast',
-    time: '12 min',
-    slot: 'breakfast',
-    steps: ['2 eggs, handful of spinach, 1 slice cheese, 1 toast.'],
+    id: 'eggToast', name: 'Eggs and toast', time: '12 min', slot: 'breakfast',
+    steps: ['Scramble 2 eggs with a handful of spinach.', 'Melt in 1 slice of cheese.', 'Toast 1 slice of bread.'],
     foods: [
       f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
       f('Baby spinach', 40, 1.1, 1.4, 0.2, 'Produce', { house: '1 handful spinach' }),
@@ -40,12 +40,38 @@ export const MEALS = {
       f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
     ],
   },
+  eggAvocado: {
+    id: 'eggAvocado', name: 'Eggs and avocado toast', time: '12 min', slot: 'breakfast',
+    steps: ['Toast 1 slice of bread.', 'Mash 1/4 avocado on it.', 'Fry 2 eggs and set on top.'],
+    foods: [
+      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
+      f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
+      f('Avocado', 40, 0.8, 3, 6, 'Produce', { house: '1/4 avocado' }),
+    ],
+  },
+  oatmeal: {
+    id: 'oatmeal', name: 'Oatmeal and eggs', time: '10 min', slot: 'breakfast',
+    steps: ['Cook 1/2 cup dry oats with water.', 'Stir in 1/2 banana.', 'Fry 2 eggs on the side.'],
+    foods: [
+      f('Dry oats', 40, 5, 27, 3, 'Pantry', { house: '1/2 cup dry oats' }),
+      f('Banana', 60, 0.7, 14, 0.2, 'Produce', { house: '1/2 banana' }),
+      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
+    ],
+  },
+  proteinShake: {
+    id: 'proteinShake', name: 'Shake and toast', time: '5 min', slot: 'breakfast',
+    steps: ['Blend 1 scoop protein, 1 cup milk, 1/2 banana.', 'Toast 1 slice of bread with 1 tsp peanut butter.'],
+    foods: [
+      f('Protein powder', 30, 24, 3, 1.5, 'Pantry', { house: '1 scoop protein' }),
+      f('Milk', 240, 8, 12, 5, 'Dairy', { house: '1 cup milk' }),
+      f('Banana', 60, 0.7, 14, 0.2, 'Produce', { house: '1/2 banana' }),
+      f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
+      f('Peanut butter', 16, 4, 3, 8, 'Pantry', { house: '1 tsp peanut butter' }),
+    ],
+  },
   pancakes: {
-    id: 'pancakes',
-    name: 'Pancakes + egg',
-    time: '20 min',
-    slot: 'breakfast',
-    steps: ['2 small pancakes, 1 fried egg, 8 strawberries.'],
+    id: 'pancakes', name: 'Pancakes and eggs', time: '20 min', slot: 'breakfast',
+    steps: ['Cook 2 small pancakes.', 'Fry 1 egg.', 'Put 8 strawberries on the side.'],
     foods: [
       f('Pancake mix', 60, 4.5, 39, 2.2, 'Pantry', { house: '2 small pancakes' }),
       f('Eggs', 50, 6.3, 0.4, 5, 'Protein', { house: '1 large egg' }),
@@ -53,11 +79,8 @@ export const MEALS = {
     ],
   },
   turkeySandwich: {
-    id: 'turkeySandwich',
-    name: 'Turkey sandwich + fruit',
-    time: '8 min',
-    slot: 'lunch',
-    steps: ['Turkey and cheddar on 2 slices. Apple and carrots.'],
+    id: 'turkeySandwich', name: 'Turkey sandwich', time: '8 min', slot: 'lunch',
+    steps: ['Toast 2 slices of bread if you want.', 'Stack 4 slices turkey and 1 slice cheese.', 'Eat with 1 apple and 8 baby carrots.'],
     foods: [
       f('Sourdough', 60, 5, 28, 1.2, 'Pantry', { house: '2 slices bread' }),
       f('Sliced turkey deli', 85, 15, 1, 1.5, 'Protein', { house: '4 slices turkey' }),
@@ -66,93 +89,86 @@ export const MEALS = {
       f('Carrots', 60, 0.6, 6, 0.2, 'Produce', { house: '8 baby carrots' }),
     ],
   },
-  leftoverChicken: {
-    id: 'leftoverChicken',
-    name: 'Leftover lemon chicken',
-    time: '5 min',
-    slot: 'lunch',
-    steps: ['Reheat extra thigh. Rice and broccoli.'],
+  chickenSalad: {
+    id: 'chickenSalad', name: 'Chicken salad plate', time: '12 min', slot: 'lunch',
+    steps: ['Warm or use cold 5 oz cooked chicken.', 'Bowl: 2 handfuls lettuce, 1/2 cup tomatoes, 1/3 cup rice.', 'Drizzle 2 tsp dressing.'],
     foods: [
-      f('Chicken thigh', 140, 25, 0, 13, 'Protein', { leftover: true, house: '1 leftover thigh' }),
+      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
+      f('Romaine', 80, 1, 2.5, 0.2, 'Produce', { house: '2 handfuls lettuce' }),
+      f('Tomato', 80, 0.7, 4, 0.2, 'Produce', { house: '1/2 cup chopped tomato' }),
+      f('Brown rice, cooked', 100, 2, 22, 0.4, 'Pantry', { house: '1/2 cup cooked rice' }),
+      f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '2 tsp dressing' }),
+    ],
+  },
+  tunaWrap: {
+    id: 'tunaWrap', name: 'Tuna wrap', time: '8 min', slot: 'lunch',
+    steps: ['Mix 1 can tuna with 1 Tbsp yogurt.', 'Spoon into 1 large tortilla with lettuce.', 'Eat with 1 apple.'],
+    foods: [
+      f('Canned tuna', 113, 25, 0, 1, 'Protein', { house: '1 can tuna, drained' }),
+      f('Plain Greek yogurt', 20, 2, 0.7, 0.1, 'Dairy', { house: '1 Tbsp yogurt' }),
+      f('Flour tortilla', 50, 4, 24, 3, 'Pantry', { house: '1 large tortilla' }),
+      f('Romaine', 40, 0.5, 1.2, 0.1, 'Produce', { house: '1 handful lettuce' }),
+      f('Apple', 150, 0.4, 21, 0.3, 'Produce', { house: '1 medium apple' }),
+    ],
+  },
+  burritoBowl: {
+    id: 'burritoBowl', name: 'Chicken burrito bowl', time: '15 min', slot: 'lunch',
+    steps: ['Warm 5 oz chicken.', 'Bowl: 3/4 cup rice, 1/3 cup beans, salsa, 1/4 avocado.'],
+    foods: [
+      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
       f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
-      f('Broccoli', 80, 2.1, 5, 0.3, 'Produce', { house: '1 cup broccoli' }),
-    ],
-  },
-  leftoverTaco: {
-    id: 'leftoverTaco',
-    name: 'Taco bowl leftover',
-    time: '5 min',
-    slot: 'lunch',
-    steps: ['Reheat extra turkey bowl. 2 slices avocado.'],
-    foods: [
-      f('Ground turkey 93%', 100, 19, 0, 8, 'Protein', { leftover: true, house: 'leftover turkey' }),
-      f('Brown rice, cooked', 120, 2.4, 26, 0.4, 'Pantry', { leftover: true, house: '1/2 cup leftover rice' }),
-      f('Black beans', 60, 4.5, 10.5, 0.3, 'Pantry', { leftover: true, house: '1/4 cup leftover beans' }),
-      f('Avocado', 30, 0.6, 2.4, 4.2, 'Produce', { house: '2 slices avocado' }),
-    ],
-  },
-  leftoverSalmon: {
-    id: 'leftoverSalmon',
-    name: 'Salmon rice box',
-    time: '5 min',
-    slot: 'lunch',
-    steps: ['Flake leftover salmon over rice and beans.'],
-    foods: [
-      f('Salmon fillet', 85, 17, 0, 11, 'Protein', { leftover: true, house: '1/2 leftover fillet' }),
-      f('Brown rice, cooked', 120, 2.4, 26, 0.4, 'Pantry', { leftover: true, house: '1/2 cup leftover rice' }),
       f('Black beans', 80, 6, 14, 0.4, 'Pantry', { house: '1/3 cup beans' }),
-    ],
-  },
-  leftoverSteak: {
-    id: 'leftoverSteak',
-    name: 'Steak taco leftover',
-    time: '8 min',
-    slot: 'lunch',
-    steps: ['Warm leftover steak. 2 tortillas, avocado, salsa.'],
-    foods: [
-      f('Flank steak', 90, 19, 0, 7, 'Protein', { leftover: true, house: 'leftover steak' }),
-      f('Corn tortillas', 46, 2.6, 20, 1.3, 'Pantry', { house: '2 small tortillas' }),
-      f('Avocado', 30, 0.6, 2.4, 4.2, 'Produce', { house: '2 slices avocado' }),
-      f('Salsa', 30, 0.4, 2.2, 0.1, 'Pantry', { house: '2 Tbsp salsa' }),
+      f('Salsa', 40, 0.6, 3, 0.2, 'Pantry', { house: '3 Tbsp salsa' }),
+      f('Avocado', 40, 0.8, 3, 6, 'Produce', { house: '1/4 avocado' }),
     ],
   },
   eggLunch: {
-    id: 'eggLunch',
-    name: 'Egg toast + fruit',
-    time: '10 min',
-    slot: 'lunch',
-    steps: ['Toast, egg, cheese, apple.'],
+    id: 'eggLunch', name: 'Egg toast and fruit', time: '10 min', slot: 'lunch',
+    steps: ['Toast 1 slice of bread.', 'Fry 2 eggs. Add 1 slice of cheese.', 'Eat with 1 apple.'],
     foods: [
-      f('Eggs', 50, 6.3, 0.4, 5, 'Protein', { house: '1 large egg' }),
+      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
       f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
       f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheese' }),
       f('Apple', 150, 0.4, 21, 0.3, 'Produce', { house: '1 medium apple' }),
     ],
   },
+  greekPlate: {
+    id: 'greekPlate', name: 'Greek plate', time: '10 min', slot: 'lunch',
+    steps: ['5 oz chicken, 1/2 cup cucumber, 8 cherry tomatoes, 1 oz feta.', '2 Tbsp hummus on the side.'],
+    foods: [
+      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
+      f('Cucumber', 80, 0.5, 3, 0.1, 'Produce', { house: '1/2 cup cucumber' }),
+      f('Cherry tomatoes', 80, 0.7, 4, 0.2, 'Produce', { house: '8 cherry tomatoes' }),
+      f('Feta', 28, 4, 1, 6, 'Dairy', { house: '1 oz feta' }),
+      f('Hummus', 30, 2, 4, 2.5, 'Pantry', { house: '2 Tbsp hummus' }),
+    ],
+  },
+  soupSandwich: {
+    id: 'soupSandwich', name: 'Soup and half sandwich', time: '10 min', slot: 'lunch',
+    steps: ['Heat 1 cup chicken soup.', 'Make a half turkey sandwich: 1 slice bread, 3 slices turkey, cheese.'],
+    foods: [
+      f('Chicken soup', 240, 8, 14, 4, 'Pantry', { house: '1 cup soup' }),
+      f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
+      f('Sliced turkey deli', 65, 12, 1, 1, 'Protein', { house: '3 slices turkey' }),
+      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheese' }),
+    ],
+  },
   lemonChicken: {
-    id: 'lemonChicken',
-    name: 'Sheet-pan lemon chicken',
-    time: '35 min',
-    slot: 'dinner',
-    steps: ['425 F. Roast 3 thighs, potato, broccoli. Eat 2. Box 1 for later.'],
+    id: 'lemonChicken', name: 'Lemon chicken and potato', time: '35 min', slot: 'dinner',
+    steps: ['Heat oven to 425.', 'Put 2 chicken thighs, 1 potato (cut up), and 2 cups broccoli on a pan.', 'Toss with 2 tsp oil and juice of 1/2 lemon.', 'Roast 25 to 30 minutes, until the chicken is 165 inside.'],
     foods: [
       f('Chicken thigh', 180, 32, 0, 16, 'Protein', { house: '2 small chicken thighs' }),
-      f('Chicken thigh', 140, 25, 0, 13, 'Protein', { prep: true, house: '1 extra thigh' }),
       f('Potatoes', 180, 3.5, 32, 0.2, 'Produce', { house: '1 medium potato' }),
       f('Broccoli', 150, 4, 9, 0.5, 'Produce', { house: '2 cups broccoli' }),
-      f('Olive oil', 10, 0, 0, 10, 'Pantry', { pantry: true, house: '2 tsp oil' }),
+      f('Olive oil', 10, 0, 0, 10, 'Pantry', { house: '2 tsp oil' }),
       f('Lemon', 30, 0.3, 3, 0.1, 'Produce', { house: '1/2 lemon' }),
     ],
   },
   tacoBowl: {
-    id: 'tacoBowl',
-    name: 'Turkey taco bowl',
-    time: '25 min',
-    slot: 'dinner',
-    steps: ['Brown turkey. Rice, beans, slaw, salsa, avocado. Box extra.'],
+    id: 'tacoBowl', name: 'Turkey taco bowl', time: '25 min', slot: 'dinner',
+    steps: ['Brown 5 oz ground turkey in a pan.', 'Add 3/4 cup cooked rice, 1/3 cup beans, 1 cup cabbage, 3 Tbsp salsa.', 'Top with 1/3 avocado.'],
     foods: [
       f('Ground turkey 93%', 150, 28, 0, 12, 'Protein', { house: '5 oz turkey' }),
-      f('Ground turkey 93%', 100, 19, 0, 8, 'Protein', { prep: true, house: 'extra turkey' }),
       f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Black beans', 80, 6, 14, 0.4, 'Pantry', { house: '1/3 cup beans' }),
       f('Cabbage slaw', 70, 1, 5, 0.1, 'Produce', { house: '1 cup cabbage' }),
@@ -161,57 +177,34 @@ export const MEALS = {
     ],
   },
   salmon: {
-    id: 'salmon',
-    name: 'Sheet-pan salmon',
-    time: '22 min',
-    slot: 'dinner',
-    steps: ['Roast green beans, then salmon. Save half a fillet.'],
+    id: 'salmon', name: 'Salmon and green beans', time: '22 min', slot: 'dinner',
+    steps: ['Heat oven to 425.', 'Toss 2 handfuls green beans with 1 tsp oil. Roast 10 minutes.', 'Add 1 salmon fillet. Roast 10 to 12 minutes more.', 'Serve with 3/4 cup rice and 2 lemon wedges.'],
     foods: [
       f('Salmon fillet', 170, 34, 0, 22, 'Protein', { house: '1 palm-size fillet' }),
-      f('Salmon fillet', 85, 17, 0, 11, 'Protein', { prep: true, house: '1/2 fillet extra' }),
       f('Green beans', 150, 2.7, 10, 0.3, 'Produce', { house: '2 handfuls green beans' }),
       f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Lemon', 20, 0.2, 2, 0.1, 'Produce', { house: '2 lemon wedges' }),
+      f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '1 tsp oil' }),
     ],
   },
   bolognese: {
-    id: 'bolognese',
-    name: 'Turkey Bolognese',
-    time: '35 min',
-    slot: 'dinner',
-    steps: ['Brown turkey with onion and garlic. Tomatoes 20 min. Pasta tonight. Save sauce.'],
+    id: 'bolognese', name: 'Turkey pasta', time: '35 min', slot: 'dinner',
+    steps: ['Brown 5 oz turkey with 1/2 small onion and 2 garlic cloves.', 'Pour in 3/4 cup crushed tomatoes. Simmer 20 minutes.', 'Boil 1 heaping cup dry pasta.', 'Toss together. Add 2 Tbsp parmesan and a side salad.'],
     foods: [
       f('Ground turkey 93%', 150, 28, 0, 12, 'Protein', { house: '5 oz turkey' }),
-      f('Ground turkey 93%', 90, 17, 0, 7, 'Protein', { prep: true, house: 'extra sauce' }),
       f('Crushed tomatoes', 200, 3, 14, 0.4, 'Pantry', { house: '3/4 cup tomatoes' }),
       f('Onion', 60, 0.7, 6, 0.1, 'Produce', { house: '1/2 small onion' }),
+      f('Garlic', 6, 0.4, 1.3, 0, 'Produce', { house: '2 garlic cloves' }),
       f('Dry pasta', 75, 10, 56, 1.2, 'Pantry', { house: '1 heaping cup dry pasta' }),
       f('Parmesan', 15, 5, 0.4, 4, 'Dairy', { house: '2 Tbsp parmesan' }),
       f('Romaine', 80, 1, 2.5, 0.2, 'Produce', { house: '2 handfuls lettuce' }),
     ],
   },
-  pastaNight: {
-    id: 'pastaNight',
-    name: 'Pasta night',
-    time: '15 min',
-    slot: 'dinner',
-    steps: ['Boil pasta. Leftover sauce. Salad.'],
-    foods: [
-      f('Ground turkey 93%', 90, 17, 0, 7, 'Protein', { leftover: true, house: '1 ladle leftover sauce' }),
-      f('Crushed tomatoes', 120, 1.8, 8.4, 0.2, 'Pantry', { leftover: true, house: '1/2 cup leftover sauce' }),
-      f('Dry pasta', 75, 10, 56, 1.2, 'Pantry', { house: '1 heaping cup dry pasta' }),
-      f('Romaine', 80, 1, 2.5, 0.2, 'Produce', { house: '2 handfuls lettuce' }),
-    ],
-  },
   steakTacos: {
-    id: 'steakTacos',
-    name: 'Steak tacos',
-    time: '25 min',
-    slot: 'dinner',
-    steps: ['Cook steak. Eat most tonight. Box some. 3 tortillas, slaw, salsa.'],
+    id: 'steakTacos', name: 'Steak tacos', time: '25 min', slot: 'dinner',
+    steps: ['Cook 6 oz steak in a hot pan, 3 to 4 minutes a side.', 'Warm 3 small tortillas.', 'Slice the steak. Add cabbage, salsa, and 1/3 avocado.'],
     foods: [
       f('Flank steak', 180, 38, 0, 14, 'Protein', { house: '1 palm of steak' }),
-      f('Flank steak', 90, 19, 0, 7, 'Protein', { prep: true, house: 'extra steak' }),
       f('Corn tortillas', 70, 4, 30, 2, 'Pantry', { house: '3 small tortillas' }),
       f('Cabbage slaw', 70, 1, 5, 0.1, 'Produce', { house: '1 cup cabbage' }),
       f('Salsa', 40, 0.6, 3, 0.2, 'Pantry', { house: '3 Tbsp salsa' }),
@@ -219,34 +212,63 @@ export const MEALS = {
     ],
   },
   chili: {
-    id: 'chili',
-    name: 'Turkey chili',
-    time: '40 min',
-    slot: 'dinner',
-    steps: ['Brown turkey and onion. Beans, tomatoes, broth 25 min. Cheese on top.'],
+    id: 'chili', name: 'Turkey chili', time: '40 min', slot: 'dinner',
+    steps: ['Brown 5 oz turkey with 1/2 small onion.', 'Add 1/2 cup beans, 3/4 cup tomatoes, 1/2 cup broth.', 'Simmer 25 minutes.', 'Shred 1 slice of cheddar on top.'],
     foods: [
       f('Ground turkey 93%', 150, 28, 0, 12, 'Protein', { house: '5 oz turkey' }),
       f('Black beans', 120, 9, 21, 0.6, 'Pantry', { house: '1/2 cup beans' }),
       f('Crushed tomatoes', 200, 3, 14, 0.4, 'Pantry', { house: '3/4 cup tomatoes' }),
       f('Onion', 60, 0.7, 6, 0.1, 'Produce', { house: '1/2 small onion' }),
       f('Chicken broth', 120, 1, 1, 0.2, 'Pantry', { house: '1/2 cup broth' }),
-      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheddar, shredded' }),
+      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheddar' }),
+    ],
+  },
+  stirFry: {
+    id: 'stirFry', name: 'Chicken stir fry', time: '20 min', slot: 'dinner',
+    steps: ['Cut 6 oz chicken into strips. Cook in 1 tsp oil until done.', 'Add 2 cups frozen stir-fry vegetables. Cook 5 minutes.', 'Stir in 2 Tbsp teriyaki. Serve over 3/4 cup rice.'],
+    foods: [
+      f('Chicken breast', 170, 36, 0, 4, 'Protein', { house: '1 palm of chicken' }),
+      f('Stir-fry vegetables', 180, 4, 12, 0.5, 'Produce', { house: '2 cups mixed vegetables' }),
+      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Teriyaki sauce', 30, 1, 6, 0, 'Pantry', { house: '2 Tbsp teriyaki' }),
+      f('Olive oil', 5, 0, 0, 5, 'Pantry', { house: '1 tsp oil' }),
+    ],
+  },
+  bakedFish: {
+    id: 'bakedFish', name: 'Baked fish and potatoes', time: '30 min', slot: 'dinner',
+    steps: ['Heat oven to 400.', 'Put 1 white fish fillet and 1 potato (cut) on a pan with 2 tsp oil.', 'Bake 20 to 25 minutes.', 'Add 1 cup green salad.'],
+    foods: [
+      f('White fish fillet', 170, 32, 0, 3, 'Protein', { house: '1 palm-size fillet' }),
+      f('Potatoes', 180, 3.5, 32, 0.2, 'Produce', { house: '1 medium potato' }),
+      f('Romaine', 60, 0.8, 2, 0.1, 'Produce', { house: '1 handful lettuce' }),
+      f('Olive oil', 10, 0, 0, 10, 'Pantry', { house: '2 tsp oil' }),
+    ],
+  },
+  burgerNight: {
+    id: 'burgerNight', name: 'Turkey burger', time: '20 min', slot: 'dinner',
+    steps: ['Form 6 oz turkey into a patty. Cook 5 minutes a side.', 'Toast a bun. Add lettuce and tomato.', 'Eat with 8 baby carrots.'],
+    foods: [
+      f('Ground turkey 93%', 170, 32, 0, 14, 'Protein', { house: '6 oz turkey patty' }),
+      f('Burger bun', 50, 5, 26, 3, 'Pantry', { house: '1 bun' }),
+      f('Romaine', 30, 0.4, 1, 0.1, 'Produce', { house: '1 leaf lettuce' }),
+      f('Tomato', 40, 0.4, 2, 0.1, 'Produce', { house: '2 slices tomato' }),
+      f('Carrots', 60, 0.6, 6, 0.2, 'Produce', { house: '8 baby carrots' }),
     ],
   },
 }
 
-export const BREAKFASTS = ['yogurtGrapes', 'yogurtBanana', 'eggToast', 'pancakes']
-export const LUNCHES = ['turkeySandwich', 'leftoverChicken', 'leftoverTaco', 'leftoverSalmon', 'leftoverSteak', 'eggLunch']
-export const DINNERS = ['lemonChicken', 'tacoBowl', 'salmon', 'bolognese', 'pastaNight', 'steakTacos', 'chili']
+export const BREAKFASTS = ['yogurtGrapes', 'yogurtBanana', 'yogurtBerries', 'eggToast', 'eggAvocado', 'oatmeal', 'proteinShake', 'pancakes']
+export const LUNCHES = ['turkeySandwich', 'chickenSalad', 'tunaWrap', 'burritoBowl', 'eggLunch', 'greekPlate', 'soupSandwich']
+export const DINNERS = ['lemonChicken', 'tacoBowl', 'salmon', 'bolognese', 'steakTacos', 'chili', 'stirFry', 'bakedFish', 'burgerNight']
 
 export const DEFAULT_WEEK = [
   { id: 'mon', day: 'Monday', breakfast: 'yogurtGrapes', lunch: 'turkeySandwich', dinner: 'lemonChicken' },
-  { id: 'tue', day: 'Tuesday', breakfast: 'eggToast', lunch: 'leftoverChicken', dinner: 'tacoBowl' },
-  { id: 'wed', day: 'Wednesday', breakfast: 'yogurtGrapes', lunch: 'leftoverTaco', dinner: 'salmon' },
-  { id: 'thu', day: 'Thursday', breakfast: 'eggToast', lunch: 'leftoverSalmon', dinner: 'bolognese' },
-  { id: 'fri', day: 'Friday', breakfast: 'yogurtBanana', lunch: 'eggLunch', dinner: 'pastaNight' },
+  { id: 'tue', day: 'Tuesday', breakfast: 'eggToast', lunch: 'chickenSalad', dinner: 'tacoBowl' },
+  { id: 'wed', day: 'Wednesday', breakfast: 'oatmeal', lunch: 'burritoBowl', dinner: 'salmon' },
+  { id: 'thu', day: 'Thursday', breakfast: 'yogurtBerries', lunch: 'tunaWrap', dinner: 'stirFry' },
+  { id: 'fri', day: 'Friday', breakfast: 'proteinShake', lunch: 'greekPlate', dinner: 'bolognese' },
   { id: 'sat', day: 'Saturday', breakfast: 'pancakes', lunch: 'eggLunch', dinner: 'steakTacos' },
-  { id: 'sun', day: 'Sunday', breakfast: 'eggToast', lunch: 'leftoverSteak', dinner: 'chili' },
+  { id: 'sun', day: 'Sunday', breakfast: 'eggAvocado', lunch: 'soupSandwich', dinner: 'chili' },
 ]
 
 export const WEEK_LABEL = 'This week'
@@ -256,7 +278,6 @@ export function mealOf(id) {
 }
 
 export function optionsFor(slot) {
-  if (slot === 'breakfast') return BREAKFASTS.map((id) => MEALS[id])
-  if (slot === 'lunch') return LUNCHES.map((id) => MEALS[id])
-  return DINNERS.map((id) => MEALS[id])
+  const ids = slot === 'breakfast' ? BREAKFASTS : slot === 'lunch' ? LUNCHES : DINNERS
+  return ids.map((id) => MEALS[id])
 }
