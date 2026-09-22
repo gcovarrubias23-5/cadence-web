@@ -58,7 +58,7 @@ export function Invent({ onSave, onClose }) {
 
   return (
     <div className="sheet" onClick={onClose}>
-      <div className="sheet-card" onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', maxHeight: '88vh' }}>
+      <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
         <p className="plan-kicker">Invent a plate</p>
         <h2 style={{ marginBottom: 8 }}>Add a food</h2>
 
@@ -81,7 +81,7 @@ export function Invent({ onSave, onClose }) {
           </button>
         ))}
 
-        <div className="card" style={{ margin: '12px 0', maxHeight: 160, overflow: 'auto' }}>
+        <div className="card" style={{ margin: '12px 0' }}>
           <div className="goal-title">On this plate</div>
           {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Pick a type, then tap a food under it.</p>}
           {lines.map((line, i) => (
@@ -102,19 +102,15 @@ export function Invent({ onSave, onClose }) {
         </div>
 
         <p className="note" style={{ marginBottom: 4 }}>{TYPES.find((t) => t.id === kind).label} foods</p>
-        <div style={{ overflow: 'auto', flex: 1, minHeight: 80 }}>
-          {hits.map((item) => (
-            <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
-              <strong>{item.name}</strong>
-              <span>{item.house}</span>
-            </button>
-          ))}
-        </div>
+        {hits.map((item) => (
+          <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
+            <strong>{item.name}</strong>
+            <span>{item.house}</span>
+          </button>
+        ))}
 
-        <div style={{ paddingTop: 8 }}>
-          <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
-          <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
-        </div>
+        <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
+        <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
       </div>
     </div>
   )
