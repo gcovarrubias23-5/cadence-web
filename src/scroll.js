@@ -1,7 +1,14 @@
 export function scrollAnchorToTop(id) {
-  if (!id) return
+  if (!id || typeof window === 'undefined') return
   const el = document.querySelector(`[data-anchor="${id}"]`)
   if (!el) return
-  const top = el.getBoundingClientRect().top + window.scrollY - 12
-  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+  if (document.activeElement && document.activeElement.blur) {
+    document.activeElement.blur()
+  }
+  const y = el.getBoundingClientRect().top + window.pageYOffset - 8
+  window.scrollTo(0, Math.max(0, y))
+  requestAnimationFrame(() => {
+    const y2 = el.getBoundingClientRect().top + window.pageYOffset - 8
+    window.scrollTo(0, Math.max(0, y2))
+  })
 }
