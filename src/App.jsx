@@ -22,6 +22,7 @@ import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
 import { Checkin } from './Checkin.jsx'
 import { Start } from './Start.jsx'
+import { Build } from './Build.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -137,6 +138,22 @@ export default function App() {
     setPicking(null)
   }
   function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
+  function copyDay(dayId) {
+    const src = picks.find((row) => row.id === dayId)
+    if (!src) return
+    setPicks((prev) => prev.map((row) => ({
+      ...row,
+      breakfast: src.breakfast,
+      snack1: src.snack1,
+      lunch: src.lunch,
+      snack2: src.snack2,
+      dinner: src.dinner,
+      snack3: src.snack3,
+    })))
+  }
+  function repeatSlot(slot, mealId) {
+    setPicks((prev) => prev.map((row) => ({ ...row, [slot]: mealId })))
+  }
   function sip(dayId) { setWater((prev) => addGlass(prev, dayId)) }
 
   async function copyList() {
@@ -263,27 +280,13 @@ export default function App() {
       )}
 
       {tab === 'build' && (
-        <>
-          <section className="hero">
-            <h1>Build the week.</h1>
-            <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
-          </section>
-          {picks.map((row) => (
-            <article className="card" key={row.id}>
-              <h3 className="day-name">{row.day}</h3>
-              {SLOTS.map((slot) => {
-                const meal = mealOf(row[slot.id])
-                return (
-                  <button key={slot.id} className="pick-row" type="button" onClick={() => setPicking({ dayId: row.id, slot: slot.id, current: row[slot.id] })}>
-                    <span className="meal-label">{slot.label}</span>
-                    <span>{meal.name}</span>
-                    <span className="qty">Change</span>
-                  </button>
-                )
-              })}
-            </article>
-          ))}
-        </>
+        <Build
+          picks={picks}
+          onPick={(dayId, slot, current) => setPicking({ dayId, slot, current })}
+          onReset={resetWeek}
+          onCopyDay={copyDay}
+          onRepeatSlot={repeatSlot}
+        />
       )}
 
       {tab === 'grocery' && (
