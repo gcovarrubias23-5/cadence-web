@@ -35,15 +35,7 @@ export function Meal({ label, meal, factor }) {
         {kitchen && (
           <div className="card" style={{ margin: '10px 0', padding: 12 }}>
             <div className="goal-title">Kitchen notes</div>
-            <p className="note" style={{ marginTop: 6 }}>{kitchen.preview}</p>
-            <div style={{ opacity: 0.45 }}>
-              <ol className="steps">
-                {kitchen.locked.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-            </div>
-            <p className="note">Paid when we launch. This is the test lock.</p>
+            <p className="note" style={{ marginTop: 6 }}>Heat, timing, and doneness for this plate. Paid when we launch.</p>
           </div>
         )}
         <ul className="foods">
