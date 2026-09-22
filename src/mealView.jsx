@@ -25,13 +25,19 @@ export function Meal({ label, meal, factor }) {
         <div className="meal-note">
           {formatMacro(plateTotals.protein)} protein · {formatMacro(plateTotals.carbs)} carbs · {formatMacro(plateTotals.fat)} fat
         </div>
-        {!kitchen && meal.steps?.length > 0 && (
-          <ol className="steps">
-            {meal.steps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        )}
+
+        <ol className="steps">
+          {plated.map((food) => (
+            <li key={food.name + food.grams}>
+              <strong>{lineLabel(food, factor)}</strong>
+              <span className="food-sub"> · {food.name}</span>
+              <div className="qty" style={{ marginTop: 4 }}>
+                {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
+              </div>
+            </li>
+          ))}
+        </ol>
+
         {kitchen && (
           <div className="card" style={{ margin: '10px 0', padding: 12 }}>
             <div className="goal-title">Kitchen notes</div>
@@ -44,17 +50,14 @@ export function Meal({ label, meal, factor }) {
             <p className="note">Test view. We hide this behind the upgrade next.</p>
           </div>
         )}
-        <ul className="foods">
-          {plated.map((food) => (
-            <li key={food.name + food.grams}>
-              <strong>{lineLabel(food, factor)}</strong>
-              <span className="food-sub"> · {food.name}</span>
-              <div className="qty" style={{ marginTop: 4 }}>
-                {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
-              </div>
-            </li>
-          ))}
-        </ul>
+
+        {!kitchen && meal.steps?.length > 0 && (
+          <ol className="steps">
+            {meal.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        )}
       </div>
     </div>
   )
