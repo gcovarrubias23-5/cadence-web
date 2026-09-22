@@ -1,10 +1,15 @@
-import { portionFromPantry } from './pantry.js'
+import { PANTRY, portionFromPantry } from './pantry.js'
 import { slotGoal } from './macros.js'
 
+function srcOf(item) {
+  return PANTRY.find((p) => p.name === item.name) || item
+}
+
 export function houseFor(item, grams) {
-  const g = Math.max(1, Number(grams) || item.base || 100)
-  const base = item.base || 100
-  const raw = item.house || item.name
+  const src = srcOf(item)
+  const g = Math.max(1, Number(grams) || src.base || 100)
+  const base = src.base || 100
+  const raw = src.house || src.name
   const f = g / base
   const m = String(raw).match(/^(\d+(?:\.\d+)?)\s+(.*)$/)
   if (m) {
@@ -31,20 +36,21 @@ export function leftoverOf(lines, target) {
 }
 
 export function gramsToHit(item, leftover) {
-  if (!item || item.kind === 'free') return item?.base || 80
-  const per100 = Number(item[item.kind]) || 0
-  if (per100 < 0.2) return item.base || 80
-  const need = Math.max(leftover, 0.5)
-  return (need / per100) * 100
+  const src = srcOf(item)
+  if (!src || src.kind === 'free') return src?.base || 80
+  const per100 = Number(src[src.kind]) || 0
+  if (per100 < 0.2) return src.base || 80
+  return (Math.max(leftover, 0.5) / per100) * 100
 }
 
 export function lineFrom(item, grams) {
-  const g = Number(grams) || item.base
+  const src = srcOf(item)
+  const g = Number(grams) || src.base
   return {
-    ...portionFromPantry(item, g),
-    kind: item.kind,
-    house: houseFor(item, g),
-    base: item.base,
+    ...portionFromPantry(src, g),
+    kind: src.kind,
+    house: houseFor(src, g),
+    base: src.base,
   }
 }
 
@@ -56,8 +62,7 @@ export function bumpLine(lines, index, dir) {
   return lines.map((line, i) => {
     if (i !== index || line.kind === 'free') return line
     const step = (line.base || 50) / 2
-    const grams = Math.max(step, line.grams + dir * step)
-    return lineFrom(line, grams)
+    return lineFrom(line, Math.max(step, line.grams + dir * step))
   })
 }
 
@@ -65,14 +70,13 @@ export function fillRest(lines, index, target) {
   const line = lines[index]
   if (!line || line.kind === 'free') return lines
   const others = leftoverOf(lines.filter((_, i) => i !== index), target)
-  const grams = gramsToHit(line, others[line.kind])
-  return lines.map((row, i) => (i === index ? lineFrom(row, grams) : row))
+  return lines.map((row, i) => (i === index ? lineFrom(row, gramsToHit(row, others[row.kind])) : row))
 }
 
 export function targetFor(goal, slotId) {
   return slotGoal(goal, slotId)
 }
 
-export function fitLinesToSlot(lines, target) {
+export function fitLinesToSlot(lines) {
   return lines
 }
