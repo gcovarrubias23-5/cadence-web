@@ -77,7 +77,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
                   <div>
                     <strong>{line.name}</strong>
                     <div className="qty">{line.house}</div>
-                    <div className="qty" style={{ marginTop: 8 }}>{macrosLine(line)}</div>
+                    <div className="qty macro-gap">{macrosLine(line)}</div>
                   </div>
                   <button className="change" type="button" style={{ margin: 0 }} onClick={() => setLines((prev) => prev.filter((_, idx) => idx !== i))}>Remove</button>
                 </div>
@@ -113,7 +113,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
             >
               <strong>{on ? `✓ ${item.name}` : item.name}</strong>
               <span style={{ display: 'block' }}>{houseFor(item, item.base)}</span>
-              <span style={{ display: 'block', marginTop: 8 }}>{macrosLine(sample)}</span>
+              <span className="macro-gap">{macrosLine(sample)}</span>
             </button>
           )
         })}
