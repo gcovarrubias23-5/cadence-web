@@ -1,4 +1,5 @@
 import { DEFAULT_MARKS } from './checkin.js'
+import { PANTRY } from './pantry.js'
 
 export { DEFAULT_MARKS }
 
@@ -13,6 +14,24 @@ export const SLOT_SHARE = {
 
 export function kcalOf({ protein, carbs, fat }) {
   return protein * 4 + carbs * 4 + fat * 9
+}
+
+export function resolveFood(food) {
+  if (!food) return food
+  const src = PANTRY.find((p) => p.name === food.name)
+  if (!src) return food
+  const grams = Number(food.grams) || src.base || 100
+  const n = grams / 100
+  return {
+    ...food,
+    grams,
+    protein: src.protein * n,
+    carbs: src.carbs * n,
+    fat: src.fat * n,
+    kind: src.kind,
+    aisle: food.aisle || src.aisle,
+    house: food.house || src.house,
+  }
 }
 
 export function goalFromMarks(t) {
@@ -39,28 +58,30 @@ export function slotGoal(goal, slotId) {
 }
 
 export function eatenFoods(foods) {
-  return (foods || []).filter((f) => !f.prep)
+  return (foods || []).filter((f) => !f.prep).map(resolveFood)
 }
 
 export function sumFoods(foods) {
   return foods.reduce(
     (acc, f) => ({
-      grams: acc.grams + f.grams,
-      protein: acc.protein + f.protein,
-      carbs: acc.carbs + f.carbs,
-      fat: acc.fat + f.fat,
+      grams: acc.grams + (Number(f.grams) || 0),
+      protein: acc.protein + (Number(f.protein) || 0),
+      carbs: acc.carbs + (Number(f.carbs) || 0),
+      fat: acc.fat + (Number(f.fat) || 0),
     }),
     { grams: 0, protein: 0, carbs: 0, fat: 0 },
   )
 }
 
 export function scaleFood(food, factor) {
+  const row = resolveFood(food)
+  const n = Number(factor) || 1
   return {
-    ...food,
-    grams: food.grams * factor,
-    protein: food.protein * factor,
-    carbs: food.carbs * factor,
-    fat: food.fat * factor,
+    ...row,
+    grams: row.grams * n,
+    protein: row.protein * n,
+    carbs: row.carbs * n,
+    fat: row.fat * n,
   }
 }
 
@@ -70,8 +91,8 @@ export function mealsOf(day) {
     ['snack1', day.snack1],
     ['lunch', day.lunch],
     ['snack2', day.snack2],
-    ['dinner', day.dinner],
     ['snack3', day.snack3],
+    ['dinner', day.dinner],
   ].filter(([, meal]) => meal)
 }
 
@@ -129,9 +150,9 @@ export function groceryFromWeek(days, factorByDay) {
       const factor = factors[slot] || 1
       meal.foods.forEach((food) => {
         if (food.leftover || food.pantry) return
-        const key = `${food.aisle}:${food.name}`
+        const key = `${food.aisle || 'Other'}:${food.name}`
         const scaled = scaleFood(food, factor)
-        const prev = map.get(key) || { aisle: food.aisle, name: food.name, grams: 0 }
+        const prev = map.get(key) || { aisle: food.aisle || 'Other', name: food.name, grams: 0 }
         prev.grams += scaled.grams
         map.set(key, prev)
       })
