@@ -5,17 +5,31 @@ import { kcalOf, formatMacro } from './macros.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
+function macroKind(item) {
+  const p = item.protein * 4
+  const c = item.carbs * 4
+  const f = item.fat * 9
+  if (p >= c && p >= f) return 'protein'
+  if (f >= p && f >= c) return 'fat'
+  return 'carbs'
+}
+
+const FILTERS = [
+  { id: 'protein', label: 'Protein' },
+  { id: 'carbs', label: 'Carbs' },
+  { id: 'fat', label: 'Fat' },
+]
+
 export function Invent({ onSave, onClose }) {
   const [name, setName] = useState('')
   const [slot, setSlot] = useState('lunch')
-  const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState('protein')
   const [lines, setLines] = useState([])
 
-  const hits = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (q.length < 2) return []
-    return PANTRY.filter((p) => p.name.toLowerCase().includes(q)).slice(0, 6)
-  }, [query])
+  const hits = useMemo(
+    () => PANTRY.filter((p) => macroKind(p) === filter),
+    [filter],
+  )
 
   const totals = lines.reduce(
     (acc, f) => ({
@@ -28,7 +42,6 @@ export function Invent({ onSave, onClose }) {
 
   function addItem(item) {
     setLines((prev) => [...prev, portionFromPantry(item, item.base)])
-    setQuery('')
   }
 
   function setGrams(i, grams) {
@@ -45,9 +58,8 @@ export function Invent({ onSave, onClose }) {
 
   function save() {
     if (!name.trim() || lines.length === 0) return
-    const id = `custom-${Date.now()}`
     onSave({
-      id,
+      id: `custom-${Date.now()}`,
       name: name.trim(),
       time: 'your plate',
       slot: SNACK_IDS.includes(slot) ? 'snack' : slot,
@@ -61,7 +73,7 @@ export function Invent({ onSave, onClose }) {
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', maxHeight: '88vh' }}>
         <p className="plan-kicker">Invent a plate</p>
-        <h2 style={{ marginBottom: 8 }}>Build it here. Search below.</h2>
+        <h2 style={{ marginBottom: 8 }}>Pick a macro. Add the food.</h2>
 
         <label className="goal-field">
           <span>Plate name</span>
@@ -74,9 +86,9 @@ export function Invent({ onSave, onClose }) {
           </select>
         </label>
 
-        <div className="card" style={{ margin: '12px 0', maxHeight: 220, overflow: 'auto' }}>
+        <div className="card" style={{ margin: '12px 0', maxHeight: 180, overflow: 'auto' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Nothing yet. Type a food name under this box.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Tap Protein, Carbs, or Fat, then a food.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '1fr 72px auto', gap: 8, alignItems: 'center', borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div>
@@ -94,12 +106,15 @@ export function Invent({ onSave, onClose }) {
           )}
         </div>
 
-        <label className="goal-field">
-          <span>Add a food</span>
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Type chicken, rice, yogurt…" autoComplete="off" />
-        </label>
+        <div className="checkin-row" style={{ marginBottom: 8 }}>
+          {FILTERS.map((f) => (
+            <button key={f.id} type="button" className={filter === f.id ? 'checkin on' : 'checkin'} onClick={() => setFilter(f.id)}>
+              <strong>{f.label}</strong>
+            </button>
+          ))}
+        </div>
+
         <div style={{ overflow: 'auto', flex: 1, minHeight: 0 }}>
-          {query.trim().length < 2 && <p className="note">Type two letters to see matches. We hide the long list on purpose.</p>}
           {hits.map((item) => (
             <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
               <strong>{item.name}</strong>
