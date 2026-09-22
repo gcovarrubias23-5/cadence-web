@@ -50,7 +50,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
         <div className="plate-dock">
-          <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
+          <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} padTop />
           <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
         </div>
@@ -125,11 +125,11 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   )
 }
 
-function Meter({ label, need, have, left }) {
+function Meter({ label, need, have, left, padTop }) {
   const pct = Math.min(100, Math.round((have / Math.max(need, 1)) * 100))
   const done = left < 0.6
   return (
-    <div style={{ margin: '6px 0' }}>
+    <div style={{ margin: padTop ? '28px 0 6px' : '6px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
         <strong>{label}</strong>
         <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
