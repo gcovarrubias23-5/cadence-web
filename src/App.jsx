@@ -21,6 +21,7 @@ import { buildShopText, STORES } from './shopList.js'
 import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
 import { Checkin } from './Checkin.jsx'
+import { Start } from './Start.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -61,6 +62,7 @@ function loadJson(key, fallback) {
 }
 
 export default function App() {
+  const [profile, setProfile] = useState(() => loadJson('cadence.profile', null))
   const [lastCheckin, setLastCheckin] = useState(() => loadJson('cadence.lastCheckin', null))
   const dueNow = isCheckinDue(lastCheckin)
   const [tab, setTab] = useState(dueNow ? 'checkin' : 'week')
@@ -86,6 +88,7 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
   useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
   useEffect(() => { localStorage.setItem('cadence.lastCheckin', JSON.stringify(lastCheckin)) }, [lastCheckin])
+  useEffect(() => { localStorage.setItem('cadence.profile', JSON.stringify(profile)) }, [profile])
   useEffect(() => {
     if (tab !== 'week' || !openDay || !openSlot) return
     const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
@@ -124,6 +127,11 @@ export default function App() {
     setLastMove(move)
     setLastCheckin(new Date().toISOString())
   }
+  function finishStart(form, math) {
+    setProfile({ ...form, targets: math, done: true })
+    setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
+    setTab('week')
+  }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
@@ -141,6 +149,10 @@ export default function App() {
       try { await navigator.share({ title: 'Cadence list', text: shopText }); return } catch {}
     }
     copyList()
+  }
+
+  if (!profile?.done) {
+    return <Start onDone={finishStart} />
   }
 
   return (
