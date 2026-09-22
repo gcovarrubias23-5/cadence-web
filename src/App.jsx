@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   DEFAULT_WEEK,
   WEEK_LABEL,
+  SLOTS,
   mealOf,
   optionsFor,
-} from './catalog.js'
+} from './plan.js'
 import {
   DEFAULT_MARKS,
   dayTotals,
@@ -28,12 +29,13 @@ const TABS = [
 ]
 
 function hydrate(picks) {
-  return picks.map((row) => ({
-    ...row,
-    breakfast: mealOf(row.breakfast),
-    lunch: mealOf(row.lunch),
-    dinner: mealOf(row.dinner),
-  }))
+  return picks.map((row) => {
+    const day = { ...row }
+    SLOTS.forEach((slot) => {
+      day[slot.id] = mealOf(row[slot.id])
+    })
+    return day
+  })
 }
 
 export default function App() {
@@ -46,7 +48,8 @@ export default function App() {
   const [picks, setPicks] = useState(() => {
     try {
       const saved = localStorage.getItem('cadence.week')
-      return saved ? JSON.parse(saved) : DEFAULT_WEEK
+      const parsed = saved ? JSON.parse(saved) : DEFAULT_WEEK
+      return parsed[0]?.snack1 ? parsed : DEFAULT_WEEK
     } catch {
       return DEFAULT_WEEK
     }
@@ -157,13 +160,14 @@ export default function App() {
             <div className="kcal-readout">{Math.round(goal.kcal)}</div>
           </div>
         </div>
+        <p className="note">Today’s plate is breakfast, two snacks, lunch, and dinner. Change any one.</p>
       </section>
 
       {tab === 'week' && (
         <>
           <section className="hero">
-            <h1>Dinner is handled.</h1>
-            <p>Tap a meal to swap it. The list updates. Cook once, eat twice when you can.</p>
+            <h1>Today’s plan.</h1>
+            <p>Open a day. Each slot is a full plate. Tap Change if you want something else.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
@@ -179,10 +183,15 @@ export default function App() {
                   </span>
                 </button>
                 {open && (
-                  <div className="meals">
-                    <MealSlot label="Breakfast" meal={d.breakfast} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'breakfast', current: pickRow.breakfast })} />
-                    <MealSlot label="Lunch" meal={d.lunch} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'lunch', current: pickRow.lunch })} />
-                    <MealSlot label="Dinner" meal={d.dinner} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'dinner', current: pickRow.dinner })} />
+                  <div className="plan-list">
+                    {SLOTS.map((slot) => (
+                      <div className="plan-slot" key={slot.id}>
+                        <Meal label={slot.label} meal={d[slot.id]} factor={factor} />
+                        <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
+                          Change
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </article>
@@ -195,17 +204,17 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Build the week.</h1>
-            <p>Tap any meal to swap it. Start over if you want the original week back.</p>
+            <p>Five slots a day. Tap one to swap it.</p>
             <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
           </section>
           {picks.map((row) => (
             <article className="card" key={row.id}>
               <h3 className="day-name">{row.day}</h3>
-              {['breakfast', 'lunch', 'dinner'].map((slot) => {
-                const meal = mealOf(row[slot])
+              {SLOTS.map((slot) => {
+                const meal = mealOf(row[slot.id])
                 return (
-                  <button key={slot} className="pick-row" type="button" onClick={() => setPicking({ dayId: row.id, slot, current: row[slot] })}>
-                    <span className="meal-label">{slot}</span>
+                  <button key={slot.id} className="pick-row" type="button" onClick={() => setPicking({ dayId: row.id, slot: slot.id, current: row[slot.id] })}>
+                    <span className="meal-label">{slot.label}</span>
                     <span>{meal.name}</span>
                     <span className="qty">Change</span>
                   </button>
@@ -276,31 +285,13 @@ export default function App() {
             <h1>Want next week written for you?</h1>
             <p>After you say how this week felt, Plus can draft the next seven days. You can still swap meals.</p>
           </section>
-          <div className="price-grid">
-            <article className="card price">
-              <p className="plan-kicker">Free</p>
-              <h3>$0</h3>
-              <ul className="features"><li>This week of food</li><li>Swap any meal</li><li>The Sunday question</li></ul>
-            </article>
-            <article className="card price featured">
-              <p className="plan-kicker">Plus</p>
-              <h3>$13<span>/mo</span></h3>
-              <p className="fine">or $99 for the year</p>
-              <ul className="features">
-                <li>A new week when you answer</li>
-                <li>Photos so you know what dinner looks like</li>
-                <li>More swaps that keep protein honest</li>
-              </ul>
-              <button className="btn" type="button" onClick={() => alert('Payments are not live. Nothing will be charged.')}>Plus is not live yet</button>
-            </article>
-          </div>
         </>
       )}
 
       {picking && (
         <div className="sheet" onClick={() => setPicking(null)}>
           <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
-            <p className="plan-kicker">Change {picking.slot}</p>
+            <p className="plan-kicker">Change this slot</p>
             <h2>What do you want instead?</h2>
             {optionsFor(picking.slot).map((meal) => (
               <button
@@ -317,15 +308,6 @@ export default function App() {
           </div>
         </div>
       )}
-    </div>
-  )
-}
-
-function MealSlot({ label, meal, factor, onChange }) {
-  return (
-    <div>
-      <Meal label={label} meal={meal} factor={factor} />
-      <button className="change" type="button" onClick={onChange}>Change {label.toLowerCase()}</button>
     </div>
   )
 }
