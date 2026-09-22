@@ -16,10 +16,11 @@ import {
   groceryFromWeek,
   kcalOf,
 } from './macros.js'
-import { applyPulse, PULSE_COPY } from './checkin.js'
+import { applyPulse } from './checkin.js'
 import { buildShopText, STORES } from './shopList.js'
 import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
+import { Checkin } from './Checkin.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import {
   WATER_GOAL,
@@ -33,10 +34,10 @@ import {
 
 const TABS = [
   { id: 'week', label: 'Kitchen' },
+  { id: 'checkin', label: 'Check-in' },
   { id: 'build', label: 'Build' },
   { id: 'grocery', label: 'List' },
   { id: 'shop', label: 'Shop' },
-  { id: 'plus', label: 'Plus' },
 ]
 
 function hydrate(picks) {
@@ -106,6 +107,10 @@ export default function App() {
     })
     return left
   }, [checked, grocery])
+  const weekPlates = DAYS.reduce((n, d) => n + dayEatenCount(eaten, d.id, SLOTS), 0)
+  const weekWater = DAYS.reduce((n, d) => n + glassesFor(water, d.id), 0)
+  const plateGoal = DAYS.length * 6
+  const waterGoal = DAYS.length * WATER_GOAL
 
   function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
   function pulse(move) { setMarks((prev) => applyPulse(prev, move)); setLastMove(move) }
@@ -144,30 +149,11 @@ export default function App() {
         </nav>
       </header>
 
-      <section className="card goal">
-        <div className="goal-title">{PULSE_COPY.prompt}</div>
-        <p className="note" style={{ marginTop: 0 }}>{PULSE_COPY.hint}</p>
-        <div className="checkin-row">
-          <PulseBtn active={lastMove === 'hungry'} onClick={() => pulse('hungry')} {...PULSE_COPY.hungry} />
-          <PulseBtn active={lastMove === 'right'} onClick={() => pulse('right')} {...PULSE_COPY.right} />
-          <PulseBtn active={lastMove === 'heavy'} onClick={() => pulse('heavy')} {...PULSE_COPY.heavy} />
-        </div>
-        <div className="goal-grid" style={{ marginTop: 14 }}>
-          <MarkInput label="protein" value={marks.protein} onChange={(v) => patch('protein', Number(v) || 0)} />
-          <MarkInput label="carbs" value={marks.carbs} onChange={(v) => patch('carbs', Number(v) || 0)} />
-          <MarkInput label="fat" value={marks.fat} onChange={(v) => patch('fat', Number(v) || 0)} />
-          <div className="goal-field">
-            <span>calories</span>
-            <div className="kcal-readout">{Math.round(goal.kcal)}</div>
-          </div>
-        </div>
-      </section>
-
       {tab === 'week' && (
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Tick a plate when you eat. Tap the water bar or a circle when you drink.</p>
+            <p>Tick a plate when you eat. Tap the water bar or a circle when you drink. Check-in is for the end of the week.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
@@ -208,12 +194,7 @@ export default function App() {
                       return (
                         <div className="slot-row" key={slot.id} data-anchor={`${d.id}-${slot.id}`}>
                           <div className="slot-row-main">
-                            <input
-                              className="slot-check"
-                              type="checkbox"
-                              checked={done}
-                              onChange={() => setEaten((prev) => toggleEaten(prev, d.id, slot.id))}
-                            />
+                            <input className="slot-check" type="checkbox" checked={done} onChange={() => setEaten((prev) => toggleEaten(prev, d.id, slot.id))} />
                             <button className="slot-toggle" type="button" onClick={() => setOpenSlot(show ? '' : slot.id)}>
                               <strong>{slot.label}</strong>
                               <span>{meal?.name || 'Choose a plate'}</span>
@@ -222,9 +203,7 @@ export default function App() {
                           {show && (
                             <div className="slot-body">
                               <Meal label={slot.label} meal={meal} factor={slotFactors[slot.id] || 1} />
-                              <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
-                                Change
-                              </button>
+                              <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>Change</button>
                             </div>
                           )}
                         </div>
@@ -236,6 +215,20 @@ export default function App() {
             )
           })}
         </>
+      )}
+
+      {tab === 'checkin' && (
+        <Checkin
+          marks={marks}
+          goal={goal}
+          lastMove={lastMove}
+          onPulse={pulse}
+          onPatch={patch}
+          platesAte={weekPlates}
+          plateGoal={plateGoal}
+          waterDrank={weekWater}
+          waterGoal={waterGoal}
+        />
       )}
 
       {tab === 'build' && (
@@ -321,23 +314,5 @@ export default function App() {
         </div>
       )}
     </div>
-  )
-}
-
-function PulseBtn({ title, line, onClick, active }) {
-  return (
-    <button type="button" className={active ? 'checkin on' : 'checkin'} onClick={onClick}>
-      <strong>{title}</strong>
-      <span>{line}</span>
-    </button>
-  )
-}
-
-function MarkInput({ label, value, onChange }) {
-  return (
-    <label className="goal-field">
-      <span>{label}</span>
-      <input type="number" min="0" value={value} onChange={(e) => onChange(e.target.value)} />
-    </label>
   )
 }
