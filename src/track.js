@@ -1,13 +1,5 @@
 export const WATER_GOAL = 8
 
-export function emptyEaten() {
-  return {}
-}
-
-export function emptyWater() {
-  return {}
-}
-
 export function slotDone(eaten, dayId, slotId) {
   return !!eaten?.[dayId]?.[slotId]
 }
@@ -23,15 +15,18 @@ export function toggleEaten(eaten, dayId, slotId) {
 }
 
 export function glassesFor(water, dayId) {
-  return Number(water[dayId] || 0)
+  return Number(water?.[dayId] || 0)
+}
+
+export function setGlasses(water, dayId, count) {
+  const n = Math.max(0, Math.min(WATER_GOAL, Number(count) || 0))
+  return { ...water, [dayId]: n }
 }
 
 export function addGlass(water, dayId) {
-  const n = Math.min(WATER_GOAL, glassesFor(water, dayId) + 1)
-  return { ...water, [dayId]: n }
+  return setGlasses(water, dayId, glassesFor(water, dayId) + 1)
 }
 
 export function removeGlass(water, dayId) {
-  const n = Math.max(0, glassesFor(water, dayId) - 1)
-  return { ...water, [dayId]: n }
+  return setGlasses(water, dayId, glassesFor(water, dayId) - 1)
 }
