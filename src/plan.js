@@ -25,7 +25,7 @@ export function optionsFor(slot, custom = []) {
   if (slot === 'lunch') base = LUNCHES.map((id) => MEALS[id])
   if (slot === 'dinner') base = DINNERS.map((id) => MEALS[id])
   const extraIds = EXTRA_BY_SLOT[slot] || []
-  const extras = extraIds.map((id) => EXTRA_MEALS[id]).filter(Boolean)
+  const extras = extraIds.map((id) => EXTRA_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
   const yours = custom.filter((m) => {
     if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
     return m.slot === slot || !m.slot
