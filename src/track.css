@@ -1,24 +1,42 @@
-.slot-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
+.slot-row {
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
 }
-.eat {
-  flex: 0 0 auto;
-  margin-top: 2px;
-  font: 600 12px var(--sans);
-  border: 1px solid var(--line);
-  background: #fff;
-  border-radius: 999px;
-  padding: 6px 10px;
+.slot-row-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slot-check {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+}
+.slot-toggle {
+  flex: 1;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 8px 0;
   cursor: pointer;
+}
+.slot-toggle strong {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--muted);
 }
-.eat.on {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+.slot-toggle span {
+  display: block;
+  font-size: 16px;
+  color: var(--ink);
+}
+.slot-body {
+  padding: 4px 0 8px 32px;
+}
+.eat {
+  display: none;
 }
 .day-meta {
   display: block;
@@ -34,7 +52,6 @@
 .water-label {
   font-size: 13px;
   margin-bottom: 8px;
-  color: var(--ink);
 }
 .glasses {
   display: flex;
@@ -52,9 +69,4 @@
 }
 .glass.on {
   background: var(--accent);
-}
-.water-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
 }
