@@ -1,0 +1,73 @@
+function item(name, aisle, p, c, f, house, base = 100) {
+  return { name, aisle, protein: p, carbs: c, fat: f, house, base }
+}
+
+export const PANTRY = [
+  item('Eggs', 'Protein', 13, 1, 10, '2 large eggs', 100),
+  item('Cooked chicken breast', 'Protein', 31, 0, 3.6, '1 palm of chicken', 140),
+  item('Chicken thigh', 'Protein', 18, 0, 9, '2 small thighs', 180),
+  item('Ground turkey 93%', 'Protein', 19, 0, 8, '5 oz turkey', 150),
+  item('Salmon fillet', 'Protein', 20, 0, 13, '1 palm-size fillet', 170),
+  item('Canned tuna', 'Protein', 22, 0, 0.9, '1 can drained', 113),
+  item('Canned salmon', 'Protein', 20, 0, 5, '1 can drained', 113),
+  item('Shrimp', 'Protein', 19, 0.2, 1.4, 'about 10 shrimp', 140),
+  item('Flank steak', 'Protein', 21, 0, 8, '1 palm of steak', 180),
+  item('White fish fillet', 'Protein', 19, 0, 1.8, '1 palm-size fillet', 170),
+  item('Sliced turkey deli', 'Protein', 18, 1, 1.8, '4 slices', 85),
+  item('Protein powder', 'Pantry', 80, 10, 5, '1 scoop', 30),
+  item('Plain Greek yogurt', 'Dairy', 10, 3.6, 0.4, '3/4 cup', 200),
+  item('Cottage cheese', 'Dairy', 11, 3.4, 2.3, '1 cup', 220),
+  item('Milk', 'Dairy', 3.3, 5, 2, '1 cup', 240),
+  item('Cheddar', 'Dairy', 25, 1.3, 33, '1 slice', 20),
+  item('Feta', 'Dairy', 14, 4, 21, '1 oz', 28),
+  item('Parmesan', 'Dairy', 36, 3, 25, '2 Tbsp', 15),
+  item('Butter', 'Dairy', 0.9, 0.1, 81, '1 tsp', 5),
+  item('Banana', 'Produce', 1.1, 23, 0.3, '1/2 banana', 60),
+  item('Apple', 'Produce', 0.3, 14, 0.2, '1 medium apple', 150),
+  item('Grapes', 'Produce', 0.7, 18, 0.2, '15 grapes', 80),
+  item('Mixed berries', 'Produce', 1, 12, 0.4, '1/2 cup berries', 70),
+  item('Strawberries', 'Produce', 0.7, 8, 0.3, '8 strawberries', 80),
+  item('Orange', 'Produce', 0.9, 12, 0.1, '1 orange', 130),
+  item('Avocado', 'Produce', 2, 9, 15, '1/4 avocado', 40),
+  item('Baby spinach', 'Produce', 2.9, 3.6, 0.4, '1 handful', 40),
+  item('Romaine', 'Produce', 1.2, 3.3, 0.3, '2 handfuls', 80),
+  item('Tomato', 'Produce', 0.9, 3.9, 0.2, '1/2 cup chopped', 80),
+  item('Cherry tomatoes', 'Produce', 0.9, 3.9, 0.2, '8 cherry tomatoes', 80),
+  item('Cucumber', 'Produce', 0.7, 3.6, 0.1, '1/2 cup', 80),
+  item('Carrots', 'Produce', 0.9, 10, 0.2, '8 baby carrots', 60),
+  item('Broccoli', 'Produce', 2.8, 7, 0.4, '2 cups', 150),
+  item('Green beans', 'Produce', 1.8, 7, 0.2, '2 handfuls', 150),
+  item('Cabbage slaw', 'Produce', 1.3, 6, 0.1, '1 cup', 70),
+  item('Potatoes', 'Produce', 2, 17, 0.1, '1 medium potato', 180),
+  item('Onion', 'Produce', 1.1, 9, 0.1, '1/2 small onion', 60),
+  item('Lemon', 'Produce', 1.1, 9, 0.3, '1/2 lemon', 30),
+  item('Lime', 'Produce', 0.7, 11, 0.2, '1 lime wedge', 20),
+  item('Pineapple', 'Produce', 0.5, 13, 0.1, '1/2 cup', 80),
+  item('Dry oats', 'Pantry', 13, 67, 7, '1/2 cup dry', 40),
+  item('Granola', 'Pantry', 10, 64, 16, '3 Tbsp', 30),
+  item('Sourdough', 'Pantry', 8, 47, 2, '1 slice', 30),
+  item('Brown rice, cooked', 'Pantry', 2.6, 23, 0.9, '1/2 cup cooked', 100),
+  item('Dry pasta', 'Pantry', 13, 75, 1.5, '1 heaping cup dry', 75),
+  item('Flour tortilla', 'Pantry', 8, 48, 6, '1 large tortilla', 50),
+  item('Corn tortillas', 'Pantry', 6, 44, 3, '2 small tortillas', 46),
+  item('Black beans', 'Pantry', 8.9, 23, 0.5, '1/3 cup', 80),
+  item('Peanut butter', 'Pantry', 25, 20, 50, '1 Tbsp', 16),
+  item('Olive oil', 'Pantry', 0, 0, 100, '1 tsp', 5),
+  item('Salsa', 'Pantry', 1.5, 7, 0.2, '3 Tbsp', 40),
+  item('Crackers', 'Pantry', 9, 70, 10, '6 crackers', 20),
+  item('Pretzels', 'Pantry', 10, 80, 3, '10 pretzels', 30),
+]
+
+export function portionFromPantry(item, grams) {
+  const g = Number(grams) || item.base
+  const n = g / 100
+  return {
+    name: item.name,
+    aisle: item.aisle,
+    grams: g,
+    protein: item.protein * n,
+    carbs: item.carbs * n,
+    fat: item.fat * n,
+    house: item.house,
+  }
+}
