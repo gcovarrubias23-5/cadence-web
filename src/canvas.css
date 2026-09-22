@@ -75,6 +75,13 @@ html, body { overflow-x: hidden; overflow-y: auto; height: auto; overscroll-beha
   z-index: 40;
   background: var(--card);
   margin: 0 -16px 12px;
-  padding: 48px 16px 14px;
+  padding: calc(28px + env(safe-area-inset-top, 0px)) 16px 14px;
   border-bottom: 1px solid var(--line);
+}
+.meter-track {
+  height: 12px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 6px 0 2px;
 }
