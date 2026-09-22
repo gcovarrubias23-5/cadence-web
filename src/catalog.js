@@ -102,55 +102,54 @@ export const MEALS = {
   },
   tunaWrap: {
     id: 'tunaWrap', name: 'Tuna wrap', time: '8 min', slot: 'lunch',
-    steps: ['Mix 1 can tuna with 1 Tbsp yogurt.', 'Spoon into 1 large tortilla with lettuce.', 'Eat with 1 apple.'],
+    steps: ['Mix 1 can tuna with 1 Tbsp yogurt.', 'Spoon into 1 large tortilla with lettuce.', 'Eat with 1 orange.'],
     foods: [
       f('Canned tuna', 113, 25, 0, 1, 'Protein', { house: '1 can tuna, drained' }),
       f('Plain Greek yogurt', 20, 2, 0.7, 0.1, 'Dairy', { house: '1 Tbsp yogurt' }),
       f('Flour tortilla', 50, 4, 24, 3, 'Pantry', { house: '1 large tortilla' }),
       f('Romaine', 40, 0.5, 1.2, 0.1, 'Produce', { house: '1 handful lettuce' }),
-      f('Apple', 150, 0.4, 21, 0.3, 'Produce', { house: '1 medium apple' }),
+      f('Orange', 130, 1, 15, 0.2, 'Produce', { house: '1 orange' }),
     ],
   },
-  burritoBowl: {
-    id: 'burritoBowl', name: 'Chicken burrito bowl', time: '15 min', slot: 'lunch',
-    steps: ['Warm 5 oz chicken.', 'Bowl: 3/4 cup rice, 1/3 cup beans, salsa, 1/4 avocado.'],
+  shrimpTacos: {
+    id: 'shrimpTacos', name: 'Shrimp tacos', time: '15 min', slot: 'lunch',
+    steps: ['Cook 5 oz shrimp in a pan, 2 minutes a side.', 'Warm 2 small tortillas.', 'Add cabbage, salsa, and a lime wedge.'],
     foods: [
-      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
-      f('Black beans', 80, 6, 14, 0.4, 'Pantry', { house: '1/3 cup beans' }),
+      f('Shrimp', 140, 27, 1, 2, 'Protein', { house: 'about 10 medium shrimp' }),
+      f('Corn tortillas', 46, 2.6, 20, 1.3, 'Pantry', { house: '2 small tortillas' }),
+      f('Cabbage slaw', 70, 1, 5, 0.1, 'Produce', { house: '1 cup cabbage' }),
       f('Salsa', 40, 0.6, 3, 0.2, 'Pantry', { house: '3 Tbsp salsa' }),
-      f('Avocado', 40, 0.8, 3, 6, 'Produce', { house: '1/4 avocado' }),
+      f('Lime', 20, 0.2, 2, 0.1, 'Produce', { house: '1 lime wedge' }),
     ],
   },
-  eggLunch: {
-    id: 'eggLunch', name: 'Egg toast and fruit', time: '10 min', slot: 'lunch',
-    steps: ['Toast 1 slice of bread.', 'Fry 2 eggs. Add 1 slice of cheese.', 'Eat with 1 apple.'],
+  cottageBowl: {
+    id: 'cottageBowl', name: 'Cottage cheese bowl', time: '5 min', slot: 'lunch',
+    steps: ['Put 1 cup cottage cheese in a bowl.', 'Add 1/2 cup pineapple and 10 pretzels on the side.'],
     foods: [
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
-      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheese' }),
-      f('Apple', 150, 0.4, 21, 0.3, 'Produce', { house: '1 medium apple' }),
+      f('Cottage cheese', 220, 24, 8, 5, 'Dairy', { house: '1 cup cottage cheese' }),
+      f('Pineapple', 80, 0.4, 11, 0.1, 'Produce', { house: '1/2 cup pineapple' }),
+      f('Pretzels', 30, 3, 22, 1, 'Pantry', { house: '10 pretzels' }),
     ],
   },
-  greekPlate: {
-    id: 'greekPlate', name: 'Greek plate', time: '10 min', slot: 'lunch',
-    steps: ['5 oz chicken, 1/2 cup cucumber, 8 cherry tomatoes, 1 oz feta.', '2 Tbsp hummus on the side.'],
+  salmonPlate: {
+    id: 'salmonPlate', name: 'Salmon and cucumber plate', time: '10 min', slot: 'lunch',
+    steps: ['Flake 1 can salmon.', 'Plate with 1/2 cup cucumber, 8 cherry tomatoes, and 6 crackers.', 'Add 1 oz feta.'],
     foods: [
-      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
+      f('Canned salmon', 113, 22, 0, 6, 'Protein', { house: '1 can salmon, drained' }),
       f('Cucumber', 80, 0.5, 3, 0.1, 'Produce', { house: '1/2 cup cucumber' }),
       f('Cherry tomatoes', 80, 0.7, 4, 0.2, 'Produce', { house: '8 cherry tomatoes' }),
       f('Feta', 28, 4, 1, 6, 'Dairy', { house: '1 oz feta' }),
-      f('Hummus', 30, 2, 4, 2.5, 'Pantry', { house: '2 Tbsp hummus' }),
+      f('Crackers', 20, 2, 14, 2, 'Pantry', { house: '6 crackers' }),
     ],
   },
-  soupSandwich: {
-    id: 'soupSandwich', name: 'Soup and half sandwich', time: '10 min', slot: 'lunch',
-    steps: ['Heat 1 cup chicken soup.', 'Half sandwich: 1 slice bread, 3 slices turkey, 1 slice cheese.'],
+  tomatoGrilledCheese: {
+    id: 'tomatoGrilledCheese', name: 'Tomato soup and grilled cheese', time: '12 min', slot: 'lunch',
+    steps: ['Heat 1 cup tomato soup.', 'Butter 2 slices of bread. Add 2 slices cheese. Grill until melted.'],
     foods: [
-      f('Chicken soup', 240, 8, 14, 4, 'Pantry', { house: '1 cup soup' }),
-      f('Sourdough', 30, 2.5, 14, 0.6, 'Pantry', { house: '1 slice bread' }),
-      f('Sliced turkey deli', 65, 12, 1, 1, 'Protein', { house: '3 slices turkey' }),
-      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheese' }),
+      f('Tomato soup', 240, 4, 20, 4, 'Pantry', { house: '1 cup tomato soup' }),
+      f('Sourdough', 60, 5, 28, 1.2, 'Pantry', { house: '2 slices bread' }),
+      f('Cheddar', 40, 10, 0.4, 14, 'Dairy', { house: '2 slices cheese' }),
+      f('Butter', 5, 0, 0, 5.5, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
   lemonChicken: {
@@ -258,17 +257,17 @@ export const MEALS = {
 }
 
 export const BREAKFASTS = ['yogurtGrapes', 'yogurtBanana', 'yogurtBerries', 'eggToast', 'eggAvocado', 'oatmeal', 'proteinShake', 'pancakes']
-export const LUNCHES = ['turkeySandwich', 'chickenSalad', 'tunaWrap', 'burritoBowl', 'eggLunch', 'greekPlate', 'soupSandwich']
+export const LUNCHES = ['turkeySandwich', 'chickenSalad', 'tunaWrap', 'shrimpTacos', 'cottageBowl', 'salmonPlate', 'tomatoGrilledCheese']
 export const DINNERS = ['lemonChicken', 'tacoBowl', 'salmon', 'bolognese', 'steakTacos', 'chili', 'stirFry', 'bakedFish', 'burgerNight']
 
 export const DEFAULT_WEEK = [
   { id: 'mon', day: 'Monday', breakfast: 'yogurtGrapes', lunch: 'turkeySandwich', dinner: 'lemonChicken' },
   { id: 'tue', day: 'Tuesday', breakfast: 'eggToast', lunch: 'chickenSalad', dinner: 'tacoBowl' },
-  { id: 'wed', day: 'Wednesday', breakfast: 'oatmeal', lunch: 'burritoBowl', dinner: 'salmon' },
+  { id: 'wed', day: 'Wednesday', breakfast: 'oatmeal', lunch: 'shrimpTacos', dinner: 'salmon' },
   { id: 'thu', day: 'Thursday', breakfast: 'yogurtBerries', lunch: 'tunaWrap', dinner: 'stirFry' },
-  { id: 'fri', day: 'Friday', breakfast: 'proteinShake', lunch: 'greekPlate', dinner: 'bolognese' },
-  { id: 'sat', day: 'Saturday', breakfast: 'pancakes', lunch: 'eggLunch', dinner: 'steakTacos' },
-  { id: 'sun', day: 'Sunday', breakfast: 'eggAvocado', lunch: 'soupSandwich', dinner: 'chili' },
+  { id: 'fri', day: 'Friday', breakfast: 'proteinShake', lunch: 'salmonPlate', dinner: 'bolognese' },
+  { id: 'sat', day: 'Saturday', breakfast: 'pancakes', lunch: 'cottageBowl', dinner: 'steakTacos' },
+  { id: 'sun', day: 'Sunday', breakfast: 'eggAvocado', lunch: 'tomatoGrilledCheese', dinner: 'chili' },
 ]
 
 export const WEEK_LABEL = 'This week'
