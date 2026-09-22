@@ -1,35 +1,22 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { SLOTS } from './plan.js'
-import { PANTRY, portionFromPantry } from './pantry.js'
+import { PANTRY, foodsOf, portionFromPantry } from './pantry.js'
 import { kcalOf, formatMacro } from './macros.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
-function macroKind(item) {
-  const p = item.protein * 4
-  const c = item.carbs * 4
-  const f = item.fat * 9
-  if (p >= c && p >= f) return 'protein'
-  if (f >= p && f >= c) return 'fat'
-  return 'carbs'
-}
-
-const FILTERS = [
-  { id: 'protein', label: 'Protein' },
-  { id: 'carbs', label: 'Carbs' },
-  { id: 'fat', label: 'Fat' },
+const TYPES = [
+  { id: 'protein', label: 'Protein', line: 'Chicken, eggs, yogurt, fish' },
+  { id: 'carbs', label: 'Carbs', line: 'Rice, fruit, bread, oats' },
+  { id: 'fat', label: 'Fat', line: 'Oil, avocado, cheese, butter' },
 ]
 
 export function Invent({ onSave, onClose }) {
   const [name, setName] = useState('')
   const [slot, setSlot] = useState('lunch')
-  const [filter, setFilter] = useState('protein')
+  const [kind, setKind] = useState('protein')
   const [lines, setLines] = useState([])
-
-  const hits = useMemo(
-    () => PANTRY.filter((p) => macroKind(p) === filter),
-    [filter],
-  )
+  const hits = foodsOf(kind)
 
   const totals = lines.reduce(
     (acc, f) => ({
@@ -73,7 +60,7 @@ export function Invent({ onSave, onClose }) {
     <div className="sheet" onClick={onClose}>
       <div className="sheet-card" onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', maxHeight: '88vh' }}>
         <p className="plan-kicker">Invent a plate</p>
-        <h2 style={{ marginBottom: 8 }}>Pick a macro. Add the food.</h2>
+        <h2 style={{ marginBottom: 8 }}>Add a food</h2>
 
         <label className="goal-field">
           <span>Plate name</span>
@@ -86,9 +73,17 @@ export function Invent({ onSave, onClose }) {
           </select>
         </label>
 
-        <div className="card" style={{ margin: '12px 0', maxHeight: 180, overflow: 'auto' }}>
+        <p className="note" style={{ marginBottom: 6 }}>Choose a food type</p>
+        {TYPES.map((t) => (
+          <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
+            <strong>{t.label}</strong>
+            <span>{t.line}</span>
+          </button>
+        ))}
+
+        <div className="card" style={{ margin: '12px 0', maxHeight: 160, overflow: 'auto' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Tap Protein, Carbs, or Fat, then a food.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Pick a type, then tap a food under it.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '1fr 72px auto', gap: 8, alignItems: 'center', borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div>
@@ -106,15 +101,8 @@ export function Invent({ onSave, onClose }) {
           )}
         </div>
 
-        <div className="checkin-row" style={{ marginBottom: 8 }}>
-          {FILTERS.map((f) => (
-            <button key={f.id} type="button" className={filter === f.id ? 'checkin on' : 'checkin'} onClick={() => setFilter(f.id)}>
-              <strong>{f.label}</strong>
-            </button>
-          ))}
-        </div>
-
-        <div style={{ overflow: 'auto', flex: 1, minHeight: 0 }}>
+        <p className="note" style={{ marginBottom: 4 }}>{TYPES.find((t) => t.id === kind).label} foods</p>
+        <div style={{ overflow: 'auto', flex: 1, minHeight: 80 }}>
           {hits.map((item) => (
             <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
               <strong>{item.name}</strong>
