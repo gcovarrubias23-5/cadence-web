@@ -65,3 +65,16 @@ html, body { overflow-x: hidden; overflow-y: auto; height: auto; overscroll-beha
 .option strong { display: block; }
 .option span { color: var(--muted); font-size: 13px; }
 .option.on { border-color: var(--accent); background: var(--accent-soft); }
+.option.picked {
+  background: #d8d3cb !important;
+  border-color: #9a9388 !important;
+}
+.plate-dock {
+  position: sticky;
+  top: -16px;
+  z-index: 40;
+  background: var(--card);
+  margin: 0 -16px 12px;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--line);
+}
