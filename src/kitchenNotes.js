@@ -23,4 +23,33 @@ export const KITCHEN = {
       'Lemon on the plate at the end, not in the oven the whole time.',
     ],
   },
+  lemonChicken: {
+    preview: 'Oven at 425. Potato and chicken first. Broccoli later.',
+    locked: [
+      'Toss thighs and the cut potato with oil and lemon.',
+      'Roast 15 minutes, then add the broccoli.',
+      'Keep going until the chicken is 165 inside, about 12 more minutes.',
+    ],
+  },
+  rotisserieBowl: {
+    preview: 'Warm the quinoa. Do not recook the chicken.',
+    locked: [
+      'Heat quinoa with a splash of water.',
+      'Pull the chicken into bite-size pieces.',
+      'Cauli rice and salsa stay cold on the side.',
+    ],
+  },
+}
+
+const BY_NAME = {
+  'Overnight oats': 'overnightOats',
+  'Shrimp tacos': 'shrimpTacos',
+  'Salmon and green beans': 'salmon',
+  'Lemon chicken and potato': 'lemonChicken',
+  'Rotisserie bowl': 'rotisserieBowl',
+}
+
+export function kitchenFor(meal) {
+  if (!meal) return null
+  return KITCHEN[meal.id] || KITCHEN[BY_NAME[meal.name]] || null
 }

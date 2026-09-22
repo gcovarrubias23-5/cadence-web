@@ -1,5 +1,5 @@
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
-import { KITCHEN } from './kitchenNotes.js'
+import { kitchenFor } from './kitchenNotes.js'
 
 function lineLabel(food, factor) {
   const closeToBase = factor > 0.9 && factor < 1.1
@@ -12,7 +12,7 @@ export function Meal({ label, meal, factor }) {
   if (!meal) return null
   const plated = meal.foods.map((food) => scaleFood(food, factor))
   const plateTotals = sumFoods(plated)
-  const kitchen = KITCHEN[meal.id]
+  const kitchen = kitchenFor(meal)
 
   return (
     <div className="meal-row">
@@ -36,7 +36,7 @@ export function Meal({ label, meal, factor }) {
           <div className="card" style={{ margin: '10px 0', padding: 12 }}>
             <div className="goal-title">Kitchen notes</div>
             <p className="note" style={{ marginTop: 6 }}>{kitchen.preview}</p>
-            <div style={{ opacity: 0.45, pointerEvents: 'none' }}>
+            <div style={{ opacity: 0.45 }}>
               <ol className="steps">
                 {kitchen.locked.map((step) => (
                   <li key={step}>{step}</li>
