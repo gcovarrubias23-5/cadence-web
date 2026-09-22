@@ -85,3 +85,4 @@ html, body { overflow-x: hidden; overflow-y: auto; height: auto; overscroll-beha
   overflow: hidden;
   margin: 6px 0 2px;
 }
+.macro-gap { display: block; margin-top: 16px; }
