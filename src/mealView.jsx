@@ -1,16 +1,15 @@
-import { eatenFoods, formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
+import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
 
 function lineLabel(food, factor) {
-  const scaled = formatG(food.grams)
   const closeToBase = factor > 0.9 && factor < 1.1
   if (food.house && closeToBase) return food.house
-  if (food.house) return `${scaled} (base: ${food.house})`
-  return scaled
+  if (food.house) return `${formatG(food.grams)} · ${food.house}`
+  return formatG(food.grams)
 }
 
 export function Meal({ label, meal, factor }) {
-  const plated = eatenFoods(meal.foods).map((food) => scaleFood(food, factor))
-  const extras = meal.foods.filter((f) => f.prep).map((food) => scaleFood(food, factor))
+  if (!meal) return null
+  const plated = meal.foods.map((food) => scaleFood(food, factor))
   const plateTotals = sumFoods(plated)
 
   return (
@@ -30,23 +29,12 @@ export function Meal({ label, meal, factor }) {
         )}
         <ul className="foods">
           {plated.map((food) => (
-            <li key={food.name + food.grams + (food.leftover ? 'L' : '')}>
+            <li key={food.name + food.grams}>
               <strong>{lineLabel(food, factor)}</strong>
-              <span className="food-sub">
-                {' '}· {food.name}
-                {factor > 0.9 && factor < 1.1 ? ` · ${formatG(food.grams)}` : ''}
-                {food.leftover ? ' · leftover' : ''}
-                {food.pantry ? ' · pantry' : ''}
-              </span>
+              <span className="food-sub"> · {food.name}</span>
             </li>
           ))}
         </ul>
-        {extras.length > 0 && (
-          <p className="note">
-            Cook extra now:{' '}
-            {extras.map((food) => food.house || `${food.name} ${formatG(food.grams)}`).join('; ')}
-          </p>
-        )}
       </div>
     </div>
   )
