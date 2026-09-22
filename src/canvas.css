@@ -75,6 +75,6 @@ html, body { overflow-x: hidden; overflow-y: auto; height: auto; overscroll-beha
   z-index: 40;
   background: var(--card);
   margin: 0 -16px 12px;
-  padding: 20px 16px 12px;
+  padding: 48px 16px 14px;
   border-bottom: 1px solid var(--line);
 }
