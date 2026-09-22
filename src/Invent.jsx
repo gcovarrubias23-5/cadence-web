@@ -22,6 +22,11 @@ function macrosBlock(food) {
   )
 }
 
+function defaultName(slotMeta) {
+  const meal = (slotMeta?.label || 'meal').toLowerCase()
+  return `custom plate ${meal}`
+}
+
 export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const [name, setName] = useState('')
   const [slot, setSlot] = useState(defaultSlot)
@@ -29,6 +34,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const [lines, setLines] = useState([])
   const hits = foodsOf(kind)
   const slotMeta = SLOTS.find((s) => s.id === slot) || { label: 'This meal' }
+  const fallbackName = defaultName(slotMeta)
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
   const left = leftoverOf(lines, target)
   const filled = {
@@ -41,7 +47,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
   function save() {
     if (!lines.length) return
-    const title = name.trim() || 'custom plate'
+    const title = name.trim() || fallbackName
     onSave({
       id: `custom-${Date.now()}`,
       name: title,
@@ -69,7 +75,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <label className="goal-field">
           <span>Plate name</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="custom plate" />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder={fallbackName} />
         </label>
         <label className="goal-field" style={{ marginTop: 8 }}>
           <span>Which meal</span>
