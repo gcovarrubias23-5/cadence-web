@@ -4,7 +4,6 @@ import {
   WEEK_LABEL,
   SLOTS,
   mealOf,
-  optionsFor,
 } from './plan.js'
 import {
   DEFAULT_MARKS,
@@ -17,13 +16,14 @@ import {
   kcalOf,
 } from './macros.js'
 import { applyPulse } from './checkin.js'
-import { buildShopText, STORES } from './shopList.js'
+import { buildShopText } from './shopList.js'
 import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
 import { Checkin } from './Checkin.jsx'
 import { Start } from './Start.jsx'
 import { Build } from './Build.jsx'
 import { Invent } from './Invent.jsx'
+import { ChangeSheet } from './ChangeSheet.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -353,20 +353,13 @@ export default function App() {
       )}
 
       {picking && (
-        <div className="sheet" onClick={() => setPicking(null)}>
-          <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
-            <p className="plan-kicker">Change this slot</p>
-            <h2>What do you want instead?</h2>
-            {optionsFor(picking.slot, custom).map((meal) => (
-              <button key={meal.id} className={meal.id === picking.current ? 'option on' : 'option'} type="button" onClick={() => choose(picking.dayId, picking.slot, meal.id)}>
-                <strong>{meal.name}</strong>
-                <span>{meal.custom ? 'your plate' : meal.time}</span>
-              </button>
-            ))}
-            <button className="btn" type="button" onClick={() => { setPicking(null); setInventOpen(true) }}>Invent a plate</button>
-            <button className="btn btn-ghost" type="button" onClick={() => setPicking(null)}>Never mind</button>
-          </div>
-        </div>
+        <ChangeSheet
+          picking={picking}
+          custom={custom}
+          onChoose={choose}
+          onInvent={() => { setPicking(null); setInventOpen(true) }}
+          onClose={() => setPicking(null)}
+        />
       )}
 
       {inventOpen && (
