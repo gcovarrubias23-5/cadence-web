@@ -3,10 +3,10 @@ import { DEFAULT_MARKS } from './checkin.js'
 export { DEFAULT_MARKS }
 
 export const SLOT_SHARE = {
-  breakfast: { protein: 15 / 120, carbs: 30 / 150, fat: 0 / 60 },
+  breakfast: { protein: 15 / 120, carbs: 30 / 150, fat: 5 / 60 },
   snack1: { protein: 15 / 120, carbs: 20 / 150, fat: 15 / 60 },
   lunch: { protein: 30 / 120, carbs: 40 / 150, fat: 15 / 60 },
-  snack2: { protein: 15 / 120, carbs: 20 / 150, fat: 0 / 60 },
+  snack2: { protein: 15 / 120, carbs: 20 / 150, fat: 5 / 60 },
   dinner: { protein: 30 / 120, carbs: 30 / 150, fat: 15 / 60 },
   snack3: { protein: 15 / 120, carbs: 10 / 150, fat: 15 / 60 },
 }
@@ -87,12 +87,11 @@ export function dayTotals(day, factors) {
 export function scaleForSlot(meal, goalForSlot) {
   if (!meal) return 1
   const base = sumFoods(eatenFoods(meal.foods))
-  const byProtein = goalForSlot.protein / Math.max(base.protein, 0.5)
-  const byCarbs = goalForSlot.carbs / Math.max(base.carbs, 0.5)
   const byKcal = goalForSlot.kcal / Math.max(kcalOf(base), 1)
-  let factor = (byProtein * 2 + byCarbs + byKcal) / 4
+  const byProtein = goalForSlot.protein / Math.max(base.protein, 0.5)
+  let factor = Math.min(byKcal, (byProtein + byKcal) / 2)
   if (!Number.isFinite(factor) || factor <= 0) factor = 1
-  return Math.min(2.4, Math.max(0.45, factor))
+  return Math.min(2.2, Math.max(0.35, factor))
 }
 
 export function factorsForDay(day, goal) {
@@ -100,6 +99,14 @@ export function factorsForDay(day, goal) {
   mealsOf(day).forEach(([slot, meal]) => {
     next[slot] = scaleForSlot(meal, slotGoal(goal, slot))
   })
+  const shown = kcalOf(dayTotals(day, next))
+  const target = Math.max(goal.kcal, 1)
+  if (shown > target) {
+    const shrink = target / shown
+    Object.keys(next).forEach((slot) => {
+      next[slot] *= shrink
+    })
+  }
   return next
 }
 
