@@ -1,0 +1,60 @@
+.slot-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.eat {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  font: 600 12px var(--sans);
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.eat.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.day-meta {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.water {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.water-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.glasses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.glass {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+.glass.on {
+  background: var(--accent);
+}
+.water-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
