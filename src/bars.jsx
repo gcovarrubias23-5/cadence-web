@@ -1,18 +1,24 @@
 import { WATER_GOAL } from './track.js'
 
-export function ProgressBars({ ate, drinks, onAddWater }) {
+export function ProgressBars({ ate, drinks, onAddWater, plateLabel, waterLabel }) {
   const platePct = Math.round(Math.min(100, (Number(ate) / 6) * 100))
   const waterPct = Math.round(Math.min(100, (Number(drinks) / WATER_GOAL) * 100))
+  const water = (
+    <Bar
+      label="Water"
+      value={waterLabel || `${drinks}/${WATER_GOAL} · ${waterPct}%`}
+      pct={waterPct}
+      color="#3d6b8a"
+    />
+  )
   return (
     <div style={{ display: 'grid', gap: 12, marginTop: 10, width: '100%' }}>
-      <Bar label="Plates" value={`${ate}/6 · ${platePct}%`} pct={platePct} color="#2f7d4a" />
-      <button
-        type="button"
-        onClick={onAddWater}
-        style={{ background: 'none', border: 0, padding: 0, textAlign: 'left', cursor: 'pointer' }}
-      >
-        <Bar label="Water" value={`${drinks}/${WATER_GOAL} · ${waterPct}%`} pct={waterPct} color="#3d6b8a" />
-      </button>
+      <Bar label="Plates" value={plateLabel || `${ate}/6 · ${platePct}%`} pct={platePct} color="#2f7d4a" />
+      {onAddWater ? (
+        <button type="button" onClick={onAddWater} style={{ background: 'none', border: 0, padding: 0, textAlign: 'left', cursor: 'pointer' }}>
+          {water}
+        </button>
+      ) : water}
     </div>
   )
 }
