@@ -41,7 +41,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
   function save() {
     if (!lines.length) return
-    const title = name.trim() || `${lines[0].name} plate`
+    const title = name.trim() || 'custom plate'
     onSave({
       id: `custom-${Date.now()}`,
       name: title,
@@ -69,7 +69,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <label className="goal-field">
           <span>Plate name</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder={lines[0] ? `${lines[0].name} plate` : 'Tuesday chicken bowl'} />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="custom plate" />
         </label>
         <label className="goal-field" style={{ marginTop: 8 }}>
           <span>Which meal</span>
