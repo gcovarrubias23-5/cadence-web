@@ -1,11 +1,9 @@
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
 import { kitchenFor } from './kitchenNotes.js'
 
-function lineLabel(food, factor) {
-  const closeToBase = factor > 0.9 && factor < 1.1
-  if (food.house && closeToBase) return food.house
-  if (food.house) return `${formatG(food.grams)} · ${food.house}`
-  return formatG(food.grams)
+function sizeOf(food) {
+  const raw = String(food.house || '').replace(/palm[- ]size /i, '').replace(/palm of /i, '').replace(/\bpalm\b/gi, '').replace(/\s+/g, ' ').trim()
+  return raw
 }
 
 export function Meal({ label, meal, factor }) {
@@ -30,8 +28,9 @@ export function Meal({ label, meal, factor }) {
         <ul className="foods">
           {plated.map((food) => (
             <li key={food.name + food.grams}>
-              <strong>{lineLabel(food, factor)}</strong>
-              <span className="food-sub"> · {food.name}</span>
+              <strong>{food.name}</strong>
+              <div className="qty" style={{ marginTop: 4 }}>{formatG(food.grams)}</div>
+              {sizeOf(food) && <div className="qty">{sizeOf(food)}</div>}
               <div className="qty" style={{ marginTop: 4 }}>
                 {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
               </div>
