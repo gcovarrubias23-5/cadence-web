@@ -23,6 +23,7 @@ import { ProgressBars } from './bars.jsx'
 import { Checkin } from './Checkin.jsx'
 import { Start } from './Start.jsx'
 import { Build } from './Build.jsx'
+import { Invent } from './Invent.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -43,11 +44,11 @@ const TABS = [
   { id: 'shop', label: 'Shop' },
 ]
 
-function hydrate(picks) {
+function hydrate(picks, custom) {
   return picks.map((row) => {
     const day = { ...row }
     SLOTS.forEach((slot) => {
-      day[slot.id] = mealOf(row[slot.id])
+      day[slot.id] = mealOf(row[slot.id], custom)
     })
     return day
   })
@@ -64,6 +65,8 @@ function loadJson(key, fallback) {
 
 export default function App() {
   const [profile, setProfile] = useState(() => loadJson('cadence.profile', null))
+  const [custom, setCustom] = useState(() => loadJson('cadence.custom', []))
+  const [inventOpen, setInventOpen] = useState(false)
   const [lastCheckin, setLastCheckin] = useState(() => loadJson('cadence.lastCheckin', null))
   const dueNow = isCheckinDue(lastCheckin)
   const [tab, setTab] = useState(dueNow ? 'checkin' : 'week')
@@ -90,13 +93,14 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
   useEffect(() => { localStorage.setItem('cadence.lastCheckin', JSON.stringify(lastCheckin)) }, [lastCheckin])
   useEffect(() => { localStorage.setItem('cadence.profile', JSON.stringify(profile)) }, [profile])
+  useEffect(() => { localStorage.setItem('cadence.custom', JSON.stringify(custom)) }, [custom])
   useEffect(() => {
     if (tab !== 'week' || !openDay || !openSlot) return
     const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
     return () => clearTimeout(t)
   }, [tab, openDay, openSlot])
 
-  const DAYS = useMemo(() => hydrate(picks), [picks])
+  const DAYS = useMemo(() => hydrate(picks, custom), [picks, custom])
   const goal = useMemo(() => goalFromMarks(marks), [marks])
   const factors = useMemo(() => {
     const next = {}
@@ -136,6 +140,10 @@ export default function App() {
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
+  }
+  function savePlate(meal) {
+    setCustom((prev) => [meal, ...prev])
+    setInventOpen(false)
   }
   function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
   function copyDay(dayId) {
@@ -282,10 +290,12 @@ export default function App() {
       {tab === 'build' && (
         <Build
           picks={picks}
+          custom={custom}
           onPick={(dayId, slot, current) => setPicking({ dayId, slot, current })}
           onReset={resetWeek}
           onCopyDay={copyDay}
           onRepeatSlot={repeatSlot}
+          onInvent={() => setInventOpen(true)}
         />
       )}
 
@@ -337,16 +347,19 @@ export default function App() {
           <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
             <p className="plan-kicker">Change this slot</p>
             <h2>What do you want instead?</h2>
-            {optionsFor(picking.slot).map((meal) => (
+            {optionsFor(picking.slot, custom).map((meal) => (
               <button key={meal.id} className={meal.id === picking.current ? 'option on' : 'option'} type="button" onClick={() => choose(picking.dayId, picking.slot, meal.id)}>
                 <strong>{meal.name}</strong>
-                <span>{meal.time}</span>
+                <span>{meal.custom ? 'your plate' : meal.time}</span>
               </button>
             ))}
+            <button className="btn" type="button" onClick={() => { setPicking(null); setInventOpen(true) }}>Invent a plate</button>
             <button className="btn btn-ghost" type="button" onClick={() => setPicking(null)}>Never mind</button>
           </div>
         </div>
       )}
+
+      {inventOpen && <Invent onSave={savePlate} onClose={() => setInventOpen(false)} />}
     </div>
   )
 }
