@@ -5,7 +5,7 @@ export function ProgressBars({ ate, drinks, onAddWater }) {
   const waterPct = Math.round(Math.min(100, (Number(drinks) / WATER_GOAL) * 100))
   return (
     <div style={{ display: 'grid', gap: 12, marginTop: 10, width: '100%' }}>
-      <Bar label="Plates" value={`${ate}/6 · ${platePct}%`} pct={platePct} color="#6b4f3a" />
+      <Bar label="Plates" value={`${ate}/6 · ${platePct}%`} pct={platePct} color="#2f7d4a" />
       <button
         type="button"
         onClick={onAddWater}
