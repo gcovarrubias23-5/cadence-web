@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
-import { addServing, bumpLine, fillRest, houseFor, leftoverOf, targetFor } from './inventMath.js'
+import { addFood, bumpLine, fillRest, houseFor, leftoverOf, previewGrams, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
@@ -26,6 +26,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     carbs: target.carbs - left.carbs,
     fat: target.fat - left.fat,
   }
+  const hasKind = lines.some((l) => l.kind === kind)
 
   function save() {
     if (!name.trim() || lines.length === 0) return
@@ -47,9 +48,8 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         <p className="plan-kicker">Invent a plate</p>
         <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
         <p className="note" style={{ marginTop: 0 }}>
-          Day is {Math.round(goal?.protein || 0)}P · {Math.round(goal?.carbs || 0)}C · {Math.round(goal?.fat || 0)}F.
           This {slotMeta.label.toLowerCase()} wants {Math.round(target.protein)}P · {Math.round(target.carbs)}C · {Math.round(target.fat)}F.
-          Add one serving at a time. Split tortillas and sweet potato. Use Fill the rest on the last food.
+          First food is one serving. Next food of that type finishes what is left.
         </p>
 
         <div className="card" style={{ marginBottom: 12 }}>
@@ -70,17 +70,16 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           </select>
         </label>
 
-        <p className="note" style={{ marginBottom: 6 }}>Choose a food type</p>
         {TYPES.map((t) => (
           <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
             <strong>{t.label}</strong>
-            <span>{t.id !== 'free' && left[t.id] > 0.5 ? `${Math.round(left[t.id])}g ${t.id} still open` : t.id !== 'free' ? 'this plate is filled' : t.line}</span>
+            <span>{t.id !== 'free' && left[t.id] > 0.5 ? `${Math.round(left[t.id])}g left on this plate` : t.id !== 'free' ? 'filled' : t.line}</span>
           </button>
         ))}
 
         <div className="card" style={{ margin: '12px 0' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Each tap adds one serving. Then Less, More, or Fill the rest.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>The line under a food is exactly what will land here.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
@@ -101,13 +100,19 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           ))}
         </div>
 
-        <p className="note" style={{ marginBottom: 4 }}>Add one serving</p>
-        {hits.map((item) => (
-          <button key={item.name} type="button" className="option" onClick={() => setLines((prev) => addServing(prev, item))}>
-            <strong>{item.name}</strong>
-            <span>Add {houseFor(item, item.base)}</span>
-          </button>
-        ))}
+        <p className="note" style={{ marginBottom: 4 }}>
+          {hasKind && kind !== 'free' ? 'Next one finishes what is left' : 'Add one serving'}
+        </p>
+        {hits.map((item) => {
+          const g = previewGrams(lines, item, target)
+          const label = houseFor(item, g)
+          return (
+            <button key={item.name} type="button" className="option" onClick={() => setLines((prev) => addFood(prev, item, target))}>
+              <strong>{item.name}</strong>
+              <span>{label}</span>
+            </button>
+          )
+        })}
 
         <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
         <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
@@ -123,12 +128,12 @@ function Meter({ label, need, have, left }) {
     <div style={{ margin: '8px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
         <strong>{label}</strong>
-        <span className="qty">{done ? 'This plate is filled' : `${Math.round(left)}g left on this plate`}</span>
+        <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
       </div>
       <div style={{ height: 8, background: 'var(--line)', borderRadius: 99, overflow: 'hidden', margin: '4px 0' }}>
         <div style={{ width: `${pct}%`, height: '100%', background: done ? 'var(--accent)' : '#c4a35a' }} />
       </div>
-      <div className="qty">This plate wants {Math.round(need)}g · on it {Math.round(have)}g · still {Math.round(left)}g</div>
+      <div className="qty">Wants {Math.round(need)}g · on plate {Math.round(have)}g · still {Math.round(left)}g</div>
     </div>
   )
 }
