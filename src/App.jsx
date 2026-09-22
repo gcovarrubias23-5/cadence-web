@@ -49,7 +49,7 @@ export default function App() {
     try {
       const saved = localStorage.getItem('cadence.week')
       const parsed = saved ? JSON.parse(saved) : DEFAULT_WEEK
-      return parsed[0]?.snack1 ? parsed : DEFAULT_WEEK
+      return parsed[0]?.snack3 ? parsed : DEFAULT_WEEK
     } catch {
       return DEFAULT_WEEK
     }
@@ -160,7 +160,7 @@ export default function App() {
             <div className="kcal-readout">{Math.round(goal.kcal)}</div>
           </div>
         </div>
-        <p className="note">Today’s plate is breakfast, two snacks, lunch, and dinner. Change any one.</p>
+        <p className="note">Six slots: breakfast, morning snack, lunch, afternoon snack, dinner, late snack.</p>
       </section>
 
       {tab === 'week' && (
@@ -204,7 +204,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Build the week.</h1>
-            <p>Five slots a day. Tap one to swap it.</p>
+            <p>Six slots a day. Tap one to swap it.</p>
             <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
           </section>
           {picks.map((row) => (
