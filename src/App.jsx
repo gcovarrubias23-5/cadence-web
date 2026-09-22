@@ -20,6 +20,7 @@ import { applyPulse, PULSE_COPY } from './checkin.js'
 import { buildShopText, STORES } from './shopList.js'
 import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
+import { scrollAnchorToTop } from './scroll.js'
 import {
   WATER_GOAL,
   addGlass,
@@ -80,6 +81,12 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.week', JSON.stringify(picks)) }, [picks])
   useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
   useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
+  useEffect(() => {
+    if (tab !== 'week' || !openDay) return
+    const id = openSlot ? `${openDay}-${openSlot}` : openDay
+    const t = setTimeout(() => scrollAnchorToTop(id), 40)
+    return () => clearTimeout(t)
+  }, [tab, openDay, openSlot])
 
   const DAYS = useMemo(() => hydrate(picks), [picks])
   const goal = useMemo(() => goalFromMarks(marks), [marks])
@@ -171,7 +178,7 @@ export default function App() {
             const ate = dayEatenCount(eaten, d.id, SLOTS)
             const drinks = glassesFor(water, d.id)
             return (
-              <article className="card day" key={d.id}>
+              <article className="card day" key={d.id} data-anchor={d.id}>
                 <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('breakfast') }}>
                   <span>
                     <span className="day-name">{d.day}</span>
@@ -200,7 +207,7 @@ export default function App() {
                       const show = openSlot === slot.id
                       const meal = d[slot.id]
                       return (
-                        <div className="slot-row" key={slot.id}>
+                        <div className="slot-row" key={slot.id} data-anchor={`${d.id}-${slot.id}`}>
                           <div className="slot-row-main">
                             <input
                               className="slot-check"
