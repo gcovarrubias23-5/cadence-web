@@ -22,6 +22,7 @@ import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
 import { Checkin } from './Checkin.jsx'
 import { scrollAnchorToTop } from './scroll.js'
+import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
   WATER_GOAL,
   addGlass,
@@ -60,7 +61,9 @@ function loadJson(key, fallback) {
 }
 
 export default function App() {
-  const [tab, setTab] = useState('week')
+  const [lastCheckin, setLastCheckin] = useState(() => loadJson('cadence.lastCheckin', null))
+  const dueNow = isCheckinDue(lastCheckin)
+  const [tab, setTab] = useState(dueNow ? 'checkin' : 'week')
   const [openDay, setOpenDay] = useState('')
   const [openSlot, setOpenSlot] = useState('')
   const [checked, setChecked] = useState({})
@@ -82,6 +85,7 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.week', JSON.stringify(picks)) }, [picks])
   useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
   useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
+  useEffect(() => { localStorage.setItem('cadence.lastCheckin', JSON.stringify(lastCheckin)) }, [lastCheckin])
   useEffect(() => {
     if (tab !== 'week' || !openDay || !openSlot) return
     const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
@@ -110,10 +114,16 @@ export default function App() {
   const weekPlates = DAYS.reduce((n, d) => n + dayEatenCount(eaten, d.id, SLOTS), 0)
   const weekWater = DAYS.reduce((n, d) => n + glassesFor(water, d.id), 0)
   const plateGoal = DAYS.length * 6
-  const waterGoal = DAYS.length * WATER_GOAL
+  const waterGoalWeek = DAYS.length * WATER_GOAL
+  const due = isCheckinDue(lastCheckin)
+  const daysLeft = daysUntilCheckin(lastCheckin)
 
   function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
-  function pulse(move) { setMarks((prev) => applyPulse(prev, move)); setLastMove(move) }
+  function pulse(move) {
+    setMarks((prev) => applyPulse(prev, move))
+    setLastMove(move)
+    setLastCheckin(new Date().toISOString())
+  }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
@@ -153,8 +163,15 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Tick a plate when you eat. Tap the water bar or a circle when you drink. Check-in is for the end of the week.</p>
+            <p>Tick a plate when you eat. Tap water when you drink.</p>
           </section>
+          {due && (
+            <section className="card" style={{ borderColor: 'var(--accent)' }}>
+              <div className="goal-title">Time to check in</div>
+              <p className="note" style={{ marginTop: 0 }}>A week has passed. Say how the food sat so next week can move.</p>
+              <button className="btn" type="button" onClick={() => setTab('checkin')}>How did this week feel?</button>
+            </section>
+          )}
           {DAYS.map((d) => {
             const open = openDay === d.id
             const slotFactors = factors[d.id] || {}
@@ -227,7 +244,9 @@ export default function App() {
           platesAte={weekPlates}
           plateGoal={plateGoal}
           waterDrank={weekWater}
-          waterGoal={waterGoal}
+          waterGoal={waterGoalWeek}
+          due={due}
+          daysLeft={daysLeft}
         />
       )}
 
