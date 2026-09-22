@@ -19,6 +19,7 @@ import {
 import { applyPulse, PULSE_COPY } from './checkin.js'
 import { buildShopText, STORES } from './shopList.js'
 import { Meal } from './mealView.jsx'
+import { ProgressBars } from './bars.jsx'
 import {
   WATER_GOAL,
   addGlass,
@@ -54,25 +55,6 @@ function loadJson(key, fallback) {
   } catch {
     return fallback
   }
-}
-
-function ProgressBars({ ate, drinks }) {
-  const platePct = Math.min(100, (ate / 6) * 100)
-  const waterPct = Math.min(100, (drinks / WATER_GOAL) * 100)
-  return (
-    <div className="bars">
-      <div className="bar-row">
-        <span>Plates</span>
-        <div className="bar-track"><div className="bar-fill" style={{ width: platePct + '%' }} /></div>
-        <span>{ate}/6</span>
-      </div>
-      <div className="bar-row">
-        <span>Water</span>
-        <div className="bar-track"><div className="bar-fill water" style={{ width: waterPct + '%' }} /></div>
-        <span>{drinks}/{WATER_GOAL}</span>
-      </div>
-    </div>
-  )
 }
 
 export default function App() {
@@ -195,9 +177,11 @@ export default function App() {
                     <span className="macro-line">
                       {Math.round(kcalOf(totals))} cal · {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F
                     </span>
-                    <ProgressBars ate={ate} drinks={drinks} />
                   </span>
                 </button>
+                <div style={{ padding: '0 4px 12px' }}>
+                  <ProgressBars ate={ate} drinks={drinks} />
+                </div>
                 {open && (
                   <div className="plan-list">
                     {SLOTS.map((slot) => {
@@ -231,8 +215,7 @@ export default function App() {
                     })}
                     <div className="water">
                       <div className="water-label">Water · {drinks} of {WATER_GOAL}</div>
-                      <ProgressBars ate={ate} drinks={drinks} />
-                      <div className="glasses" style={{ marginTop: 10 }}>
+                      <div className="glasses">
                         {Array.from({ length: WATER_GOAL }, (_, i) => (
                           <button
                             key={i}
