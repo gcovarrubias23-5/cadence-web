@@ -2,6 +2,15 @@ import { DEFAULT_MARKS } from './checkin.js'
 
 export { DEFAULT_MARKS }
 
+export const SLOT_SHARE = {
+  breakfast: { protein: 15 / 120, carbs: 30 / 150, fat: 0 / 60 },
+  snack1: { protein: 15 / 120, carbs: 20 / 150, fat: 15 / 60 },
+  lunch: { protein: 30 / 120, carbs: 40 / 150, fat: 15 / 60 },
+  snack2: { protein: 15 / 120, carbs: 20 / 150, fat: 0 / 60 },
+  dinner: { protein: 30 / 120, carbs: 30 / 150, fat: 15 / 60 },
+  snack3: { protein: 15 / 120, carbs: 10 / 150, fat: 15 / 60 },
+}
+
 export function kcalOf({ protein, carbs, fat }) {
   return protein * 4 + carbs * 4 + fat * 9
 }
@@ -19,6 +28,14 @@ export function goalFromMarks(t) {
     mealsPerDay: Number(t.mealsPerDay) || 6,
     weekMark: t.weekMark || 5,
   }
+}
+
+export function slotGoal(goal, slotId) {
+  const share = SLOT_SHARE[slotId] || { protein: 1 / 6, carbs: 1 / 6, fat: 1 / 6 }
+  const protein = goal.protein * share.protein
+  const carbs = goal.carbs * share.carbs
+  const fat = goal.fat * share.fat
+  return { protein, carbs, fat, kcal: kcalOf({ protein, carbs, fat }) }
 }
 
 export function eatenFoods(foods) {
@@ -48,22 +65,42 @@ export function scaleFood(food, factor) {
 }
 
 export function mealsOf(day) {
-  return [day.breakfast, day.snack1, day.lunch, day.snack2, day.dinner, day.snack3].filter(Boolean)
+  return [
+    ['breakfast', day.breakfast],
+    ['snack1', day.snack1],
+    ['lunch', day.lunch],
+    ['snack2', day.snack2],
+    ['dinner', day.dinner],
+    ['snack3', day.snack3],
+  ].filter(([, meal]) => meal)
 }
 
-export function dayTotals(day) {
-  return sumFoods(mealsOf(day).flatMap((meal) => eatenFoods(meal.foods)))
+export function dayTotals(day, factors) {
+  return sumFoods(
+    mealsOf(day).flatMap(([slot, meal]) => {
+      const factor = factors?.[slot] || 1
+      return eatenFoods(meal.foods).map((food) => scaleFood(food, factor))
+    }),
+  )
 }
 
-export function scaleForGoal(day, goal) {
-  const base = dayTotals(day)
-  const byProtein = goal.protein / Math.max(base.protein, 1)
-  const byKcal = goal.kcal / Math.max(kcalOf(base), 1)
-  let factor = byProtein
-  if (goal.kcal > 0 && kcalOf(base) * factor > goal.kcal * 1.2) {
-    factor = (byProtein + byKcal) / 2
-  }
-  return factor
+export function scaleForSlot(meal, goalForSlot) {
+  if (!meal) return 1
+  const base = sumFoods(eatenFoods(meal.foods))
+  const byProtein = goalForSlot.protein / Math.max(base.protein, 0.5)
+  const byCarbs = goalForSlot.carbs / Math.max(base.carbs, 0.5)
+  const byKcal = goalForSlot.kcal / Math.max(kcalOf(base), 1)
+  let factor = (byProtein * 2 + byCarbs + byKcal) / 4
+  if (!Number.isFinite(factor) || factor <= 0) factor = 1
+  return Math.min(2.4, Math.max(0.45, factor))
+}
+
+export function factorsForDay(day, goal) {
+  const next = {}
+  mealsOf(day).forEach(([slot, meal]) => {
+    next[slot] = scaleForSlot(meal, slotGoal(goal, slot))
+  })
+  return next
 }
 
 export function formatG(n) {
@@ -78,8 +115,9 @@ export function formatMacro(n) {
 export function groceryFromWeek(days, factorByDay) {
   const map = new Map()
   days.forEach((day) => {
-    const factor = factorByDay[day.id] || 1
-    mealsOf(day).forEach((meal) => {
+    const factors = factorByDay[day.id] || {}
+    mealsOf(day).forEach(([slot, meal]) => {
+      const factor = factors[slot] || 1
       meal.foods.forEach((food) => {
         if (food.leftover || food.pantry) return
         const key = `${food.aisle}:${food.name}`
