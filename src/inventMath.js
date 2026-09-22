@@ -54,23 +54,14 @@ export function lineFrom(item, grams) {
   }
 }
 
-export function previewGrams(lines, item, target) {
+export function previewGrams(lines, item) {
   const src = srcOf(item)
-  if (!src || src.kind === 'free') return src?.base || 80
-  const already = (lines || []).some((l) => l.kind === src.kind)
-  if (!already) return src.base
-  return gramsToHit(src, leftoverOf(lines, target)[src.kind])
+  return src?.base || 80
 }
 
-export function addFood(lines, item, target) {
+export function addFood(lines, item) {
   const src = srcOf(item)
-  const grams = previewGrams(lines, src, target)
-  if (src.kind !== 'free' && grams < 2) return lines
-  return [...lines, lineFrom(src, grams)]
-}
-
-export function addServing(lines, item, target) {
-  return addFood(lines, item, target)
+  return [...(lines || []), lineFrom(src, src.base)]
 }
 
 export function bumpLine(lines, index, dir) {
@@ -85,7 +76,9 @@ export function fillRest(lines, index, target) {
   const line = lines[index]
   if (!line || line.kind === 'free') return lines
   const others = leftoverOf(lines.filter((_, i) => i !== index), target)
-  return lines.map((row, i) => (i === index ? lineFrom(row, gramsToHit(row, others[row.kind])) : row))
+  const grams = gramsToHit(line, others[line.kind])
+  if (grams < 2) return lines
+  return lines.map((row, i) => (i === index ? lineFrom(row, grams) : row))
 }
 
 export function targetFor(goal, slotId) {

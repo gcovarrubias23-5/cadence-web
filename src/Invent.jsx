@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
-import { addFood, bumpLine, fillRest, houseFor, leftoverOf, previewGrams, targetFor } from './inventMath.js'
+import { addFood, bumpLine, fillRest, houseFor, leftoverOf, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
@@ -26,7 +26,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
     carbs: target.carbs - left.carbs,
     fat: target.fat - left.fat,
   }
-  const hasKind = lines.some((l) => l.kind === kind)
+  const picked = new Set(lines.map((l) => l.name))
 
   function save() {
     if (!name.trim() || lines.length === 0) return
@@ -49,11 +49,10 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
         <p className="note" style={{ marginTop: 0 }}>
           This {slotMeta.label.toLowerCase()} wants {Math.round(target.protein)}P · {Math.round(target.carbs)}C · {Math.round(target.fat)}F.
-          First food is one serving. Next food of that type finishes what is left.
+          Tap to add a serving. Grey means it is already on the plate.
         </p>
 
         <div className="card" style={{ marginBottom: 12 }}>
-          <div className="goal-title">Left on this {slotMeta.label.toLowerCase()}</div>
           <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
           <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
@@ -73,13 +72,13 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         {TYPES.map((t) => (
           <button key={t.id} type="button" className={kind === t.id ? 'option on' : 'option'} onClick={() => setKind(t.id)}>
             <strong>{t.label}</strong>
-            <span>{t.id !== 'free' && left[t.id] > 0.5 ? `${Math.round(left[t.id])}g left on this plate` : t.id !== 'free' ? 'filled' : t.line}</span>
+            <span>{t.id !== 'free' && left[t.id] > 0.5 ? `${Math.round(left[t.id])}g left` : t.id !== 'free' ? 'filled' : t.line}</span>
           </button>
         ))}
 
-        <div className="card" style={{ margin: '12px 0' }}>
+        <div className="card" style={{ margin: '12px 0', position: 'sticky', top: 0, zIndex: 5, boxShadow: '0 8px 16px rgba(26,23,20,0.08)' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>The line under a food is exactly what will land here.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Nothing yet. This box stays with you as you scroll.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
@@ -100,16 +99,19 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           ))}
         </div>
 
-        <p className="note" style={{ marginBottom: 4 }}>
-          {hasKind && kind !== 'free' ? 'Next one finishes what is left' : 'Add one serving'}
-        </p>
+        <p className="note" style={{ marginBottom: 4 }}>Add a serving</p>
         {hits.map((item) => {
-          const g = previewGrams(lines, item, target)
-          const label = houseFor(item, g)
+          const on = picked.has(item.name)
           return (
-            <button key={item.name} type="button" className="option" onClick={() => setLines((prev) => addFood(prev, item, target))}>
-              <strong>{item.name}</strong>
-              <span>{label}</span>
+            <button
+              key={item.name}
+              type="button"
+              className="option"
+              onClick={() => setLines((prev) => addFood(prev, item))}
+              style={on ? { background: '#e6e2da', borderColor: '#c9c2b6' } : undefined}
+            >
+              <strong>{item.name}{on ? ' · on the plate' : ''}</strong>
+              <span>{houseFor(item, item.base)}</span>
             </button>
           )
         })}
