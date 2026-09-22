@@ -1,0 +1,37 @@
+.shop-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.link-btn { display: inline-block; text-decoration: none; margin-top: 10px; }
+.shop-text {
+  white-space: pre-wrap;
+  font: 14px/1.45 var(--sans);
+  background: #f7f2e8;
+  border-radius: 12px;
+  padding: 12px;
+  overflow: auto;
+  max-height: 320px;
+}
+.steps { margin: 8px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.45; }
+.steps li { margin: 4px 0; }
+.food-sub { color: var(--muted); font-weight: 400; }
+.foods strong { font-weight: 650; color: var(--ink); }
+.checkin-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+@media (min-width: 640px) {
+  .checkin-row { grid-template-columns: 1fr 1fr 1fr; }
+}
+.checkin {
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+.checkin strong { display: block; font-size: 16px; margin-bottom: 4px; }
+.checkin span { color: var(--muted); font-size: 13px; line-height: 1.35; }
+.checkin.on { border-color: var(--accent); background: var(--accent-soft); }
