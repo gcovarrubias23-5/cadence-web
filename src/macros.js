@@ -16,13 +16,13 @@ export function goalFromMarks(t) {
       carbs: Number(t.carbs) || 0,
       fat: Number(t.fat) || 0,
     }),
-    mealsPerDay: Number(t.mealsPerDay) || 3,
+    mealsPerDay: Number(t.mealsPerDay) || 5,
     weekMark: t.weekMark || 5,
   }
 }
 
 export function eatenFoods(foods) {
-  return foods.filter((f) => !f.prep)
+  return (foods || []).filter((f) => !f.prep)
 }
 
 export function sumFoods(foods) {
@@ -48,7 +48,7 @@ export function scaleFood(food, factor) {
 }
 
 export function mealsOf(day) {
-  return [day.breakfast, day.lunch, day.dinner, ...(day.snacks || [])]
+  return [day.breakfast, day.snack1, day.lunch, day.snack2, day.dinner].filter(Boolean)
 }
 
 export function dayTotals(day) {

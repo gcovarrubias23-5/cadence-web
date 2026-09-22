@@ -2,9 +2,9 @@ export const PULSE_STEP = 0.05
 
 export const DEFAULT_MARKS = {
   weekMark: 5,
-  mealsPerDay: 3,
-  protein: 165,
-  carbs: 195,
+  mealsPerDay: 5,
+  protein: 120,
+  carbs: 150,
   fat: 60,
 }
 
