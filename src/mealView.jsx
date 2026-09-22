@@ -25,7 +25,7 @@ export function Meal({ label, meal, factor }) {
         <div className="meal-note">
           {formatMacro(plateTotals.protein)} protein · {formatMacro(plateTotals.carbs)} carbs · {formatMacro(plateTotals.fat)} fat
         </div>
-        {meal.steps?.length > 0 && (
+        {!kitchen && meal.steps?.length > 0 && (
           <ol className="steps">
             {meal.steps.map((step) => (
               <li key={step}>{step}</li>
@@ -35,7 +35,13 @@ export function Meal({ label, meal, factor }) {
         {kitchen && (
           <div className="card" style={{ margin: '10px 0', padding: 12 }}>
             <div className="goal-title">Kitchen notes</div>
-            <p className="note" style={{ marginTop: 6 }}>Heat, timing, and doneness for this plate. Paid when we launch.</p>
+            <p style={{ margin: '8px 0' }}>{kitchen.preview}</p>
+            <ol className="steps">
+              {kitchen.locked.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+            <p className="note">Test view. We hide this behind the upgrade next.</p>
           </div>
         )}
         <ul className="foods">
