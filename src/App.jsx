@@ -60,8 +60,8 @@ function loadJson(key, fallback) {
 
 export default function App() {
   const [tab, setTab] = useState('week')
-  const [openDay, setOpenDay] = useState('mon')
-  const [openSlot, setOpenSlot] = useState('breakfast')
+  const [openDay, setOpenDay] = useState('')
+  const [openSlot, setOpenSlot] = useState('')
   const [checked, setChecked] = useState({})
   const [copied, setCopied] = useState('')
   const [lastMove, setLastMove] = useState('')
@@ -82,9 +82,8 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
   useEffect(() => { localStorage.setItem('cadence.water', JSON.stringify(water)) }, [water])
   useEffect(() => {
-    if (tab !== 'week' || !openDay) return
-    const id = openSlot ? `${openDay}-${openSlot}` : openDay
-    const t = setTimeout(() => scrollAnchorToTop(id), 40)
+    if (tab !== 'week' || !openDay || !openSlot) return
+    const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
     return () => clearTimeout(t)
   }, [tab, openDay, openSlot])
 
@@ -179,7 +178,7 @@ export default function App() {
             const drinks = glassesFor(water, d.id)
             return (
               <article className="card day" key={d.id} data-anchor={d.id}>
-                <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('breakfast') }}>
+                <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('') }}>
                   <span>
                     <span className="day-name">{d.day}</span>
                     <span className="macro-line">
