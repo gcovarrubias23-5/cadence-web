@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { DAYS, WEEK_LABEL } from './weekPlan.js'
+import {
+  DEFAULT_WEEK,
+  WEEK_LABEL,
+  mealOf,
+  optionsFor,
+} from './catalog.js'
 import {
   DEFAULT_MARKS,
   dayTotals,
@@ -16,10 +21,20 @@ import { Meal } from './mealView.jsx'
 
 const TABS = [
   { id: 'week', label: 'Kitchen' },
+  { id: 'build', label: 'Build' },
   { id: 'grocery', label: 'List' },
   { id: 'shop', label: 'Shop' },
   { id: 'plus', label: 'Plus' },
 ]
+
+function hydrate(picks) {
+  return picks.map((row) => ({
+    ...row,
+    breakfast: mealOf(row.breakfast),
+    lunch: mealOf(row.lunch),
+    dinner: mealOf(row.dinner),
+  }))
+}
 
 export default function App() {
   const [tab, setTab] = useState('week')
@@ -27,6 +42,15 @@ export default function App() {
   const [checked, setChecked] = useState({})
   const [copied, setCopied] = useState('')
   const [lastMove, setLastMove] = useState('')
+  const [picking, setPicking] = useState(null)
+  const [picks, setPicks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cadence.week')
+      return saved ? JSON.parse(saved) : DEFAULT_WEEK
+    } catch {
+      return DEFAULT_WEEK
+    }
+  })
   const [marks, setMarks] = useState(() => {
     try {
       const saved = localStorage.getItem('cadence.marks')
@@ -39,7 +63,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('cadence.marks', JSON.stringify(marks))
   }, [marks])
+  useEffect(() => {
+    localStorage.setItem('cadence.week', JSON.stringify(picks))
+  }, [picks])
 
+  const DAYS = useMemo(() => hydrate(picks), [picks])
   const goal = useMemo(() => goalFromMarks(marks), [marks])
   const factors = useMemo(() => {
     const next = {}
@@ -47,8 +75,8 @@ export default function App() {
       next[day.id] = scaleForGoal(day, goal)
     })
     return next
-  }, [goal])
-  const grocery = useMemo(() => groceryFromWeek(DAYS, factors), [factors])
+  }, [goal, DAYS])
+  const grocery = useMemo(() => groceryFromWeek(DAYS, factors), [DAYS, factors])
   const shopText = useMemo(() => buildShopText(grocery, goal), [grocery, goal])
   const totalItems = grocery.reduce((n, s) => n + s.items.length, 0)
   const remaining = useMemo(() => {
@@ -64,10 +92,17 @@ export default function App() {
   function patch(field, value) {
     setMarks((prev) => ({ ...prev, [field]: value }))
   }
-
   function pulse(move) {
     setMarks((prev) => applyPulse(prev, move))
     setLastMove(move)
+  }
+  function choose(dayId, slot, mealId) {
+    setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
+    setPicking(null)
+  }
+  function resetWeek() {
+    setPicks(DEFAULT_WEEK)
+    setPicking(null)
   }
 
   async function copyList() {
@@ -79,7 +114,6 @@ export default function App() {
     }
     setTimeout(() => setCopied(''), 2000)
   }
-
   async function shareList() {
     if (navigator.share) {
       try {
@@ -105,6 +139,7 @@ export default function App() {
           ))}
         </nav>
       </header>
+
       <section className="card goal">
         <div className="goal-title">{PULSE_COPY.prompt}</div>
         <p className="note" style={{ marginTop: 0 }}>{PULSE_COPY.hint}</p>
@@ -123,16 +158,18 @@ export default function App() {
           </div>
         </div>
       </section>
+
       {tab === 'week' && (
         <>
           <section className="hero">
             <h1>Dinner is handled.</h1>
-            <p>Same easy breakfasts. Lunch is last night. Cook once, eat twice.</p>
+            <p>Tap a meal to swap it. The list updates. Cook once, eat twice when you can.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
             const factor = factors[d.id]
             const totals = scaledDayTotals(d, factor)
+            const pickRow = picks.find((p) => p.id === d.id)
             return (
               <article className="card day" key={d.id}>
                 <button className="day-head" onClick={() => setOpenDay(open ? '' : d.id)}>
@@ -143,9 +180,9 @@ export default function App() {
                 </button>
                 {open && (
                   <div className="meals">
-                    <Meal label="Breakfast" meal={d.breakfast} factor={factor} />
-                    <Meal label="Lunch" meal={d.lunch} factor={factor} />
-                    <Meal label="Dinner" meal={d.dinner} factor={factor} />
+                    <MealSlot label="Breakfast" meal={d.breakfast} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'breakfast', current: pickRow.breakfast })} />
+                    <MealSlot label="Lunch" meal={d.lunch} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'lunch', current: pickRow.lunch })} />
+                    <MealSlot label="Dinner" meal={d.dinner} factor={factor} onChange={() => setPicking({ dayId: d.id, slot: 'dinner', current: pickRow.dinner })} />
                   </div>
                 )}
               </article>
@@ -153,11 +190,37 @@ export default function App() {
           })}
         </>
       )}
+
+      {tab === 'build' && (
+        <>
+          <section className="hero">
+            <h1>Build the week.</h1>
+            <p>Tap any meal to swap it. Start over if you want the original week back.</p>
+            <button className="btn" type="button" onClick={resetWeek}>Use the starter week</button>
+          </section>
+          {picks.map((row) => (
+            <article className="card" key={row.id}>
+              <h3 className="day-name">{row.day}</h3>
+              {['breakfast', 'lunch', 'dinner'].map((slot) => {
+                const meal = mealOf(row[slot])
+                return (
+                  <button key={slot} className="pick-row" type="button" onClick={() => setPicking({ dayId: row.id, slot, current: row[slot] })}>
+                    <span className="meal-label">{slot}</span>
+                    <span>{meal.name}</span>
+                    <span className="qty">Change</span>
+                  </button>
+                )
+              })}
+            </article>
+          ))}
+        </>
+      )}
+
       {tab === 'grocery' && (
         <>
           <section className="hero">
             <h1>Here is what to buy.</h1>
-            <p>If it says leftover, you already bought it. {remaining} of {totalItems} still unchecked.</p>
+            <p>This list matches the week you built. {remaining} of {totalItems} still unchecked.</p>
             <button className="btn" type="button" onClick={() => setTab('shop')}>Take this shopping</button>
           </section>
           {grocery.map((section) => (
@@ -181,6 +244,7 @@ export default function App() {
           ))}
         </>
       )}
+
       {tab === 'shop' && (
         <>
           <section className="hero">
@@ -205,17 +269,18 @@ export default function App() {
           ))}
         </>
       )}
+
       {tab === 'plus' && (
         <>
           <section className="hero">
             <h1>Want next week written for you?</h1>
-            <p>After you say how this week felt, Plus builds the next seven days.</p>
+            <p>After you say how this week felt, Plus can draft the next seven days. You can still swap meals.</p>
           </section>
           <div className="price-grid">
             <article className="card price">
               <p className="plan-kicker">Free</p>
               <h3>$0</h3>
-              <ul className="features"><li>This week of food</li><li>The Sunday question</li></ul>
+              <ul className="features"><li>This week of food</li><li>Swap any meal</li><li>The Sunday question</li></ul>
             </article>
             <article className="card price featured">
               <p className="plan-kicker">Plus</p>
@@ -224,13 +289,43 @@ export default function App() {
               <ul className="features">
                 <li>A new week when you answer</li>
                 <li>Photos so you know what dinner looks like</li>
-                <li>Swap a meal without losing your protein</li>
+                <li>More swaps that keep protein honest</li>
               </ul>
               <button className="btn" type="button" onClick={() => alert('Payments are not live. Nothing will be charged.')}>Plus is not live yet</button>
             </article>
           </div>
         </>
       )}
+
+      {picking && (
+        <div className="sheet" onClick={() => setPicking(null)}>
+          <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
+            <p className="plan-kicker">Change {picking.slot}</p>
+            <h2>What do you want instead?</h2>
+            {optionsFor(picking.slot).map((meal) => (
+              <button
+                key={meal.id}
+                className={meal.id === picking.current ? 'option on' : 'option'}
+                type="button"
+                onClick={() => choose(picking.dayId, picking.slot, meal.id)}
+              >
+                <strong>{meal.name}</strong>
+                <span>{meal.time}</span>
+              </button>
+            ))}
+            <button className="btn btn-ghost" type="button" onClick={() => setPicking(null)}>Never mind</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function MealSlot({ label, meal, factor, onChange }) {
+  return (
+    <div>
+      <Meal label={label} meal={meal} factor={factor} />
+      <button className="change" type="button" onClick={onChange}>Change {label.toLowerCase()}</button>
     </div>
   )
 }
