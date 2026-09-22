@@ -1,18 +1,6 @@
 import { portionFromPantry } from './pantry.js'
 import { slotGoal } from './macros.js'
 
-function scaleLine(line, factor) {
-  const grams = line.grams * factor
-  return {
-    ...line,
-    grams,
-    protein: line.protein * factor,
-    carbs: line.carbs * factor,
-    fat: line.fat * factor,
-    house: houseFor(line, grams),
-  }
-}
-
 export function houseFor(item, grams) {
   const g = Math.max(1, Number(grams) || item.base || 100)
   const base = item.base || 100
@@ -50,25 +38,41 @@ export function gramsToHit(item, leftover) {
   return (need / per100) * 100
 }
 
-export function fitLinesToSlot(lines, target) {
-  let next = lines.map((line) => ({ ...line }))
-  ;['protein', 'carbs', 'fat'].forEach((key) => {
-    const has = next.some((line) => line.kind === key)
-    if (!has) return
-    const sum = next.reduce((n, line) => (line.kind === key ? n + line[key] : n), 0)
-    const factor = target[key] / Math.max(sum, 0.05)
-    next = next.map((line) => (line.kind === key ? scaleLine(line, factor) : line))
-  })
-  return next
+export function lineFrom(item, grams) {
+  const g = Number(grams) || item.base
+  return {
+    ...portionFromPantry(item, g),
+    kind: item.kind,
+    house: houseFor(item, g),
+    base: item.base,
+  }
 }
 
-export function addFitted(lines, item, target) {
-  const left = leftoverOf(lines, target)
-  const grams = item.kind === 'free' ? item.base : gramsToHit(item, left[item.kind] || 0)
-  const line = { ...portionFromPantry(item, grams), kind: item.kind, house: houseFor(item, grams) }
-  return fitLinesToSlot([...lines, line], target)
+export function addServing(lines, item) {
+  return [...lines, lineFrom(item, item.base)]
+}
+
+export function bumpLine(lines, index, dir) {
+  return lines.map((line, i) => {
+    if (i !== index || line.kind === 'free') return line
+    const step = (line.base || 50) / 2
+    const grams = Math.max(step, line.grams + dir * step)
+    return lineFrom(line, grams)
+  })
+}
+
+export function fillRest(lines, index, target) {
+  const line = lines[index]
+  if (!line || line.kind === 'free') return lines
+  const others = leftoverOf(lines.filter((_, i) => i !== index), target)
+  const grams = gramsToHit(line, others[line.kind])
+  return lines.map((row, i) => (i === index ? lineFrom(row, grams) : row))
 }
 
 export function targetFor(goal, slotId) {
   return slotGoal(goal, slotId)
+}
+
+export function fitLinesToSlot(lines, target) {
+  return lines
 }
