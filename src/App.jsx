@@ -59,6 +59,7 @@ function loadJson(key, fallback) {
 export default function App() {
   const [tab, setTab] = useState('week')
   const [openDay, setOpenDay] = useState('mon')
+  const [openSlot, setOpenSlot] = useState('breakfast')
   const [checked, setChecked] = useState({})
   const [copied, setCopied] = useState('')
   const [lastMove, setLastMove] = useState('')
@@ -158,7 +159,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Mark a plate when you eat it. Tap a glass when you drink one.</p>
+            <p>Open a day. Tick the box when you eat. Tap the name to see the plate.</p>
           </section>
           {DAYS.map((d) => {
             const open = openDay === d.id
@@ -169,7 +170,7 @@ export default function App() {
             const drinks = glassesFor(water, d.id)
             return (
               <article className="card day" key={d.id}>
-                <button className="day-head" onClick={() => setOpenDay(open ? '' : d.id)}>
+                <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('breakfast') }}>
                   <span>
                     <span className="day-name">{d.day}</span>
                     <span className="macro-line">
@@ -182,17 +183,30 @@ export default function App() {
                   <div className="plan-list">
                     {SLOTS.map((slot) => {
                       const done = slotDone(eaten, d.id, slot.id)
+                      const show = openSlot === slot.id
+                      const meal = d[slot.id]
                       return (
-                        <div className="plan-slot" key={slot.id}>
-                          <div className="slot-head">
-                            <Meal label={slot.label} meal={d[slot.id]} factor={slotFactors[slot.id] || 1} />
-                            <button className={done ? 'eat on' : 'eat'} type="button" onClick={() => setEaten((prev) => toggleEaten(prev, d.id, slot.id))}>
-                              {done ? 'Ate it' : 'Mark eaten'}
+                        <div className="slot-row" key={slot.id}>
+                          <div className="slot-row-main">
+                            <input
+                              className="slot-check"
+                              type="checkbox"
+                              checked={done}
+                              onChange={() => setEaten((prev) => toggleEaten(prev, d.id, slot.id))}
+                            />
+                            <button className="slot-toggle" type="button" onClick={() => setOpenSlot(show ? '' : slot.id)}>
+                              <strong>{slot.label}</strong>
+                              <span>{meal?.name || 'Choose a plate'}</span>
                             </button>
                           </div>
-                          <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
-                            Change
-                          </button>
+                          {show && (
+                            <div className="slot-body">
+                              <Meal label={slot.label} meal={meal} factor={slotFactors[slot.id] || 1} />
+                              <button className="change" type="button" onClick={() => setPicking({ dayId: d.id, slot: slot.id, current: pickRow[slot.id] })}>
+                                Change
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )
                     })}
@@ -205,7 +219,6 @@ export default function App() {
                             type="button"
                             className={i < drinks ? 'glass on' : 'glass'}
                             onClick={() => setWater((prev) => (i < drinks ? removeGlass(prev, d.id) : addGlass(prev, d.id)))}
-                            aria-label={i < drinks ? 'Remove a glass' : 'Add a glass'}
                           />
                         ))}
                       </div>
@@ -247,8 +260,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Here is what to buy.</h1>
-            <p>This list matches the week you built. {remaining} of {totalItems} still unchecked.</p>
-            <button className="btn" type="button" onClick={() => setTab('shop')}>Take this shopping</button>
+            <p>{remaining} of {totalItems} still unchecked.</p>
           </section>
           {grocery.map((section) => (
             <div className="card aisle" key={section.name}>
@@ -276,11 +288,10 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Go shop like you usually do.</h1>
-            <p>Copy the list, then finish in Instacart or at the store.</p>
           </section>
           <div className="card">
             <div className="shop-actions">
-              <button className="btn" type="button" onClick={copyList}>{copied === 'copied' ? 'Copied' : copied === 'failed' ? 'That did not copy' : 'Copy the list'}</button>
+              <button className="btn" type="button" onClick={copyList}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
               <button className="btn btn-ghost" type="button" onClick={shareList}>Text it to myself</button>
             </div>
             <pre className="shop-text">{shopText}</pre>
