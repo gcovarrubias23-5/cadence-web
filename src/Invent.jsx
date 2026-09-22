@@ -147,7 +147,7 @@ function Meter({ label, need, have, left, padTop }) {
     <div style={{ margin: padTop ? '28px 0 6px' : '6px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
         <strong>{label}</strong>
-        <span className="qty">{done ? 'Filled' : `${Math.round(left)}g left`}</span>
+        <span className="qty">{Math.round(have)} / {Math.round(need)}g</span>
       </div>
       <div className="meter-track">
         <div style={{ width: `${pct}%`, height: '100%', background: done ? 'var(--accent)' : '#c4a35a' }} />
