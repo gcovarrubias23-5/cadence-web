@@ -35,14 +35,40 @@
 .slot-body {
   padding: 4px 0 8px 32px;
 }
-.eat {
-  display: none;
-}
 .day-meta {
   display: block;
   color: var(--muted);
   font-size: 12px;
   margin-top: 2px;
+}
+.bars {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  width: min(320px, 100%);
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 44px;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+.bar-track {
+  height: 8px;
+  background: #ece7df;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+  width: 0;
+}
+.bar-fill.water {
+  background: #3d6b8a;
 }
 .water {
   margin-top: 12px;
@@ -62,11 +88,11 @@
   width: 28px;
   height: 28px;
   border-radius: 999px;
-  border: 1px solid var(--accent);
+  border: 1px solid #3d6b8a;
   background: transparent;
   cursor: pointer;
   padding: 0;
 }
 .glass.on {
-  background: var(--accent);
+  background: #3d6b8a;
 }
