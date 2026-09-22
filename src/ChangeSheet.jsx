@@ -9,8 +9,8 @@ export function ChangeSheet({ picking, custom, onChoose, onInvent, onClose }) {
   function Block({ title, meals }) {
     if (!meals.length) return null
     return (
-      <div style={{ margin: '12px 0 8px' }}>
-        <p className="plan-kicker" style={{ marginBottom: 8 }}>{title}</p>
+      <div style={{ margin: '16px 0 8px' }}>
+        <div className="goal-title" style={{ marginBottom: 10 }}>{title}</div>
         {meals.map((meal) => (
           <button
             key={meal.id}
@@ -28,9 +28,9 @@ export function ChangeSheet({ picking, custom, onChoose, onInvent, onClose }) {
 
   return (
     <div className="sheet" onClick={onClose}>
-      <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
-        <p className="plan-kicker">Change this slot</p>
-        <h2>What do you want instead?</h2>
+      <div className="sheet-card" onClick={(e) => e.stopPropagation()} style={{ paddingTop: 36 }}>
+        <h2 style={{ margin: '8px 0 6px' }}>Change this slot</h2>
+        <p className="note" style={{ marginTop: 0 }}>What do you want instead?</p>
         <Block title="Your plates" meals={yours} />
         <Block title="New from Cadence" meals={neu} />
         <Block title="Built by Cadence" meals={rest} />
