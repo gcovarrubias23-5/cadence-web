@@ -13,7 +13,6 @@ export function Meal({ label, meal, factor }) {
   const plated = meal.foods.map((food) => scaleFood(food, factor))
   const plateTotals = sumFoods(plated)
   const kitchen = kitchenFor(meal)
-  const story = kitchen ? [kitchen.preview, ...(kitchen.locked || [])].join(' ') : ''
 
   return (
     <div className="meal-row">
@@ -43,7 +42,12 @@ export function Meal({ label, meal, factor }) {
         {kitchen && (
           <div className="card" style={{ margin: '12px 0', padding: 12 }}>
             <div className="goal-title">How to cook it</div>
-            <p style={{ margin: '8px 0 6px' }}>{story}</p>
+            <p className="note" style={{ marginTop: 6 }}>{kitchen.preview}</p>
+            <ol className="steps">
+              {kitchen.locked.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
             <p className="note">Test view. We hide this behind the upgrade next.</p>
           </div>
         )}
