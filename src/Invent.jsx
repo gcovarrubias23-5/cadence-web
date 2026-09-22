@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
-import { addFitted, fitLinesToSlot, targetFor } from './inventMath.js'
+import { addFitted, fitLinesToSlot, gramsToHit, houseFor, leftoverOf, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
 
 const TYPES = [
   { id: 'protein', label: 'Protein', line: 'Chicken, eggs, yogurt, fish' },
-  { id: 'carbs', label: 'Carbs', line: 'Rice, fruit, bread, oats' },
+  { id: 'carbs', label: 'Carbs', line: 'Rice, fruit, cooked veg, oats' },
   { id: 'fat', label: 'Fat', line: 'Oil, avocado, cheese, butter' },
   { id: 'free', label: 'Free', line: 'Raw veg. No tomato, carrot, or pepper.' },
 ]
@@ -19,23 +19,11 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
   const [lines, setLines] = useState([])
   const hits = foodsOf(kind)
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
-
-  const filled = lines.reduce(
-    (acc, f) => {
-      if (f.kind === 'free') return acc
-      return {
-        protein: acc.protein + (f.kind === 'protein' ? f.protein : 0),
-        carbs: acc.carbs + (f.kind === 'carbs' ? f.carbs : 0),
-        fat: acc.fat + (f.kind === 'fat' ? f.fat : 0),
-      }
-    },
-    { protein: 0, carbs: 0, fat: 0 },
-  )
-
-  const left = {
-    protein: Math.max(0, target.protein - filled.protein),
-    carbs: Math.max(0, target.carbs - filled.carbs),
-    fat: Math.max(0, target.fat - filled.fat),
+  const left = leftoverOf(lines, target)
+  const filled = {
+    protein: target.protein - left.protein,
+    carbs: target.carbs - left.carbs,
+    fat: target.fat - left.fat,
   }
 
   function addItem(item) {
@@ -60,7 +48,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
       slot: SNACK_IDS.includes(slot) ? 'snack' : slot,
       custom: true,
       locked: true,
-      steps: lines.map((f) => `${f.house || f.name} · ${Math.round(f.grams)} g`),
+      steps: lines.map((f) => f.house || `${Math.round(f.grams)} g ${f.name}`),
       foods: lines,
     }, slot)
   }
@@ -76,7 +64,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
           <Meter label="Protein" need={target.protein} have={filled.protein} left={left.protein} />
           <Meter label="Carbs" need={target.carbs} have={filled.carbs} left={left.carbs} />
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
-          <p className="note">Free veg does not subtract from this.</p>
+          <p className="note">Free raw veg does not subtract from this.</p>
         </div>
 
         <label className="goal-field">
@@ -100,25 +88,30 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <div className="card" style={{ margin: '12px 0' }}>
           <div className="goal-title">On this plate</div>
-          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Nothing yet. Tap a type, then a food.</p>}
+          {lines.length === 0 && <p className="note" style={{ marginTop: 0 }}>Tap a food. We set the amount to fill what is left.</p>}
           {lines.map((line, i) => (
             <div key={`${line.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8, alignItems: 'center', borderTop: '1px solid var(--line)', padding: '8px 0' }}>
               <div>
                 <strong>{line.name}</strong>
-                <div className="qty">{Math.round(line.grams)} g · {line.kind === 'free' ? 'free' : line.kind}</div>
+                <div className="qty">{line.house}</div>
               </div>
               <button className="change" type="button" style={{ margin: 0 }} onClick={() => remove(i)}>Remove</button>
             </div>
           ))}
         </div>
 
-        <p className="note" style={{ marginBottom: 4 }}>{TYPES.find((t) => t.id === kind).label} foods</p>
-        {hits.map((item) => (
-          <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
-            <strong>{item.name}</strong>
-            <span>{item.house}</span>
-          </button>
-        ))}
+        <p className="note" style={{ marginBottom: 4 }}>
+          {TYPES.find((t) => t.id === kind).label} foods · tap one and we portion it
+        </p>
+        {hits.map((item) => {
+          const g = item.kind === 'free' ? item.base : gramsToHit(item, left[item.kind] || 0)
+          return (
+            <button key={item.name} type="button" className="option" onClick={() => addItem(item)}>
+              <strong>{item.name}</strong>
+              <span>Use {houseFor(item, g)}</span>
+            </button>
+          )
+        })}
 
         <button className="btn" type="button" onClick={save} disabled={!name.trim() || !lines.length}>Save this plate</button>
         <button className="btn btn-ghost" type="button" onClick={onClose}>Never mind</button>
