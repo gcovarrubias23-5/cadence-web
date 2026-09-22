@@ -9,6 +9,7 @@ const TYPES = [
   { id: 'protein', label: 'Protein', line: 'Chicken, eggs, yogurt, fish' },
   { id: 'carbs', label: 'Carbs', line: 'Rice, fruit, bread, oats' },
   { id: 'fat', label: 'Fat', line: 'Oil, avocado, cheese, butter' },
+  { id: 'free', label: 'Free', line: 'Raw veg. No tomato, carrot, or pepper.' },
 ]
 
 export function Invent({ onSave, onClose }) {
