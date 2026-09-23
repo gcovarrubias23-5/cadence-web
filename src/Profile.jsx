@@ -18,6 +18,7 @@ export function Profile({ profile, onSave, onCheckin }) {
   const math = useMemo(() => {
     try { return buildTargets(form) } catch { return null }
   }, [form])
+  const skips = form.avoid || []
 
   function patch(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -81,12 +82,19 @@ export function Profile({ profile, onSave, onCheckin }) {
 
       <section className="card">
         <div className="goal-title">Skip these plates</div>
-        <p className="note" style={{ marginTop: 0 }}>We hide recipes that use the food. Read labels yourself. Cadence is not an allergy service.</p>
-        {AVOIDS.map((a) => (
-          <button key={a.id} type="button" className={(form.avoid || []).includes(a.id) ? 'option on' : 'option'} onClick={() => toggleAvoid(a.id)}>
-            <strong>{a.label}</strong><span>{a.line}</span>
-          </button>
-        ))}
+        <p className="note" style={{ marginTop: 0 }}>Green means we hide it. Tap it again to allow it. Then save.</p>
+        {skips.length > 0 && (
+          <button className="change" type="button" onClick={() => patch('avoid', [])}>Clear all skips</button>
+        )}
+        {AVOIDS.map((a) => {
+          const on = skips.includes(a.id)
+          return (
+            <button key={a.id} type="button" className={on ? 'option on' : 'option'} onClick={() => toggleAvoid(a.id)}>
+              <strong>{a.label}{on ? ' · on' : ''}</strong>
+              <span>{on ? 'Tap to allow this food again' : a.line}</span>
+            </button>
+          )
+        })}
       </section>
 
       {math && (
@@ -96,7 +104,7 @@ export function Profile({ profile, onSave, onCheckin }) {
         </section>
       )}
 
-      <button className="btn" type="button" disabled={!math} onClick={() => onSave(form, math)}>Save profile</button>
+      <button className="btn" type="button" disabled={!math} onClick={() => onSave({ ...form, avoid: form.avoid || [] }, math)}>Save profile</button>
     </>
   )
 }
