@@ -16,8 +16,9 @@ export function shopQty(item) {
   const key = name.toLowerCase()
   const src = pantryOf(name)
 
+  if (key.includes('pineapple') || key.includes('mango') || key.includes('watermelon')) return g > 350 ? '2 packs' : '1 pack'
   if (key.includes('banana')) return `${ceil(g / 118)} banana`
-  if (key.includes('apple')) return `${ceil(g / 150)} apple`
+  if (key === 'apple' || key.startsWith('apple ') || key.endsWith(' apple')) return `${ceil(g / 150)} apple`
   if (key.includes('orange')) return `${ceil(g / 130)} orange`
   if (key.includes('avocado')) return `${ceil(g / 150)} avocado`
   if (key.includes('peach')) return `${ceil(g / 150)} peach`
@@ -25,7 +26,7 @@ export function shopQty(item) {
   if (key.includes('lemon')) return `${ceil(g / 60)} lemon`
   if (key.includes('lime')) return `${ceil(g / 40)} lime`
   if (key.includes('grape')) return g > 250 ? '1 bag grapes' : '1 bunch grapes'
-  if (key.includes('berr') || key.includes('mango') || key.includes('pineapple') || key.includes('watermelon')) return g > 350 ? '2 packs' : '1 pack'
+  if (key.includes('berr')) return g > 350 ? '2 packs' : '1 pack'
   if (key.includes('date')) return `${ceil(g / 24)} dates`
 
   if (key.includes('egg white')) return '1 carton egg whites'
