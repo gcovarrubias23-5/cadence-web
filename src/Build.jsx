@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { SLOTS, mealOf } from './plan.js'
 
-export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot, onInvent }) {
+export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot, onInvent, onEdit, onDelete }) {
   const [open, setOpen] = useState(picks[0]?.id || 'mon')
   return (
     <>
       <section className="hero">
         <h1>Build your week.</h1>
-        <p>Open one day at a time. Invent a plate, or swap a slot.</p>
-        <button className="btn" type="button" onClick={onInvent}>Invent a plate</button>
+        <p>Open one day. Invent a plate, change a slot, or clean up your plates.</p>
+        <button className="btn" type="button" onClick={() => onInvent()}>Invent a plate</button>
         <button className="btn btn-ghost" type="button" onClick={onReset}>Use the starter week</button>
       </section>
 
@@ -16,7 +16,14 @@ export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeat
         <section className="card">
           <div className="goal-title">Your plates</div>
           {custom.map((meal) => (
-            <p key={meal.id} className="note" style={{ marginTop: 6 }}>{meal.name} · {meal.slot}</p>
+            <div key={meal.id} style={{ borderTop: '1px solid var(--line)', padding: '10px 0' }}>
+              <strong>{meal.name}</strong>
+              <div className="qty">{meal.slot || 'meal'}</div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
+                <button className="change" type="button" style={{ margin: 0 }} onClick={() => onEdit(meal)}>Edit</button>
+                <button className="change" type="button" style={{ margin: 0 }} onClick={() => onDelete(meal.id)}>Delete</button>
+              </div>
+            </div>
           ))}
         </section>
       )}
