@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
 
-export function Profile({ profile, onSave }) {
+export function Profile({ profile, onSave, onCheckin }) {
   const [form, setForm] = useState(() => ({
     units: profile.units || 'us',
     age: profile.age || '',
@@ -35,6 +35,10 @@ export function Profile({ profile, onSave }) {
         <h1>Your profile.</h1>
         <p>Change the math or what you do not want on a plate. Cadence hides the obvious mismatches. It does not certify a kitchen or treat an allergy.</p>
       </section>
+
+      {onCheckin && (
+        <button className="btn btn-ghost" type="button" onClick={onCheckin}>How did this week feel?</button>
+      )}
 
       <section className="card">
         <div className="goal-title">You</div>
