@@ -9,7 +9,6 @@ import {
   DEFAULT_MARKS,
   dayTotals,
   factorsForDay,
-  formatG,
   formatMacro,
   goalFromMarks,
   groceryFromWeek,
@@ -24,6 +23,7 @@ import { Start } from './Start.jsx'
 import { Build } from './Build.jsx'
 import { Invent } from './Invent.jsx'
 import { ChangeSheet } from './ChangeSheet.jsx'
+import { List } from './List.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -111,16 +111,6 @@ export default function App() {
   }, [goal, DAYS])
   const grocery = useMemo(() => groceryFromWeek(DAYS, factors), [DAYS, factors])
   const shopText = useMemo(() => buildShopText(grocery, goal), [grocery, goal])
-  const totalItems = grocery.reduce((n, s) => n + s.items.length, 0)
-  const remaining = useMemo(() => {
-    let left = 0
-    grocery.forEach((section) => {
-      section.items.forEach((item) => {
-        if (!checked[`${section.name}:${item.name}`]) left += 1
-      })
-    })
-    return left
-  }, [checked, grocery])
   const weekPlates = DAYS.reduce((n, d) => n + dayEatenCount(eaten, d.id, SLOTS), 0)
   const weekWater = DAYS.reduce((n, d) => n + glassesFor(water, d.id), 0)
   const plateGoal = DAYS.length * 6
@@ -174,16 +164,18 @@ export default function App() {
   }
   function sip(dayId) { setWater((prev) => addGlass(prev, dayId)) }
 
-  async function copyList() {
-    try { await navigator.clipboard.writeText(shopText); setCopied('copied') }
+  async function copyList(text) {
+    const body = typeof text === 'string' ? text : shopText
+    try { await navigator.clipboard.writeText(body); setCopied('copied') }
     catch { setCopied('failed') }
     setTimeout(() => setCopied(''), 2000)
   }
-  async function shareList() {
+  async function shareList(text) {
+    const body = typeof text === 'string' ? text : shopText
     if (navigator.share) {
-      try { await navigator.share({ title: 'Cadence list', text: shopText }); return } catch {}
+      try { await navigator.share({ title: 'Cadence list', text: body }); return } catch {}
     }
-    copyList()
+    copyList(body)
   }
 
   if (!profile?.done) {
@@ -310,31 +302,16 @@ export default function App() {
       )}
 
       {tab === 'grocery' && (
-        <>
-          <section className="hero">
-            <h1>Here is what to buy.</h1>
-            <p>{remaining} of {totalItems} still unchecked.</p>
-          </section>
-          {grocery.map((section) => (
-            <div className="card aisle" key={section.name}>
-              <h3>{section.name}</h3>
-              <ul>
-                {section.items.map((item) => {
-                  const key = `${section.name}:${item.name}`
-                  return (
-                    <li key={key}>
-                      <label>
-                        <input type="checkbox" checked={!!checked[key]} onChange={() => setChecked((prev) => ({ ...prev, [key]: !prev[key] }))} />
-                        <span className="item-name">{item.name}</span>
-                        <span className="qty">{formatG(item.grams)}</span>
-                      </label>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          ))}
-        </>
+        <List
+          days={DAYS}
+          factors={factors}
+          goal={goal}
+          checked={checked}
+          setChecked={setChecked}
+          copied={copied}
+          onCopy={copyList}
+          onShare={shareList}
+        />
       )}
 
       {tab === 'shop' && (
@@ -344,8 +321,8 @@ export default function App() {
           </section>
           <div className="card">
             <div className="shop-actions">
-              <button className="btn" type="button" onClick={copyList}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
-              <button className="btn btn-ghost" type="button" onClick={shareList}>Text it to myself</button>
+              <button className="btn" type="button" onClick={() => copyList(shopText)}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
+              <button className="btn btn-ghost" type="button" onClick={() => shareList(shopText)}>Text it to myself</button>
             </div>
             <pre className="shop-text">{shopText}</pre>
           </div>
