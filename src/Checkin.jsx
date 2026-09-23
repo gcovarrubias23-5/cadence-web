@@ -14,18 +14,9 @@ export function Checkin({
   waterGoal,
   due,
   daysLeft,
-  onYou,
 }) {
   const platePct = Math.round((platesAte / Math.max(plateGoal, 1)) * 100)
   const waterPct = Math.round((waterDrank / Math.max(waterGoal, 1)) * 100)
-  function goYou() {
-    if (onYou) {
-      onYou()
-      return
-    }
-    const btn = [...document.querySelectorAll('nav button')].find((b) => b.textContent.trim() === 'You')
-    btn?.click()
-  }
   return (
     <>
       <section className="hero">
@@ -73,14 +64,6 @@ export function Checkin({
           <p className="note" style={{ marginTop: 0 }}>
             The feeling question comes back when seven days have passed.
           </p>
-        </section>
-      )}
-
-      {lastMove && (
-        <section className="card">
-          <div className="goal-title">Did how you move or what you want change?</div>
-          <p className="note" style={{ marginTop: 0 }}>Only if life changed. Optional. Plate size already followed how the food sat.</p>
-          <button className="btn" type="button" onClick={goYou}>Update move or goal</button>
         </section>
       )}
 
