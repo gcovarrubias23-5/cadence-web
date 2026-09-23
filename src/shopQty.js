@@ -16,7 +16,8 @@ export function shopQty(item) {
   const key = name.toLowerCase()
   const src = pantryOf(name)
 
-  if (key.includes('pineapple') || key.includes('mango') || key.includes('watermelon')) return g > 350 ? '2 packs' : '1 pack'
+  if (key.includes('pineapple')) return '1 can pineapple'
+  if (key.includes('mango') || key.includes('watermelon')) return g > 350 ? '2 packs' : '1 bag'
   if (key.includes('banana')) return `${ceil(g / 118)} banana`
   if (key === 'apple' || key.startsWith('apple ') || key.endsWith(' apple')) return `${ceil(g / 150)} apple`
   if (key.includes('orange')) return `${ceil(g / 130)} orange`
