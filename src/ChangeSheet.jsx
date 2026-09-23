@@ -1,7 +1,7 @@
 import { optionsFor } from './plan.js'
 
-export function ChangeSheet({ picking, custom, onChoose, onInvent, onClose }) {
-  const all = optionsFor(picking.slot, custom)
+export function ChangeSheet({ picking, custom, avoid = [], onChoose, onInvent, onClose }) {
+  const all = optionsFor(picking.slot, custom, avoid)
   const yours = all.filter((m) => m.custom)
   const neu = all.filter((m) => m.fresh && !m.custom)
   const rest = all.filter((m) => !m.custom && !m.fresh)
@@ -31,6 +31,7 @@ export function ChangeSheet({ picking, custom, onChoose, onInvent, onClose }) {
       <div className="sheet-card" onClick={(e) => e.stopPropagation()} style={{ paddingTop: 36 }}>
         <h2 style={{ margin: '8px 0 6px' }}>Change this slot</h2>
         <p className="note" style={{ marginTop: 0 }}>What do you want instead?</p>
+        {!all.length && <p className="note">Nothing left for this slot with your skips. Loosen a skip in Profile or invent a plate.</p>}
         <Block title="Your plates" meals={yours} />
         <Block title="New from Cadence" meals={neu} />
         <Block title="Built by Cadence" meals={rest} />
