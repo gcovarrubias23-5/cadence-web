@@ -17,7 +17,7 @@ export const SLOTS = [
 const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
 
 export function mealOf(id, custom = []) {
-  return MEALS[id] || EXTRA_MEALS[id] || SNACK_MEALS[id] || custom.find((m) => m.id === id) || MEALS.yogurtGrapes
+  return MEALS[id] || EXTRA_MEALS[id] || SNACK_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
 }
 
 export function optionsFor(slot, custom = [], avoid = []) {
@@ -29,15 +29,14 @@ export function optionsFor(slot, custom = [], avoid = []) {
   const extras = extraIds.map((id) => EXTRA_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
   const yours = custom.filter((m) => {
     if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
-    return m.slot === slot || !m.slot
+    return m.slot === slot || m.slot === 'snack' && SNACK_SLOTS.includes(slot) || !m.slot
   })
   return safeMeals([...yours, ...extras, ...base], avoid)
 }
 
-export function firstSafe(slot, custom = [], avoid = [], fallbackId) {
+export function firstSafe(slot, custom = [], avoid = []) {
   const list = optionsFor(slot, custom, avoid)
-  if (fallbackId && list.some((m) => m.id === fallbackId) && !mealHitsAvoid(mealOf(fallbackId, custom), avoid)) return fallbackId
-  return list[0]?.id || fallbackId
+  return list[0]?.id || (slot === 'dinner' ? 'lemonChicken' : 'yogurtGrapes')
 }
 
 export function cleanWeek(picks, custom = [], avoid = []) {
@@ -46,10 +45,26 @@ export function cleanWeek(picks, custom = [], avoid = []) {
     const next = { ...row }
     SLOTS.forEach((slot) => {
       const meal = mealOf(row[slot.id], custom)
-      if (mealHitsAvoid(meal, avoid)) next[slot.id] = firstSafe(slot.id, custom, avoid, row[slot.id])
+      if (mealHitsAvoid(meal, avoid)) next[slot.id] = firstSafe(slot.id, custom, avoid)
     })
     return next
   })
+}
+
+export function dropCustom(picks, custom, id, avoid = []) {
+  const nextCustom = (custom || []).filter((m) => m.id !== id && m.name !== id)
+  const nextPicks = (picks || []).map((row) => {
+    const next = { ...row }
+    SLOTS.forEach((slot) => {
+      const used = row[slot.id]
+      const meal = mealOf(used, custom)
+      if (used === id || meal?.id === id || meal?.name === id) {
+        next[slot.id] = firstSafe(slot.id, nextCustom, avoid)
+      }
+    })
+    return next
+  })
+  return { nextCustom, nextPicks }
 }
 
 export const DEFAULT_WEEK = [
