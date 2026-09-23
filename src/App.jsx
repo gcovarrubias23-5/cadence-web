@@ -5,6 +5,7 @@ import {
   SLOTS,
   mealOf,
   cleanWeek,
+  firstSafe,
 } from './plan.js'
 import {
   DEFAULT_MARKS,
@@ -40,7 +41,6 @@ import {
 
 const TABS = [
   { id: 'week', label: 'Kitchen' },
-  { id: 'checkin', label: 'Check-in' },
   { id: 'build', label: 'Build' },
   { id: 'grocery', label: 'List' },
   { id: 'you', label: 'You' },
@@ -149,12 +149,21 @@ export default function App() {
     setCustom((prev) => [meal, ...prev.filter((m) => m.id !== meal.id)])
     if (picking?.dayId) {
       setPicks((prev) => prev.map((row) => (row.id === picking.dayId ? { ...row, [picking.slot]: meal.id } : row)))
-    } else {
-      setPicks((prev) => prev.map((row) => ({ ...row, [slot]: meal.id })))
     }
     setPicking(null)
     setInventOpen(false)
     setTab('build')
+  }
+  function deletePlate(id) {
+    const nextCustom = custom.filter((m) => m.id !== id)
+    setCustom(nextCustom)
+    setPicks((prev) => prev.map((row) => {
+      const next = { ...row }
+      SLOTS.forEach((slot) => {
+        if (row[slot.id] === id) next[slot.id] = firstSafe(slot.id, nextCustom, avoid, row[slot.id])
+      })
+      return next
+    }))
   }
   function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid)); setPicking(null) }
   function copyDay(dayId) {
@@ -309,6 +318,7 @@ export default function App() {
           onCopyDay={copyDay}
           onRepeatSlot={repeatSlot}
           onInvent={() => setInventOpen(true)}
+          onDelete={deletePlate}
         />
       )}
 
@@ -326,7 +336,7 @@ export default function App() {
       )}
 
       {tab === 'you' && (
-        <Profile profile={profile} onSave={saveProfile} />
+        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} />
       )}
 
       {picking && (
