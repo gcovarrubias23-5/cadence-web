@@ -4,6 +4,7 @@ import {
   WEEK_LABEL,
   SLOTS,
   mealOf,
+  cleanWeek,
 } from './plan.js'
 import {
   DEFAULT_MARKS,
@@ -24,6 +25,7 @@ import { Build } from './Build.jsx'
 import { Invent } from './Invent.jsx'
 import { ChangeSheet } from './ChangeSheet.jsx'
 import { List } from './List.jsx'
+import { Profile } from './Profile.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import {
@@ -41,6 +43,7 @@ const TABS = [
   { id: 'checkin', label: 'Check-in' },
   { id: 'build', label: 'Build' },
   { id: 'grocery', label: 'List' },
+  { id: 'you', label: 'You' },
 ]
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
@@ -87,6 +90,7 @@ export default function App() {
     const saved = loadJson('cadence.marks', null)
     return saved ? { ...DEFAULT_MARKS, ...saved } : DEFAULT_MARKS
   })
+  const avoid = profile?.avoid || []
 
   useEffect(() => { localStorage.setItem('cadence.marks', JSON.stringify(marks)) }, [marks])
   useEffect(() => { localStorage.setItem('cadence.week', JSON.stringify(picks)) }, [picks])
@@ -124,8 +128,16 @@ export default function App() {
     setLastCheckin(new Date().toISOString())
   }
   function finishStart(form, math) {
-    setProfile({ ...form, targets: math, done: true })
+    setProfile({ ...form, avoid: form.avoid || [], targets: math, done: true })
     setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
+    setPicks((prev) => cleanWeek(prev, custom, form.avoid || []))
+    setTab('week')
+  }
+  function saveProfile(form, math) {
+    const nextAvoid = form.avoid || []
+    setProfile({ ...form, targets: math, done: true })
+    if (math) setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
+    setPicks((prev) => cleanWeek(prev, custom, nextAvoid))
     setTab('week')
   }
   function choose(dayId, slot, mealId) {
@@ -144,7 +156,7 @@ export default function App() {
     setInventOpen(false)
     setTab('build')
   }
-  function resetWeek() { setPicks(DEFAULT_WEEK); setPicking(null) }
+  function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid)); setPicking(null) }
   function copyDay(dayId) {
     const src = picks.find((row) => row.id === dayId)
     if (!src) return
@@ -313,10 +325,15 @@ export default function App() {
         />
       )}
 
+      {tab === 'you' && (
+        <Profile profile={profile} onSave={saveProfile} />
+      )}
+
       {picking && (
         <ChangeSheet
           picking={picking}
           custom={custom}
+          avoid={avoid}
           onChoose={choose}
           onInvent={() => { setPicking(null); setInventOpen(true) }}
           onClose={() => setPicking(null)}
