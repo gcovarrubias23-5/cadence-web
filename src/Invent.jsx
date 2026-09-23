@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
+import { foodHitsAvoid } from './avoid.js'
 import { addFood, bumpLine, fillRest, houseFor, leftoverOf, lineFrom, shareKind, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
@@ -27,12 +28,12 @@ function defaultName(slotMeta) {
   return `custom plate ${meal}`
 }
 
-export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
+export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid = [] }) {
   const [name, setName] = useState('')
   const [slot, setSlot] = useState(defaultSlot)
   const [kind, setKind] = useState('protein')
   const [lines, setLines] = useState([])
-  const hits = foodsOf(kind)
+  const hits = foodsOf(kind).filter((item) => !foodHitsAvoid(item, avoid))
   const slotMeta = SLOTS.find((s) => s.id === slot) || { label: 'This meal' }
   const fallbackName = defaultName(slotMeta)
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
@@ -56,7 +57,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
       custom: true,
       locked: true,
       steps: lines.map((f) => `${f.house} · ${Math.round(f.grams)} g`),
-      foods: lines,
+      foods: lines.filter((f) => !foodHitsAvoid(f, avoid)),
     }, slot)
   }
 
@@ -71,7 +72,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
 
         <p className="plan-kicker">Invent a plate</p>
         <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
-        <p className="note">First food is one serving. The next protein, carb, or fat takes what is left. Split even if you want them to share.</p>
+        <p className="note">Foods you skip in You are hidden here.</p>
 
         <label className="goal-field">
           <span>Plate name</span>
@@ -122,6 +123,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose }) {
         ))}
 
         <p className="note">Grey foods are already on the plate.</p>
+        {!hits.length && <p className="note">Nothing left in this group with your skips.</p>}
         {hits.map((item) => {
           const on = picked.has(item.name)
           const sample = lineFrom(item, item.base)
