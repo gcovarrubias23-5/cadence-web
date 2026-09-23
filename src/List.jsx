@@ -3,6 +3,8 @@ import { groceryFromWeek } from './macros.js'
 import { buildShopText } from './shopList.js'
 import { shopQty } from './shopQty.js'
 
+const INSTACART = 'https://www.instacart.com'
+
 export function List({ days, factors, goal, checked, setChecked, copied, onCopy, onShare }) {
   const [span, setSpan] = useState('week')
   const [dayId, setDayId] = useState(days[0]?.id || 'mon')
@@ -53,8 +55,10 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
       )}
 
       <div className="card">
+        <p className="note" style={{ marginTop: 0 }}>Copy the list, then open Instacart and add what you need. Cadence does not log into your store.</p>
         <div className="shop-actions">
           <button className="btn" type="button" onClick={() => onCopy(shopText)}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
+          <a className="btn btn-ghost" href={INSTACART} target="_blank" rel="noreferrer">Open Instacart</a>
           <button className="btn btn-ghost" type="button" onClick={() => onShare(shopText)}>Text it to myself</button>
         </div>
       </div>
