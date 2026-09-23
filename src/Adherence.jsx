@@ -28,11 +28,17 @@ export function Adherence() {
   const waterGoal = DAYS.length * WATER_GOAL
   const platePct = Math.round((plates / plateGoal) * 100)
   const waterPct = Math.round((drinks / waterGoal) * 100)
-  const lines = DAYS.map((d) => ({
-    ...d,
-    plates: dayEatenCount(eaten, d.id, SLOTS),
-    drinks: glassesFor(water, d.id),
-  }))
+  const lines = DAYS.map((d) => {
+    const p = dayEatenCount(eaten, d.id, SLOTS)
+    const w = glassesFor(water, d.id)
+    return {
+      ...d,
+      plates: p,
+      drinks: w,
+      platePct: Math.round((p / SLOTS.length) * 100),
+      waterPct: Math.round((w / WATER_GOAL) * 100),
+    }
+  })
   const line = platePct >= 80
     ? 'Strong week. Keep the same rhythm.'
     : platePct >= 50
@@ -43,23 +49,23 @@ export function Adherence() {
     <section className="card">
       <div className="goal-title">This week</div>
       <p className="note" style={{ marginTop: 0 }}>
-        {plates} of {plateGoal} plates · {platePct}% · {drinks} of {waterGoal} glasses · {waterPct}%
+        Plates {plates}/{plateGoal} · {platePct}% · Water {drinks}/{waterGoal} · {waterPct}%
       </p>
       <p className="note">{line}</p>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 120, marginTop: 12 }}>
-        {lines.map((d) => {
-          const h = Math.max(4, Math.round((d.plates / SLOTS.length) * 100))
-          return (
-            <div key={d.id} style={{ flex: 1, textAlign: 'center' }}>
-              <div style={{ height: 100, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <div style={{ width: '70%', height: `${h}%`, background: 'var(--accent)', borderRadius: 6 }} title={`${d.plates} plates`} />
-              </div>
-              <div className="qty" style={{ marginTop: 6 }}>{d.label}</div>
+      <p className="note" style={{ marginTop: 8 }}>Green = plates. Gold = water.</p>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, marginTop: 12 }}>
+        {lines.map((d) => (
+          <div key={d.id} style={{ flex: 1, textAlign: 'center' }}>
+            <div className="qty">{d.platePct}%</div>
+            <div style={{ height: 90, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 3 }}>
+              <div style={{ width: 8, height: `${Math.max(4, d.platePct)}%`, background: 'var(--accent)', borderRadius: 4 }} />
+              <div style={{ width: 8, height: `${Math.max(4, d.waterPct)}%`, background: '#c4a35a', borderRadius: 4 }} />
             </div>
-          )
-        })}
+            <div className="qty" style={{ marginTop: 4 }}>{d.waterPct}%</div>
+            <div className="qty">{d.label}</div>
+          </div>
+        ))}
       </div>
-      <p className="note" style={{ marginTop: 10 }}>Each bar is plates ticked that day. Six is a full day.</p>
     </section>
   )
 }
