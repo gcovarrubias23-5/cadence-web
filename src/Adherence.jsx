@@ -11,6 +11,9 @@ const DAYS = [
   { id: 'sun', label: 'S' },
 ]
 
+const GREEN = 'var(--accent)'
+const BLUE = '#3b82f6'
+
 function load(key) {
   try {
     return JSON.parse(localStorage.getItem(key) || '{}') || {}
@@ -33,8 +36,6 @@ export function Adherence() {
     const w = glassesFor(water, d.id)
     return {
       ...d,
-      plates: p,
-      drinks: w,
       platePct: Math.round((p / SLOTS.length) * 100),
       waterPct: Math.round((w / WATER_GOAL) * 100),
     }
@@ -49,19 +50,24 @@ export function Adherence() {
     <section className="card">
       <div className="goal-title">This week</div>
       <p className="note" style={{ marginTop: 0 }}>
-        Plates {plates}/{plateGoal} · {platePct}% · Water {drinks}/{waterGoal} · {waterPct}%
+        <span style={{ color: GREEN, fontWeight: 700 }}>Plates {plates}/{plateGoal} · {platePct}%</span>
+        {' · '}
+        <span style={{ color: BLUE, fontWeight: 700 }}>Water {drinks}/{waterGoal} · {waterPct}%</span>
       </p>
       <p className="note">{line}</p>
-      <p className="note" style={{ marginTop: 8 }}>Green = plates. Blue = water.</p>
+      <p className="note" style={{ marginTop: 8 }}>
+        <span style={{ color: GREEN, fontWeight: 700 }}>Green = plates.</span>{' '}
+        <span style={{ color: BLUE, fontWeight: 700 }}>Blue = water.</span>
+      </p>
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, marginTop: 12 }}>
         {lines.map((d) => (
           <div key={d.id} style={{ flex: 1, textAlign: 'center' }}>
-            <div className="qty">{d.platePct}%</div>
+            <div className="qty" style={{ color: GREEN, fontWeight: 700 }}>{d.platePct}%</div>
             <div style={{ height: 90, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 3 }}>
-              <div style={{ width: 8, height: `${Math.max(4, d.platePct)}%`, background: 'var(--accent)', borderRadius: 4 }} />
-              <div style={{ width: 8, height: `${Math.max(4, d.waterPct)}%`, background: '#3b82f6', borderRadius: 4 }} />
+              <div style={{ width: 8, height: `${Math.max(4, d.platePct)}%`, background: GREEN, borderRadius: 4 }} />
+              <div style={{ width: 8, height: `${Math.max(4, d.waterPct)}%`, background: BLUE, borderRadius: 4 }} />
             </div>
-            <div className="qty" style={{ marginTop: 4 }}>{d.waterPct}%</div>
+            <div className="qty" style={{ marginTop: 4, color: BLUE, fontWeight: 700 }}>{d.waterPct}%</div>
             <div className="qty">{d.label}</div>
           </div>
         ))}
