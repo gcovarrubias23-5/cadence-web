@@ -41,7 +41,6 @@ const TABS = [
   { id: 'checkin', label: 'Check-in' },
   { id: 'build', label: 'Build' },
   { id: 'grocery', label: 'List' },
-  { id: 'shop', label: 'Shop' },
 ]
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
@@ -312,21 +311,6 @@ export default function App() {
           onCopy={copyList}
           onShare={shareList}
         />
-      )}
-
-      {tab === 'shop' && (
-        <>
-          <section className="hero">
-            <h1>Go shop like you usually do.</h1>
-          </section>
-          <div className="card">
-            <div className="shop-actions">
-              <button className="btn" type="button" onClick={() => copyList(shopText)}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
-              <button className="btn btn-ghost" type="button" onClick={() => shareList(shopText)}>Text it to myself</button>
-            </div>
-            <pre className="shop-text">{shopText}</pre>
-          </div>
-        </>
       )}
 
       {picking && (
