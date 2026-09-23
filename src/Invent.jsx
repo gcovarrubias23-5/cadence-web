@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { foodsOf } from './pantry.js'
 import { foodHitsAvoid } from './avoid.js'
+import { seedFrom } from './inventSeed.js'
 import { addFood, bumpLine, fillRest, houseFor, leftoverOf, lineFrom, shareKind, targetFor } from './inventMath.js'
 
 const SNACK_IDS = ['snack1', 'snack2', 'snack3']
@@ -37,12 +38,13 @@ function defaultName(slotMeta) {
   return `custom plate ${meal}`
 }
 
-export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid }) {
+export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid, initial }) {
   const skips = readAvoid(avoid)
-  const [name, setName] = useState('')
-  const [slot, setSlot] = useState(defaultSlot)
+  const seed = seedFrom(initial, defaultSlot)
+  const [name, setName] = useState(seed.name)
+  const [slot, setSlot] = useState(seed.slot)
   const [kind, setKind] = useState('protein')
-  const [lines, setLines] = useState([])
+  const [lines, setLines] = useState(seed.lines)
   const hits = foodsOf(kind).filter((item) => !foodHitsAvoid(item, skips))
   const slotMeta = SLOTS.find((s) => s.id === slot) || { label: 'This meal' }
   const fallbackName = defaultName(slotMeta)
@@ -60,7 +62,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid }) 
     if (!lines.length) return
     const title = name.trim() || fallbackName
     onSave({
-      id: `custom-${Date.now()}`,
+      id: seed.id || `custom-${Date.now()}`,
       name: title,
       time: 'your plate',
       slot: SNACK_IDS.includes(slot) ? 'snack' : slot,
@@ -80,7 +82,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid }) 
           <Meter label="Fat" need={target.fat} have={filled.fat} left={left.fat} />
         </div>
 
-        <p className="plan-kicker">Invent a plate</p>
+        <p className="plan-kicker">{seed.id ? 'Edit this plate' : 'Invent a plate'}</p>
         <h2 style={{ marginBottom: 8 }}>{slotMeta.label} only</h2>
         <p className="note">Foods you skip in You are hidden here.</p>
 
