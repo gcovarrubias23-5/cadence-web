@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
 import { SeasonAsk } from './SeasonAsk.jsx'
+import { Adherence } from './Adherence.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 import { isCheckinDue } from './weekGate.js'
 
@@ -62,6 +63,8 @@ export function Profile({ profile, onSave, onCheckin }) {
         <h1>Your profile.</h1>
         <p>Change the math or what you do not want on a plate. Cadence hides the obvious mismatches. It does not certify a kitchen or treat an allergy.</p>
       </section>
+
+      <Adherence />
 
       <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
 
