@@ -52,14 +52,14 @@ export function Adherence() {
         Plates {plates}/{plateGoal} · {platePct}% · Water {drinks}/{waterGoal} · {waterPct}%
       </p>
       <p className="note">{line}</p>
-      <p className="note" style={{ marginTop: 8 }}>Green = plates. Gold = water.</p>
+      <p className="note" style={{ marginTop: 8 }}>Green = plates. Blue = water.</p>
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, marginTop: 12 }}>
         {lines.map((d) => (
           <div key={d.id} style={{ flex: 1, textAlign: 'center' }}>
             <div className="qty">{d.platePct}%</div>
             <div style={{ height: 90, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 3 }}>
               <div style={{ width: 8, height: `${Math.max(4, d.platePct)}%`, background: 'var(--accent)', borderRadius: 4 }} />
-              <div style={{ width: 8, height: `${Math.max(4, d.waterPct)}%`, background: '#c4a35a', borderRadius: 4 }} />
+              <div style={{ width: 8, height: `${Math.max(4, d.waterPct)}%`, background: '#3b82f6', borderRadius: 4 }} />
             </div>
             <div className="qty" style={{ marginTop: 4 }}>{d.waterPct}%</div>
             <div className="qty">{d.label}</div>
