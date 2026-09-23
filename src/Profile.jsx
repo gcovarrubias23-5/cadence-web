@@ -62,11 +62,11 @@ export function Profile({ profile, onSave, onCheckin }) {
     <>
       <section className="hero">
         <h1>Your profile.</h1>
-        <p>Change the math or what you do not want on a plate. Cadence hides the obvious mismatches. It does not certify a kitchen or treat an allergy.</p>
+        <p>Weight and this week’s plates sit at the top. Skips and math are lower.</p>
       </section>
 
-      <Adherence />
       <WeightLog units={form.units} />
+      <Adherence />
 
       <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
 
