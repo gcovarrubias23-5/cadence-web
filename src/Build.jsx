@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { SLOTS, mealOf } from './plan.js'
 
-export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot, onInvent, onEdit, onDelete }) {
+export function Build({
+  picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot,
+  onInvent, onEdit = () => {}, onDelete = () => {},
+}) {
   const [open, setOpen] = useState(picks[0]?.id || 'mon')
   return (
     <>
       <section className="hero">
         <h1>Build your week.</h1>
         <p>Open one day. Invent a plate, change a slot, or clean up your plates.</p>
-        <button className="btn" type="button" onClick={() => onInvent()}>Invent a plate</button>
+        <button className="btn" type="button" onClick={() => onInvent()} >Invent a plate</button>
         <button className="btn btn-ghost" type="button" onClick={onReset}>Use the starter week</button>
       </section>
 
@@ -20,8 +23,14 @@ export function Build({ picks, custom = [], onPick, onReset, onCopyDay, onRepeat
               <strong>{meal.name}</strong>
               <div className="qty">{meal.slot || 'meal'}</div>
               <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
-                <button className="change" type="button" style={{ margin: 0 }} onClick={() => onEdit(meal)}>Edit</button>
-                <button className="change" type="button" style={{ margin: 0 }} onClick={() => onDelete(meal.id)}>Delete</button>
+                <button className="change" type="button" style={{ margin: 0 }} onClick={() => {
+                  try { localStorage.setItem('cadence.editMeal', JSON.stringify(meal)) } catch {}
+                  onEdit(meal)
+                  onInvent(meal)
+                }}>Edit</button>
+                <button className="change" type="button" style={{ margin: 0 }} onClick={() => {
+                  if (window.confirm(`Delete ${meal.name}?`)) onDelete(meal.id)
+                }}>Delete</button>
               </div>
             </div>
           ))}
