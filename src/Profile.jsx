@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
+import { SeasonAsk } from './SeasonAsk.jsx'
+import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 
 export function Profile({ profile, onSave, onCheckin }) {
   const [form, setForm] = useState(() => ({
@@ -15,10 +17,12 @@ export function Profile({ profile, onSave, onCheckin }) {
     goal: profile.goal || 'hold',
     avoid: profile.avoid || [],
   }))
+  const [tick, setTick] = useState(0)
   const math = useMemo(() => {
     try { return buildTargets(form) } catch { return null }
   }, [form])
   const skips = form.avoid || []
+  const waited = daysSinceReview()
 
   function patch(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -29,6 +33,10 @@ export function Profile({ profile, onSave, onCheckin }) {
       return { ...prev, avoid: on ? prev.avoid.filter((x) => x !== id) : [...(prev.avoid || []), id] }
     })
   }
+  function save() {
+    writeReview()
+    onSave({ ...form, avoid: form.avoid || [], goalReview: new Date().toISOString() }, math)
+  }
 
   return (
     <>
@@ -37,9 +45,21 @@ export function Profile({ profile, onSave, onCheckin }) {
         <p>Change the math or what you do not want on a plate. Cadence hides the obvious mismatches. It does not certify a kitchen or treat an allergy.</p>
       </section>
 
+      <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
+
       {onCheckin && (
         <button className="btn btn-ghost" type="button" onClick={onCheckin}>How did this week feel?</button>
       )}
+
+      <section className="card">
+        <div className="goal-title">Season check</div>
+        <p className="note" style={{ marginTop: 0 }}>
+          We ask about move and goal every 90 days, not every week. {waited ? `${waited} days since the last look.` : 'No season stamp yet. Save profile to start the clock.'}
+        </p>
+        <button className="change" type="button" onClick={() => { pretendSeasonDue(); setTick((n) => n + 1) }}>
+          Test: pretend 3 months passed
+        </button>
+      </section>
 
       <section className="card">
         <div className="goal-title">You</div>
@@ -66,7 +86,7 @@ export function Profile({ profile, onSave, onCheckin }) {
         )}
       </section>
 
-      <section className="card">
+      <section className="card" id="move-goal">
         <div className="goal-title">Move and goal</div>
         {ACTIVITY.map((a) => (
           <button key={a.id} type="button" className={form.activity === a.id ? 'option on' : 'option'} onClick={() => patch('activity', a.id)}>
@@ -104,7 +124,8 @@ export function Profile({ profile, onSave, onCheckin }) {
         </section>
       )}
 
-      <button className="btn" type="button" disabled={!math} onClick={() => onSave({ ...form, avoid: form.avoid || [] }, math)}>Save profile</button>
+      <button className="btn" type="button" disabled={!math} onClick={save}>Save profile</button>
+      <span style={{ display: 'none' }}>{tick}</span>
     </>
   )
 }
