@@ -4,6 +4,7 @@ import { AVOIDS } from './avoid.js'
 import { SeasonAsk } from './SeasonAsk.jsx'
 import { Adherence } from './Adherence.jsx'
 import { WeightLog } from './WeightLog.jsx'
+import { About } from './About.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 import { isCheckinDue } from './weekGate.js'
 
@@ -63,6 +64,7 @@ export function Profile({ profile, onSave, onCheckin }) {
       <section className="hero">
         <h1>Your profile.</h1>
         <p>Weight and this week’s plates sit at the top. Skips and math are lower.</p>
+        <button className="btn btn-ghost" type="button" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>About Cadence</button>
       </section>
 
       <WeightLog units={form.units} />
@@ -148,6 +150,7 @@ export function Profile({ profile, onSave, onCheckin }) {
       )}
 
       <button className="btn" type="button" disabled={!math} onClick={save}>Save profile</button>
+      <About />
       <span style={{ display: 'none' }}>{tick}</span>
     </>
   )
