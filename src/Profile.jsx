@@ -1,8 +1,17 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
 import { SeasonAsk } from './SeasonAsk.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
+import { isCheckinDue } from './weekGate.js'
+
+function readLastCheckin() {
+  try {
+    return JSON.parse(localStorage.getItem('cadence.lastCheckin') || 'null')
+  } catch {
+    return null
+  }
+}
 
 export function Profile({ profile, onSave, onCheckin }) {
   const [form, setForm] = useState(() => ({
@@ -18,11 +27,20 @@ export function Profile({ profile, onSave, onCheckin }) {
     avoid: profile.avoid || [],
   }))
   const [tick, setTick] = useState(0)
+  const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
   const math = useMemo(() => {
     try { return buildTargets(form) } catch { return null }
   }, [form])
   const skips = form.avoid || []
   const waited = daysSinceReview()
+  const weekReady = !!lastCheckin && isCheckinDue(lastCheckin)
+
+  useEffect(() => {
+    if (lastCheckin) return
+    const stamp = new Date().toISOString()
+    try { localStorage.setItem('cadence.lastCheckin', JSON.stringify(stamp)) } catch {}
+    setLastCheckin(stamp)
+  }, [lastCheckin])
 
   function patch(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -47,7 +65,7 @@ export function Profile({ profile, onSave, onCheckin }) {
 
       <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
 
-      {onCheckin && (
+      {onCheckin && weekReady && (
         <button className="btn btn-ghost" type="button" onClick={onCheckin}>How did this week feel?</button>
       )}
 
