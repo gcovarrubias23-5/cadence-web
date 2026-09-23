@@ -1,6 +1,7 @@
 import { MEALS, BREAKFASTS, LUNCHES, DINNERS, WEEK_LABEL } from './catalog.js'
 import { EXTRA_MEALS, EXTRA_BY_SLOT } from './catalogExtras.js'
 import { SNACK_MEALS, SNACKS } from './snacks.js'
+import { mealHitsAvoid, safeMeals } from './avoid.js'
 
 export { WEEK_LABEL }
 
@@ -19,7 +20,7 @@ export function mealOf(id, custom = []) {
   return MEALS[id] || EXTRA_MEALS[id] || SNACK_MEALS[id] || custom.find((m) => m.id === id) || MEALS.yogurtGrapes
 }
 
-export function optionsFor(slot, custom = []) {
+export function optionsFor(slot, custom = [], avoid = []) {
   let base = SNACKS.map((id) => SNACK_MEALS[id])
   if (slot === 'breakfast') base = BREAKFASTS.map((id) => MEALS[id])
   if (slot === 'lunch') base = LUNCHES.map((id) => MEALS[id])
@@ -30,7 +31,25 @@ export function optionsFor(slot, custom = []) {
     if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
     return m.slot === slot || !m.slot
   })
-  return [...yours, ...extras, ...base]
+  return safeMeals([...yours, ...extras, ...base], avoid)
+}
+
+export function firstSafe(slot, custom = [], avoid = [], fallbackId) {
+  const list = optionsFor(slot, custom, avoid)
+  if (fallbackId && list.some((m) => m.id === fallbackId) && !mealHitsAvoid(mealOf(fallbackId, custom), avoid)) return fallbackId
+  return list[0]?.id || fallbackId
+}
+
+export function cleanWeek(picks, custom = [], avoid = []) {
+  if (!avoid?.length) return picks
+  return picks.map((row) => {
+    const next = { ...row }
+    SLOTS.forEach((slot) => {
+      const meal = mealOf(row[slot.id], custom)
+      if (mealHitsAvoid(meal, avoid)) next[slot.id] = firstSafe(slot.id, custom, avoid, row[slot.id])
+    })
+    return next
+  })
 }
 
 export const DEFAULT_WEEK = [
