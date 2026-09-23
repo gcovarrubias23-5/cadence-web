@@ -1,11 +1,31 @@
 import { useState } from 'react'
 import { SLOTS, mealOf } from './plan.js'
+import { applyDelete } from './deletePlate.js'
 
 export function Build({
   picks, custom = [], onPick, onReset, onCopyDay, onRepeatSlot,
-  onInvent, onEdit = () => {}, onDelete = () => {},
+  onInvent, onEdit = () => {}, onDelete,
 }) {
   const [open, setOpen] = useState(picks[0]?.id || 'mon')
+  const [gone, setGone] = useState([])
+  const mine = custom.filter((m) => !gone.includes(m.id) && !gone.includes(m.name))
+
+  function remove(meal) {
+    const id = meal.id || meal.name
+    setGone((prev) => [...prev, id, meal.name, meal.id].filter(Boolean))
+    if (onDelete) onDelete(id)
+    else {
+      applyDelete(
+        () => {},
+        () => {},
+        custom,
+        picks,
+        id,
+        [],
+      )
+    }
+  }
+
   return (
     <>
       <section className="hero">
@@ -15,10 +35,10 @@ export function Build({
         <button className="btn btn-ghost" type="button" onClick={onReset}>Use the starter week</button>
       </section>
 
-      {custom.length > 0 && (
+      {mine.length > 0 && (
         <section className="card">
           <div className="goal-title">Your plates</div>
-          {custom.map((meal) => (
+          {mine.map((meal) => (
             <div key={meal.id || meal.name} style={{ borderTop: '1px solid var(--line)', padding: '10px 0' }}>
               <strong>{meal.name}</strong>
               <div className="qty">{meal.slot || 'meal'}</div>
@@ -28,9 +48,7 @@ export function Build({
                   onEdit(meal)
                   onInvent(meal)
                 }}>Edit</button>
-                <button className="change" type="button" style={{ margin: 0 }} onClick={() => onDelete(meal.id || meal.name)}>
-                  Delete
-                </button>
+                <button className="change" type="button" style={{ margin: 0 }} onClick={() => remove(meal)}>Delete</button>
               </div>
             </div>
           ))}
