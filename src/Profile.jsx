@@ -3,6 +3,7 @@ import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
 import { SeasonAsk } from './SeasonAsk.jsx'
 import { Adherence } from './Adherence.jsx'
+import { WeightLog } from './WeightLog.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 import { isCheckinDue } from './weekGate.js'
 
@@ -65,6 +66,7 @@ export function Profile({ profile, onSave, onCheckin }) {
       </section>
 
       <Adherence />
+      <WeightLog units={form.units} />
 
       <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
 
