@@ -33,7 +33,7 @@ export function Profile({ profile, onSave }) {
     <>
       <section className="hero">
         <h1>Your profile.</h1>
-        <p>Change the math or what you cannot eat. Plates update to match.</p>
+        <p>Change the math or what you do not want on a plate. Cadence hides the obvious mismatches. It does not certify a kitchen or treat an allergy.</p>
       </section>
 
       <section className="card">
@@ -76,8 +76,8 @@ export function Profile({ profile, onSave }) {
       </section>
 
       <section className="card">
-        <div className="goal-title">Skip these</div>
-        <p className="note" style={{ marginTop: 0 }}>We hide plates that use them. This is not medical advice.</p>
+        <div className="goal-title">Skip these plates</div>
+        <p className="note" style={{ marginTop: 0 }}>We hide recipes that use the food. Read labels yourself. Cadence is not an allergy service.</p>
         {AVOIDS.map((a) => (
           <button key={a.id} type="button" className={(form.avoid || []).includes(a.id) ? 'option on' : 'option'} onClick={() => toggleAvoid(a.id)}>
             <strong>{a.label}</strong><span>{a.line}</span>
