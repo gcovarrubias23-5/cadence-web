@@ -33,6 +33,11 @@ export function mealHitsAvoid(meal, avoid = []) {
   return avoid.some((id) => RULES[id] && RULES[id].test(text))
 }
 
+export function foodHitsAvoid(item, avoid = []) {
+  if (!item || !avoid.length) return false
+  return mealHitsAvoid({ name: item.name, foods: [item] }, avoid)
+}
+
 export function safeMeals(list, avoid = []) {
   return (list || []).filter((m) => !mealHitsAvoid(m, avoid))
 }
