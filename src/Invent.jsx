@@ -13,6 +13,15 @@ const TYPES = [
   { id: 'free', label: 'Free', line: 'Raw veg. No tomato, carrot, or pepper.' },
 ]
 
+function readAvoid(passed) {
+  if (passed && passed.length) return passed
+  try {
+    return JSON.parse(localStorage.getItem('cadence.profile') || '{}').avoid || []
+  } catch {
+    return []
+  }
+}
+
 function macrosBlock(food) {
   return (
     <div className="macro-gap">
@@ -28,12 +37,13 @@ function defaultName(slotMeta) {
   return `custom plate ${meal}`
 }
 
-export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid = [] }) {
+export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid }) {
+  const skips = readAvoid(avoid)
   const [name, setName] = useState('')
   const [slot, setSlot] = useState(defaultSlot)
   const [kind, setKind] = useState('protein')
   const [lines, setLines] = useState([])
-  const hits = foodsOf(kind).filter((item) => !foodHitsAvoid(item, avoid))
+  const hits = foodsOf(kind).filter((item) => !foodHitsAvoid(item, skips))
   const slotMeta = SLOTS.find((s) => s.id === slot) || { label: 'This meal' }
   const fallbackName = defaultName(slotMeta)
   const target = useMemo(() => targetFor(goal, slot), [goal, slot])
@@ -57,7 +67,7 @@ export function Invent({ goal, defaultSlot = 'lunch', onSave, onClose, avoid = [
       custom: true,
       locked: true,
       steps: lines.map((f) => `${f.house} · ${Math.round(f.grams)} g`),
-      foods: lines.filter((f) => !foodHitsAvoid(f, avoid)),
+      foods: lines.filter((f) => !foodHitsAvoid(f, skips)),
     }, slot)
   }
 
