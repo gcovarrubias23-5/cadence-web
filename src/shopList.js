@@ -1,4 +1,4 @@
-import { formatG } from './macros.js'
+import { shopQty } from './shopQty.js'
 
 export function buildShopText(grocery, goal) {
   const lines = [
@@ -9,7 +9,7 @@ export function buildShopText(grocery, goal) {
   grocery.forEach((section) => {
     lines.push(section.name.toUpperCase())
     section.items.forEach((item) => {
-      lines.push(`- ${item.name} — ${formatG(item.grams)}`)
+      lines.push(`- ${item.name} — ${shopQty(item)}`)
     })
     lines.push('')
   })

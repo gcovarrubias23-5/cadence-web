@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { formatG, groceryFromWeek, kcalOf, goalFromMarks } from './macros.js'
+import { groceryFromWeek } from './macros.js'
 import { buildShopText } from './shopList.js'
+import { shopQty } from './shopQty.js'
 
 export function List({ days, factors, goal, checked, setChecked, copied, onCopy, onShare }) {
   const [span, setSpan] = useState('week')
@@ -8,14 +9,19 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
   const slice = span === 'day' ? days.filter((d) => d.id === dayId) : days
   const grocery = useMemo(() => groceryFromWeek(slice, factors), [slice, factors])
   const shopText = useMemo(() => buildShopText(grocery, goal), [grocery, goal])
-  const totalItems = grocery.reduce((n, s) => n + s.items.length, 0)
-  const left = grocery.reduce((n, section) => {
-    section.items.forEach((item) => {
-      if (!checked[`${section.name}:${item.name}`]) n += 1
-    })
-    return n
-  }, 0)
+  const keys = grocery.flatMap((section) => section.items.map((item) => `${section.name}:${item.name}`))
+  const totalItems = keys.length
+  const left = keys.filter((key) => !checked[key]).length
+  const allOn = totalItems > 0 && left === 0
   const dayMeta = days.find((d) => d.id === dayId)
+
+  function selectAll() {
+    setChecked((prev) => {
+      const next = { ...prev }
+      keys.forEach((key) => { next[key] = !allOn })
+      return next
+    })
+  }
 
   return (
     <>
@@ -27,6 +33,7 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
       <div className="card" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <button className={span === 'day' ? 'btn' : 'btn btn-ghost'} type="button" onClick={() => setSpan('day')}>This day</button>
         <button className={span === 'week' ? 'btn' : 'btn btn-ghost'} type="button" onClick={() => setSpan('week')}>This week</button>
+        <button className="btn btn-ghost" type="button" onClick={selectAll}>{allOn ? 'Clear all' : 'Select all'}</button>
       </div>
 
       {span === 'day' && (
@@ -63,7 +70,7 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
                   <label>
                     <input type="checkbox" checked={!!checked[key]} onChange={() => setChecked((prev) => ({ ...prev, [key]: !prev[key] }))} />
                     <span className="item-name">{item.name}</span>
-                    <span className="qty">{formatG(item.grams)}</span>
+                    <span className="qty">{shopQty(item)}</span>
                   </label>
                 </li>
               )
