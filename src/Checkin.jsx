@@ -23,7 +23,7 @@ export function Checkin({
         <h1>Weekly check-in.</h1>
         <p>
           {due
-            ? 'A week has passed. Say how the food sat and next week follows from that.'
+            ? 'A week has passed. Say if you had enough. This week is saved, and the plates start fresh.'
             : `You already checked in. This comes back in ${daysLeft} day${daysLeft === 1 ? '' : 's'}.`}
         </p>
       </section>
@@ -52,9 +52,9 @@ export function Checkin({
           </div>
           {lastMove ? (
             <p className="note">
-              {lastMove === 'hungry' && 'Next week the plates get a little bigger.'}
-              {lastMove === 'right' && 'Next week stays where it is.'}
-              {lastMove === 'heavy' && 'Next week the plates get a little smaller.'}
+              {lastMove === 'hungry' && 'Saved. Next week the plates get a little bigger.'}
+              {lastMove === 'right' && 'Saved. Next week stays where it is.'}
+              {lastMove === 'heavy' && 'Saved. Next week the plates get a little smaller.'}
             </p>
           ) : null}
         </section>
