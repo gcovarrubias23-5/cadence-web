@@ -81,9 +81,6 @@ export function Profile({ profile, onSave, onCheckin }) {
         <p className="note" style={{ marginTop: 0 }}>
           We ask about move and goal every 90 days, not every week. {waited ? `${waited} days since the last look.` : 'No season stamp yet. Save profile to start the clock.'}
         </p>
-        <button className="change" type="button" onClick={() => { pretendSeasonDue(); setTick((n) => n + 1) }}>
-          Test: pretend 3 months passed
-        </button>
       </section>
 
       <section className="card">
@@ -135,7 +132,7 @@ export function Profile({ profile, onSave, onCheckin }) {
           const on = skips.includes(a.id)
           return (
             <button key={a.id} type="button" className={on ? 'option on' : 'option'} onClick={() => toggleAvoid(a.id)}>
-              <strong>{a.label}{on ? ' · on' : ''}</strong>
+              <strong>{a.label}{on ? ' \u00b7 on' : ''}</strong>
               <span>{on ? 'Tap to allow this food again' : a.line}</span>
             </button>
           )
@@ -151,6 +148,13 @@ export function Profile({ profile, onSave, onCheckin }) {
 
       <button className="btn" type="button" disabled={!math} onClick={save}>Save profile</button>
       <About />
+      <details className="card">
+        <summary className="qty">Preview tools</summary>
+        <p className="note">Only for trying the 90-day card before launch.</p>
+        <button className="change" type="button" onClick={() => { pretendSeasonDue(); setTick((n) => n + 1) }}>
+          Pretend 3 months passed
+        </button>
+      </details>
       <span style={{ display: 'none' }}>{tick}</span>
     </>
   )
