@@ -5,6 +5,9 @@ import './styles.css'
 import './shop.css'
 import './canvas.css'
 import './track.css'
+import { registerHomeScreen } from './install.js'
+
+registerHomeScreen()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
