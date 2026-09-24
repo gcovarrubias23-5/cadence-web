@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { SLOTS } from './plan.js'
 import { WATER_GOAL, dayEatenCount, glassesFor } from './track.js'
 import { GREEN, WATER } from './theme.js'
-import { closedWeeks, weekRange, writeCurrentWeek } from './weekHistory.js'
+import { closedWeeks, weekRange } from './weekHistory.js'
 
 const DAYS = [
   { id: 'mon', label: 'M' },
@@ -37,12 +37,7 @@ export function Adherence() {
   const waterGoal = DAYS.length * WATER_GOAL
   const platePct = Math.round((plates / plateGoal) * 100)
   const waterPct = Math.round((drinks / waterGoal) * 100)
-  const [past, setPast] = useState(closedWeeks)
-
-  useEffect(() => {
-    writeCurrentWeek({ plates, plateGoal, drinks, waterGoal })
-    setPast(closedWeeks())
-  }, [plates, drinks, plateGoal, waterGoal])
+  const past = useMemo(() => closedWeeks(), [])
 
   const lines = DAYS.map((d) => {
     const p = dayEatenCount(eaten, d.id, SLOTS)
@@ -101,7 +96,7 @@ export function Adherence() {
       {past.slice(0, 8).map((h) => (
         <div key={h.id} style={{ padding: '10px 0', borderTop: '1px solid var(--line)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-            <strong>{weekRange(h.monday || h.id)}</strong>
+            <strong>{weekRange(h.monday || String(h.id).slice(0, 10))}</strong>
             <span className="qty">{MOVE_LINE[h.move] || 'Closed'}</span>
           </div>
           <div style={{ display: 'flex', gap: 8, marginTop: 6, alignItems: 'center' }}>
