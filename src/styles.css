@@ -26,7 +26,7 @@ nav button.nav-on { background: var(--accent-soft); color: var(--accent); }
 .hero p { color: var(--muted); max-width: 34em; line-height: 1.5; margin: 0; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
 .goal-title { font-family: var(--serif); font-size: 18px; margin-bottom: 10px; }
-.goal-grid, .metpro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.goal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .goal-field span { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
 .goal-field input, .kcal-readout { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 8px; font: 600 16px var(--sans); background: #fff; }
 .kcal-readout { min-height: 38px; display: flex; align-items: center; }
@@ -51,4 +51,15 @@ nav button.nav-on { background: var(--accent-soft); color: var(--accent); }
 .fine { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
 .features { padding-left: 18px; color: var(--muted); }
 .featured { border-color: var(--accent); }
-.btn { margin-top: 8px; font: 600 15px var(--sans); background: var(--accent); color: white; border: 0; border-radius: 999px; padding: 11px 16px; cursor: pointer; }
+.btn { margin-top: 8px; font: 600 15px var(--sans); background: var(--accent); color: white; border: 0; border-radius: 999px; padding: 11px 16px; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.welcome-dock {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(transparent, var(--bg) 28%);
+  padding: 20px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  margin: 12px -18px -24px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.welcome-dock .btn { width: 100%; text-align: center; font-size: 20px; padding: 16px 20px; }
