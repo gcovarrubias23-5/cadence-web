@@ -30,7 +30,7 @@ function roundG(n) {
 
 export const PULSE_COPY = {
   prompt: 'How did this week feel?',
-  hint: 'Tap how the food sat. Next week follows from that.',
+  hint: 'Did you have enough? Next week gets a little more, stays the same, or eases off.',
   hungry: {
     title: 'Still hungry',
     line: 'I could have eaten more.',
@@ -41,6 +41,6 @@ export const PULSE_COPY = {
   },
   heavy: {
     title: 'Too much',
-    line: 'Cut it back a little.',
+    line: 'Ease it off a little.',
   },
 }
