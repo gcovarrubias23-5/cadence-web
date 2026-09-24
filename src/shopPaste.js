@@ -1,3 +1,8 @@
+export const STEAK_CUTS = [
+  { id: 'flank', label: 'Flank steak', search: 'flank steak' },
+  { id: 'sirloin', label: 'Sirloin steak', search: 'sirloin steak' },
+]
+
 const RENAME = [
   [/kodiak/i, 'Kodiak pancake mix'],
   [/fairlife shake/i, 'Fairlife protein shake'],
@@ -26,11 +31,9 @@ const RENAME = [
   [/shrimp/i, 'shrimp'],
   [/cod/i, 'cod fillet'],
   [/white fish/i, 'cod fillet'],
-  [/flank steak|skirt steak/i, 'sirloin steak'],
   [/pork tenderloin/i, 'pork tenderloin'],
   [/ground beef|lean ground/i, 'lean ground beef'],
   [/bison/i, 'ground beef'],
-  [/steak|sirloin/i, 'sirloin steak'],
   [/extra firm tofu|tofu/i, 'extra firm tofu'],
   [/tempeh/i, 'tempeh'],
   [/edamame/i, 'edamame'],
@@ -125,21 +128,33 @@ function tidy(name) {
     .trim()
 }
 
-export function shopSearchName(name) {
+function isSteak(name) {
+  return /flank|skirt|sirloin|\bsteak\b/i.test(name || '')
+}
+
+export function groceryHasSteak(grocery) {
+  return (grocery || []).some((section) => section.items.some((item) => isSteak(item.name)))
+}
+
+export function shopSearchName(name, prefs = {}) {
   const raw = tidy(name)
   if (!raw) return ''
+  if (isSteak(name) || isSteak(raw)) {
+    const cut = STEAK_CUTS.find((c) => c.id === prefs.steak) || STEAK_CUTS[0]
+    return cut.search
+  }
   for (const [re, out] of RENAME) {
     if (re.test(raw) || re.test(String(name || ''))) return out
   }
   return raw
 }
 
-export function buildInstacartText(grocery) {
+export function buildInstacartText(grocery, prefs = {}) {
   const seen = new Set()
   const lines = []
   grocery.forEach((section) => {
     section.items.forEach((item) => {
-      const name = shopSearchName(item.name)
+      const name = shopSearchName(item.name, prefs)
       const key = name.toLowerCase()
       if (!name || key.length < 3 || seen.has(key)) return
       seen.add(key)

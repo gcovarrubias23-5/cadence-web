@@ -2,15 +2,18 @@ import { useMemo, useState } from 'react'
 import { groceryFromWeek } from './macros.js'
 import { buildShopText, buildReadableList } from './shopList.js'
 import { shopQty } from './shopQty.js'
+import { STEAK_CUTS, groceryHasSteak } from './shopPaste.js'
 
 const INSTACART = 'https://www.instacart.com'
 
 export function List({ days, factors, goal, checked, setChecked, copied, onCopy, onShare }) {
   const [span, setSpan] = useState('week')
   const [dayId, setDayId] = useState(days[0]?.id || 'mon')
+  const [steak, setSteak] = useState(() => localStorage.getItem('cadence.shopSteak') || 'flank')
   const slice = span === 'day' ? days.filter((d) => d.id === dayId) : days
   const grocery = useMemo(() => groceryFromWeek(slice, factors), [slice, factors])
-  const pasteText = useMemo(() => buildShopText(grocery), [grocery])
+  const prefs = useMemo(() => ({ steak }), [steak])
+  const pasteText = useMemo(() => buildShopText(grocery, prefs), [grocery, prefs])
   const readable = useMemo(() => buildReadableList(grocery, goal), [grocery, goal])
   const keys = grocery.flatMap((section) => section.items.map((item) => `${section.name}:${item.name}`))
   const totalItems = keys.length
@@ -18,6 +21,7 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
   const left = keys.filter((key) => !checked[key]).length
   const allOn = totalItems > 0 && left === 0
   const dayMeta = days.find((d) => d.id === dayId)
+  const showSteak = groceryHasSteak(grocery)
 
   function selectAll() {
     setChecked((prev) => {
@@ -25,6 +29,11 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
       keys.forEach((key) => { next[key] = !allOn })
       return next
     })
+  }
+
+  function pickSteak(id) {
+    setSteak(id)
+    localStorage.setItem('cadence.shopSteak', id)
   }
 
   return (
@@ -56,9 +65,28 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
         </div>
       )}
 
+      {showSteak && (
+        <section className="card">
+          <div className="goal-title">Steak this week</div>
+          <p className="note" style={{ marginTop: 0 }}>Safeway often misses flank. Pick the cut you want Instacart to search.</p>
+          <div className="checkin-row">
+            {STEAK_CUTS.map((cut) => (
+              <button
+                key={cut.id}
+                type="button"
+                className={steak === cut.id ? 'checkin on' : 'checkin'}
+                onClick={() => pickSteak(cut.id)}
+              >
+                <strong>{cut.label}</strong>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div className="card">
         <p className="note" style={{ marginTop: 0 }}>
-          Copy is one grocery name per line — no aisles, no macros, no “1 jar.” That is what Instacart paste can read. Amounts stay on this screen.
+          Copy is one grocery name per line. Amounts stay on this screen.
         </p>
         <div className="shop-actions">
           <button className="btn" type="button" onClick={() => onCopy(pasteText)}>{copied === 'copied' ? 'Copied' : 'Copy for Instacart'}</button>
