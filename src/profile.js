@@ -56,7 +56,13 @@ export function buildTargets(profile) {
   const fatKcal = kcal * 0.27
   let fat = Math.round(fatKcal / 9)
   let carbs = Math.round((kcal - protein * 4 - fat * 9) / 4)
-  if (carbs < 80) {
+  if (profile.style === 'keto') {
+    carbs = 30
+    fat = Math.max(40, Math.round((kcal - protein * 4 - carbs * 4) / 9))
+  } else if (profile.style === 'carnivore') {
+    carbs = 8
+    fat = Math.max(40, Math.round((kcal - protein * 4 - carbs * 4) / 9))
+  } else if (carbs < 80) {
     carbs = 80
     fat = Math.max(35, Math.round((kcal - protein * 4 - carbs * 4) / 9))
   }
