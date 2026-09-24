@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { groceryFromWeek } from './macros.js'
-import { buildShopText } from './shopList.js'
+import { buildShopText, buildReadableList } from './shopList.js'
 import { shopQty } from './shopQty.js'
 
 const INSTACART = 'https://www.instacart.com'
@@ -10,9 +10,11 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
   const [dayId, setDayId] = useState(days[0]?.id || 'mon')
   const slice = span === 'day' ? days.filter((d) => d.id === dayId) : days
   const grocery = useMemo(() => groceryFromWeek(slice, factors), [slice, factors])
-  const shopText = useMemo(() => buildShopText(grocery, goal), [grocery, goal])
+  const pasteText = useMemo(() => buildShopText(grocery), [grocery])
+  const readable = useMemo(() => buildReadableList(grocery, goal), [grocery, goal])
   const keys = grocery.flatMap((section) => section.items.map((item) => `${section.name}:${item.name}`))
   const totalItems = keys.length
+  const pasteCount = pasteText.split('\n').filter(Boolean).length
   const left = keys.filter((key) => !checked[key]).length
   const allOn = totalItems > 0 && left === 0
   const dayMeta = days.find((d) => d.id === dayId)
@@ -29,7 +31,7 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
     <>
       <section className="hero">
         <h1>{span === 'day' ? `Buy for ${dayMeta?.day || 'today'}.` : 'Buy for the week.'}</h1>
-        <p>{left} of {totalItems} still unchecked.</p>
+        <p>{left} of {totalItems} still unchecked. Copy sends {pasteCount} store names.</p>
       </section>
 
       <div className="card" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -55,11 +57,13 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
       )}
 
       <div className="card">
-        <p className="note" style={{ marginTop: 0 }}>Copy the list, then open Instacart and add what you need. Cadence does not log into your store.</p>
+        <p className="note" style={{ marginTop: 0 }}>
+          Copy is one grocery name per line — no aisles, no macros, no “1 jar.” That is what Instacart paste can read. Amounts stay on this screen.
+        </p>
         <div className="shop-actions">
-          <button className="btn" type="button" onClick={() => onCopy(shopText)}>{copied === 'copied' ? 'Copied' : 'Copy the list'}</button>
+          <button className="btn" type="button" onClick={() => onCopy(pasteText)}>{copied === 'copied' ? 'Copied' : 'Copy for Instacart'}</button>
           <a className="btn btn-ghost" href={INSTACART} target="_blank" rel="noreferrer">Open Instacart</a>
-          <button className="btn btn-ghost" type="button" onClick={() => onShare(shopText)}>Text it to myself</button>
+          <button className="btn btn-ghost" type="button" onClick={() => onShare(readable)}>Text amounts to myself</button>
         </div>
       </div>
 
