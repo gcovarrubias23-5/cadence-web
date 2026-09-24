@@ -10,10 +10,8 @@ import {
 import {
   dayTotals,
   factorsForDay,
-  formatMacro,
   goalFromMarks,
   groceryFromWeek,
-  kcalOf,
 } from './macros.js'
 import { applyPulse } from './checkin.js'
 import { buildShopText } from './shopList.js'
@@ -26,6 +24,7 @@ import { Invent } from './Invent.jsx'
 import { ChangeSheet } from './ChangeSheet.jsx'
 import { List } from './List.jsx'
 import { Profile } from './Profile.jsx'
+import { DayMacros } from './DayMacros.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import { archiveWeek } from './weekHistory.js'
@@ -163,7 +162,6 @@ export default function App() {
     setPicking(null)
   }
   function savePlate(meal, slotId) {
-    const slot = slotId || picking?.slot || (SNACK_IDS.includes(meal.slot) ? 'lunch' : meal.slot)
     setCustom((prev) => [meal, ...prev.filter((m) => m.id !== meal.id)])
     if (picking?.dayId) {
       setPicks((prev) => prev.map((row) => (row.id === picking.dayId ? { ...row, [picking.slot]: meal.id } : row)))
@@ -235,7 +233,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Tick a plate when you eat. Use + glass or tap a circle for water. New plates land after check-in or when the week turns.</p>
+            <p>Tick a plate when you eat. Calories are a band. Protein, carbs, and fat stay exact.</p>
           </section>
           {due && (
             <section className="card" style={{ borderColor: 'var(--accent)' }}>
@@ -256,28 +254,15 @@ export default function App() {
                 <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('') }}>
                   <span>
                     <span className="day-name">{d.day}</span>
-                    <span className="macro-line">
-                      {Math.round(kcalOf(totals))} cal · {formatMacro(totals.protein)} P · {formatMacro(totals.carbs)} C · {formatMacro(totals.fat)} F
-                    </span>
+                    <DayMacros kcal={goal.kcal} protein={totals.protein} carbs={totals.carbs} fat={totals.fat} />
                   </span>
                 </button>
                 <div style={{ padding: '0 4px 12px' }}>
-                  <ProgressBars
-                    ate={ate}
-                    drinks={drinks}
-                    onAddWater={() => sip(d.id)}
-                    onRemoveWater={() => pour(d.id)}
-                  />
+                  <ProgressBars ate={ate} drinks={drinks} onAddWater={() => sip(d.id)} onRemoveWater={() => pour(d.id)} />
                   <p className="note" style={{ margin: '8px 0 0' }}>Tap a glass to set the count.</p>
                   <div className="glasses" style={{ marginTop: 8 }}>
                     {Array.from({ length: WATER_GOAL }, (_, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        className={i < drinks ? 'glass on' : 'glass'}
-                        aria-label={`${i + 1} glasses`}
-                        onClick={() => setWater((prev) => setGlasses(prev, d.id, i + 1 === drinks ? i : i + 1))}
-                      />
+                      <button key={i} type="button" className={i < drinks ? 'glass on' : 'glass'} aria-label={`${i + 1} glasses`} onClick={() => setWater((prev) => setGlasses(prev, d.id, i + 1 === drinks ? i : i + 1))} />
                     ))}
                   </div>
                 </div>
@@ -314,45 +299,15 @@ export default function App() {
       )}
 
       {tab === 'checkin' && (
-        <Checkin
-          marks={marks}
-          goal={goal}
-          lastMove={lastMove}
-          onPulse={pulse}
-          onPatch={patch}
-          platesAte={weekPlates}
-          plateGoal={plateGoal}
-          waterDrank={weekWater}
-          waterGoal={waterGoalWeek}
-          due={due}
-          daysLeft={daysLeft}
-        />
+        <Checkin marks={marks} goal={goal} lastMove={lastMove} onPulse={pulse} onPatch={patch} platesAte={weekPlates} plateGoal={plateGoal} waterDrank={weekWater} waterGoal={waterGoalWeek} due={due} daysLeft={daysLeft} />
       )}
 
       {tab === 'build' && (
-        <Build
-          picks={picks}
-          custom={custom}
-          onPick={(dayId, slot, current) => setPicking({ dayId, slot, current })}
-          onReset={resetWeek}
-          onCopyDay={copyDay}
-          onRepeatSlot={repeatSlot}
-          onInvent={() => setInventOpen(true)}
-          onDelete={deletePlate}
-        />
+        <Build picks={picks} custom={custom} onPick={(dayId, slot, current) => setPicking({ dayId, slot, current })} onReset={resetWeek} onCopyDay={copyDay} onRepeatSlot={repeatSlot} onInvent={() => setInventOpen(true)} onDelete={deletePlate} />
       )}
 
       {tab === 'grocery' && (
-        <List
-          days={DAYS}
-          factors={factors}
-          goal={goal}
-          checked={checked}
-          setChecked={setChecked}
-          copied={copied}
-          onCopy={copyList}
-          onShare={shareList}
-        />
+        <List days={DAYS} factors={factors} goal={goal} checked={checked} setChecked={setChecked} copied={copied} onCopy={copyList} onShare={shareList} />
       )}
 
       {tab === 'you' && (
@@ -360,23 +315,11 @@ export default function App() {
       )}
 
       {picking && (
-        <ChangeSheet
-          picking={picking}
-          custom={custom}
-          avoid={avoid}
-          onChoose={choose}
-          onInvent={() => { setPicking(null); setInventOpen(true) }}
-          onClose={() => setPicking(null)}
-        />
+        <ChangeSheet picking={picking} custom={custom} avoid={avoid} onChoose={choose} onInvent={() => { setPicking(null); setInventOpen(true) }} onClose={() => setPicking(null)} />
       )}
 
       {inventOpen && (
-        <Invent
-          goal={goal}
-          defaultSlot={picking?.slot || 'lunch'}
-          onSave={savePlate}
-          onClose={() => setInventOpen(false)}
-        />
+        <Invent goal={goal} defaultSlot={picking?.slot || 'lunch'} onSave={savePlate} onClose={() => setInventOpen(false)} />
       )}
     </div>
   )
