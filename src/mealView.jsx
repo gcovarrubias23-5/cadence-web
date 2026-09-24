@@ -41,13 +41,16 @@ export function Meal({ label, meal, factor }) {
         {kitchen && (
           <div className="card" style={{ margin: '12px 0', padding: 12 }}>
             <div className="goal-title">How to cook it</div>
-            <p className="note" style={{ marginTop: 6 }}>{kitchen.preview}</p>
+            <p className="note" style={{ marginTop: 6 }}>
+              {kitchen.preview}{kitchen.time ? ` · ${kitchen.time}` : ''}
+            </p>
+            {kitchen.ahead ? <p className="note">{kitchen.ahead}</p> : null}
             <ol className="steps">
               {kitchen.locked.map((step) => (
                 <li key={step}>{step}</li>
               ))}
             </ol>
-            <p className="note">Test view. We hide this behind the upgrade next.</p>
+            {kitchen.done ? <p className="note">Done when: {kitchen.done}</p> : null}
           </div>
         )}
 
