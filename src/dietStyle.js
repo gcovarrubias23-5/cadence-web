@@ -4,8 +4,8 @@ export const STYLES = [
   { id: 'carnivore', label: 'Carnivore', line: 'Animal foods. Eggs and dairy stay in.' },
 ]
 
-const KETO_NO = /oat|granola|bread|toast|bagel|muffin|pita|tortilla|pasta|rice|quinoa|farro|bean|lentil|chickpea|hummus|potato|banana|grape|apple|orange|mango|peach|date|pineapple|pretzel|cracker|pancake|bun|teriyaki|honey|maple|overnight/i
-const PLANT = /oat|granola|bread|toast|bagel|muffin|pita|tortilla|pasta|rice|quinoa|farro|bean|lentil|chickpea|hummus|potato|banana|grape|apple|orange|mango|peach|date|pineapple|pretzel|cracker|pancake|bun|berry|berries|spinach|lettuce|cabbage|broccoli|pepper|tomato|cucumber|avocado|salsa|lime|lemon|kiwi|asparagus|zucchini|mushroom|onion|garlic|carrot|celery|kale|edamame|tofu|tempeh|pea|corn|quinoa/i
+const KETO_NO = /oat|granola|bread|toast|bagel|muffin|pita|tortilla|pasta|rice|quinoa|farro|bean|lentil|chickpea|hummus|potato|banana|grape|apple|orange|mango|peach|date|pineapple|pretzel|cracker|pancake|bun|teriyaki|honey|maple|overnight|chocolate|watermelon|kiwi|corn|pea\b|squash/i
+const PLANT = /oat|granola|bread|toast|bagel|muffin|pita|tortilla|pasta|rice|quinoa|farro|bean|lentil|chickpea|hummus|potato|banana|grape|apple|orange|mango|peach|date|pineapple|pretzel|cracker|pancake|bun|berry|berries|spinach|lettuce|cabbage|broccoli|pepper|tomato|cucumber|avocado|salsa|lime|lemon|kiwi|asparagus|zucchini|mushroom|onion|garlic|carrot|celery|kale|edamame|tofu|tempeh|pea|corn|quinoa|olive|chocolate|kimchi|pickle|radish|jicama/i
 
 function blob(meal) {
   const foods = (meal?.foods || []).map((f) => f.name).join(' ')
@@ -21,7 +21,7 @@ export function mealFitsStyle(meal, style) {
   const text = blob(meal)
   if (style === 'keto') {
     if (KETO_NO.test(text)) return false
-    return carbsOf(meal) <= 28
+    return carbsOf(meal) <= 20
   }
   if (style === 'carnivore') {
     return !PLANT.test(text)
