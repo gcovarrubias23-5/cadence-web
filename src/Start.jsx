@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
+import { setPlan, startTrial } from './trial.js'
 
 const STEPS = ['welcome', 'age', 'sex', 'size', 'move', 'goal', 'result']
 
@@ -18,6 +19,7 @@ const EMPTY = {
 export function Start({ onDone }) {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState(EMPTY)
+  const [pay, setPay] = useState(false)
   const id = STEPS[step]
   const ready = canAdvance(id, form)
   const math = useMemo(() => {
@@ -29,7 +31,17 @@ export function Start({ onDone }) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  function begin() {
+    startTrial()
+    setPlan('trial')
+    setStep(1)
+  }
+
   function next() {
+    if (id === 'welcome') {
+      begin()
+      return
+    }
     if (id === 'result') {
       onDone(form, math)
       return
@@ -43,15 +55,32 @@ export function Start({ onDone }) {
       <header>
         <div>
           <div className="brand">Cadence</div>
-          <div className="eyebrow">Start here</div>
+          <div className="eyebrow">A rhythm, not a streak</div>
         </div>
       </header>
 
       {id === 'welcome' && (
-        <section className="hero">
-          <h1>You do not need a perfect week.</h1>
-          <p>You need a rhythm. Same six plates. Same water. One honest check-in. Tell us a few facts. We size the plates from a standard calorie equation. You live the week.</p>
-        </section>
+        <>
+          <section className="hero">
+            <h1>Eat on a cadence. Not on a guilt calendar.</h1>
+            <p>Other apps open with 80 screens or a card before you have seen a plate. We open with two weeks free. No card. Six plates. Water. A list you can shop. One honest check-in after the first week.</p>
+          </section>
+          <section className="card">
+            <div className="goal-title">Two weeks free</div>
+            <p className="note" style={{ marginTop: 0 }}>The kitchen, the list, and the weekly feel check. We do not take a card to start. If it fits, stay. If it does not, you leave with nothing charged.</p>
+          </section>
+          <section className="card">
+            <div className="goal-title">Stay after</div>
+            <p className="note" style={{ marginTop: 0 }}>Month-to-month or a year when you are ready. Cooking notes are the paid layer later. Checkout is not live in this preview.</p>
+            <button className="btn btn-ghost" type="button" onClick={() => setPay((v) => !v)}>{pay ? 'Hide plans' : 'See plans'}</button>
+            {pay && (
+              <>
+                <button className="option" type="button" onClick={() => setPlan('month')}><strong>Month</strong><span>Stay after the two weeks. Price set at launch.</span></button>
+                <button className="option" type="button" onClick={() => setPlan('year')}><strong>Year</strong><span>Same kitchen. Better rate when we publish it.</span></button>
+              </>
+            )}
+          </section>
+        </>
       )}
 
       {id === 'age' && (
@@ -128,7 +157,7 @@ export function Start({ onDone }) {
       )}
 
       <button className="btn" type="button" disabled={!ready && id !== 'welcome' && id !== 'result'} onClick={next}>
-        {id === 'welcome' ? 'Begin' : id === 'result' ? 'Take me to the kitchen' : 'Continue'}
+        {id === 'welcome' ? 'Get started' : id === 'result' ? 'Take me to the kitchen' : 'Continue'}
       </button>
       {step > 0 && id !== 'result' && (
         <button className="btn btn-ghost" type="button" onClick={() => setStep((n) => n - 1)}>Back</button>
