@@ -28,13 +28,16 @@ export function Checkin({
   const platePct = Math.round((platesAte / Math.max(plateGoal, 1)) * 100)
   const waterPct = Math.round((waterDrank / Math.max(waterGoal, 1)) * 100)
   const draft = adaptWeek({ platePct, goalId: readGoal() })
+  const feelWins = draft.firstMonth
   return (
     <>
       <section className="hero">
         <h1>Weekly check-in.</h1>
         <p>
           {due
-            ? 'A week has passed. Read the draft, then say if you had enough. You can take it or override.'
+            ? (feelWins
+              ? 'A week has passed. Read the draft. This first month, how you felt still wins.'
+              : 'A week has passed. Read the draft, then say if you had enough. You can take it or override.')
             : `You already checked in. This comes back in ${daysLeft} day${daysLeft === 1 ? '' : 's'}.`}
         </p>
       </section>
@@ -55,7 +58,11 @@ export function Checkin({
       <section className="card">
         <div className="goal-title">Draft for next week</div>
         <p className="note" style={{ marginTop: 0 }}>{draft.why}</p>
-        <p className="note">Suggested: {draft.label}. How you felt still wins.</p>
+        <p className="note">
+          {feelWins
+            ? 'This first month, how you felt still wins. Take the draft only if it matches.'
+            : 'You can take the draft or override it.'}
+        </p>
         {due && (
           <button className="btn" type="button" onClick={() => onPulse(draft.move)}>
             Take the suggestion
@@ -68,9 +75,9 @@ export function Checkin({
           <div className="goal-title">{PULSE_COPY.prompt}</div>
           <p className="note" style={{ marginTop: 0 }}>{PULSE_COPY.hint}</p>
           <div className="checkin-row">
-            <PulseBtn active={lastMove === 'hungry' || (!lastMove && draft.move === 'hungry')} onClick={() => onPulse('hungry')} {...PULSE_COPY.hungry} suggested={draft.move === 'hungry'} />
-            <PulseBtn active={lastMove === 'right' || (!lastMove && draft.move === 'right')} onClick={() => onPulse('right')} {...PULSE_COPY.right} suggested={draft.move === 'right'} />
-            <PulseBtn active={lastMove === 'heavy' || (!lastMove && draft.move === 'heavy')} onClick={() => onPulse('heavy')} {...PULSE_COPY.heavy} suggested={draft.move === 'heavy'} />
+            <PulseBtn active={lastMove === 'hungry'} onClick={() => onPulse('hungry')} {...PULSE_COPY.hungry} suggested={draft.move === 'hungry'} />
+            <PulseBtn active={lastMove === 'right'} onClick={() => onPulse('right')} {...PULSE_COPY.right} suggested={draft.move === 'right'} />
+            <PulseBtn active={lastMove === 'heavy'} onClick={() => onPulse('heavy')} {...PULSE_COPY.heavy} suggested={draft.move === 'heavy'} />
           </div>
           {lastMove ? (
             <p className="note">
