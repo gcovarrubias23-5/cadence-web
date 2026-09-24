@@ -64,7 +64,7 @@ export function Start({ onDone }) {
           <section className="hero">
             <h1 style={{ fontSize: 'clamp(44px, 11vw, 68px)', lineHeight: 1.05, margin: '8px 0 20px' }}>You made it.</h1>
             <p style={{ fontSize: 22, lineHeight: 1.5, maxWidth: '34rem' }}>
-              Come in. We will build a week that fits you — six plates a day, water beside them, and a grocery list you can carry into the store or use to order online.
+              Come in. We will build a week that fits you — six plates a day, track your water, and a grocery list you can carry into the store or use to order online.
             </p>
             <p style={{ fontSize: 20, lineHeight: 1.5, maxWidth: '34rem', marginTop: 14 }}>
               After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
