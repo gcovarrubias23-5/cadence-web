@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { WATER_GOAL } from './track.js'
+import { GREEN, WATER, HONEY } from './theme.js'
 
 export function ProgressBars({ ate, drinks, onAddWater, plateLabel, waterLabel }) {
   const platePct = Math.round(Math.min(100, (Number(ate) / 6) * 100))
@@ -39,12 +40,12 @@ export function ProgressBars({ ate, drinks, onAddWater, plateLabel, waterLabel }
       label="Water"
       value={waterLabel || `${drinks}/${WATER_GOAL} · ${waterPct}%`}
       pct={waterPct}
-      color="#3b82f6"
+      color={WATER}
     />
   )
   return (
     <div style={{ display: 'grid', gap: 12, marginTop: 10, width: '100%' }}>
-      <Bar label="Plates" value={plateLabel || `${ate}/6 · ${platePct}%`} pct={platePct} color="#2f7d4a" />
+      <Bar label="Plates" value={plateLabel || `${ate}/6 · ${platePct}%`} pct={platePct} color={GREEN} />
       {onAddWater ? (
         <button type="button" onClick={onAddWater} style={{ background: 'none', border: 0, padding: 0, textAlign: 'left', cursor: 'pointer' }}>
           {water}
@@ -74,7 +75,7 @@ function Confetti() {
   const bits = Array.from({ length: 28 }, (_, i) => ({
     left: `${(i * 37) % 100}%`,
     delay: `${(i % 8) * 0.04}s`,
-    color: ['#2f7d4a', '#3b82f6', '#c4a35a', '#f4e7c5'][i % 4],
+    color: [GREEN, WATER, HONEY, '#f4e7c5'][i % 4],
     rot: (i * 24) % 360,
   }))
   return (
