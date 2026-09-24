@@ -28,7 +28,10 @@ function weekKey(iso) {
 }
 
 export function WeightLog({ units = 'us' }) {
-  const label = units === 'metric' ? 'kg' : 'lb'
+  const metric = units === 'metric'
+  const label = metric ? 'kg' : 'lb'
+  const min = metric ? 30 : 70
+  const max = metric ? 250 : 450
   const [mode, setMode] = useState(() => localStorage.getItem('cadence.weightMode') || 'weekly')
   const [rows, setRows] = useState(load)
   const [value, setValue] = useState('')
@@ -41,9 +44,9 @@ export function WeightLog({ units = 'us' }) {
 
   function add() {
     const n = Number(value)
-    if (!n || n < 50 || n > 450) return
+    if (!n || n < min || n > max) return
     const date = mode === 'weekly' ? weekKey(today()) : today()
-    const next = [...rows.filter((r) => r.date !== date), { date, kg: units === 'metric', value: n, mode }]
+    const next = [...rows.filter((r) => r.date !== date), { date, kg: metric, value: n, mode }]
     setRows(next)
     save(next)
     setValue('')
@@ -72,7 +75,7 @@ export function WeightLog({ units = 'us' }) {
       <div className="goal-grid">
         <label className="goal-field">
           <span>{mode === 'weekly' ? `This week (${label})` : `Today (${label})`}</span>
-          <input type="number" min="50" max="450" step="0.1" value={value} onChange={(e) => setValue(e.target.value)} />
+          <input type="number" min={min} max={max} step="0.1" value={value} onChange={(e) => setValue(e.target.value)} />
         </label>
       </div>
       <button className="btn" type="button" style={{ marginTop: 10 }} onClick={add}>Add weight</button>
@@ -98,13 +101,13 @@ function Line({ rows }) {
     return <p className="note">Add two logs to see the line.</p>
   }
   const vals = rows.map((r) => r.value)
-  const min = Math.min(...vals) - 1
-  const max = Math.max(...vals) + 1
+  const minV = Math.min(...vals) - 1
+  const maxV = Math.max(...vals) + 1
   const w = 280
   const h = 90
   const pts = rows.map((r, i) => {
     const x = rows.length === 1 ? w / 2 : (i / (rows.length - 1)) * w
-    const y = h - ((r.value - min) / (max - min || 1)) * h
+    const y = h - ((r.value - minV) / (maxV - minV || 1)) * h
     return `${x},${y}`
   }).join(' ')
   return (
@@ -112,7 +115,7 @@ function Line({ rows }) {
       <polyline fill="none" stroke="var(--accent)" strokeWidth="3" points={pts} />
       {rows.map((r, i) => {
         const x = rows.length === 1 ? w / 2 : (i / (rows.length - 1)) * w
-        const y = h - ((r.value - min) / (max - min || 1)) * h
+        const y = h - ((r.value - minV) / (maxV - minV || 1)) * h
         return <circle key={r.date} cx={x} cy={y} r="4" fill="var(--accent)" />
       })}
     </svg>

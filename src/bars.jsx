@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { WATER_GOAL } from './track.js'
 import { GREEN, WATER, HONEY } from './theme.js'
 
-export function ProgressBars({ ate, drinks, onAddWater, plateLabel, waterLabel }) {
+export function ProgressBars({ ate, drinks, onAddWater, onRemoveWater, plateLabel, waterLabel }) {
   const platePct = Math.round(Math.min(100, (Number(ate) / 6) * 100))
   const waterPct = Math.round(Math.min(100, (Number(drinks) / WATER_GOAL) * 100))
   const platesLeft = Math.max(0, 6 - Number(ate || 0))
@@ -35,22 +35,16 @@ export function ProgressBars({ ate, drinks, onAddWater, plateLabel, waterLabel }
           ? `Only ${platesLeft} plate${platesLeft === 1 ? '' : 's'} and ${waterLeft} glass${waterLeft === 1 ? '' : 'es'} left. You can do this.`
           : `${platesLeft} plate${platesLeft === 1 ? '' : 's'} and ${waterLeft} glass${waterLeft === 1 ? '' : 'es'} to a full day.`
 
-  const water = (
-    <Bar
-      label="Water"
-      value={waterLabel || `${drinks}/${WATER_GOAL} · ${waterPct}%`}
-      pct={waterPct}
-      color={WATER}
-    />
-  )
   return (
     <div style={{ display: 'grid', gap: 12, marginTop: 10, width: '100%' }}>
       <Bar label="Plates" value={plateLabel || `${ate}/6 · ${platePct}%`} pct={platePct} color={GREEN} />
-      {onAddWater ? (
-        <button type="button" onClick={onAddWater} style={{ background: 'none', border: 0, padding: 0, textAlign: 'left', cursor: 'pointer' }}>
-          {water}
-        </button>
-      ) : water}
+      <Bar label="Water" value={waterLabel || `${drinks}/${WATER_GOAL} · ${waterPct}%`} pct={waterPct} color={WATER} />
+      {(onAddWater || onRemoveWater) && (
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <button className="btn btn-ghost" type="button" onClick={onRemoveWater} style={{ marginTop: 0 }}>− glass</button>
+          <button className="btn" type="button" onClick={onAddWater} style={{ marginTop: 0 }}>+ glass</button>
+        </div>
+      )}
       <p className="note" style={{ margin: 0, fontWeight: 600 }}>{nudge}</p>
       {boom && <Confetti />}
     </div>
