@@ -6,9 +6,9 @@ import {
   mealOf,
   cleanWeek,
   firstSafe,
+  dropCustom,
 } from './plan.js'
 import {
-  DEFAULT_MARKS,
   dayTotals,
   factorsForDay,
   formatMacro,
@@ -88,7 +88,7 @@ export default function App() {
   })
   const [marks, setMarks] = useState(() => {
     const saved = loadJson('cadence.marks', null)
-    return saved ? { ...DEFAULT_MARKS, ...saved } : DEFAULT_MARKS
+    return saved ? { protein: 120, carbs: 150, fat: 60, weekMark: 5, mealsPerDay: 5, ...saved } : { protein: 120, carbs: 150, fat: 60, weekMark: 5, mealsPerDay: 5 }
   })
   const avoid = profile?.avoid || []
 
@@ -128,9 +128,11 @@ export default function App() {
     setLastCheckin(new Date().toISOString())
   }
   function finishStart(form, math) {
+    const now = new Date().toISOString()
     setProfile({ ...form, avoid: form.avoid || [], targets: math, done: true })
     setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
     setPicks((prev) => cleanWeek(prev, custom, form.avoid || []))
+    setLastCheckin(now)
     setTab('week')
   }
   function saveProfile(form, math) {
@@ -155,15 +157,9 @@ export default function App() {
     setTab('build')
   }
   function deletePlate(id) {
-    const nextCustom = custom.filter((m) => m.id !== id)
+    const { nextCustom, nextPicks } = dropCustom(picks, custom, id, avoid)
     setCustom(nextCustom)
-    setPicks((prev) => prev.map((row) => {
-      const next = { ...row }
-      SLOTS.forEach((slot) => {
-        if (row[slot.id] === id) next[slot.id] = firstSafe(slot.id, nextCustom, avoid, row[slot.id])
-      })
-      return next
-    }))
+    setPicks(nextPicks)
   }
   function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid)); setPicking(null) }
   function copyDay(dayId) {
@@ -227,7 +223,7 @@ export default function App() {
           {due && (
             <section className="card" style={{ borderColor: 'var(--accent)' }}>
               <div className="goal-title">Time to check in</div>
-              <p className="note" style={{ marginTop: 0 }}>A week has passed. Say how the food sat so next week can move.</p>
+              <p className="note" style={{ marginTop: 0 }}>A week has passed. Tell us if you had enough so next week can move.</p>
               <button className="btn" type="button" onClick={() => setTab('checkin')}>How did this week feel?</button>
             </section>
           )}
