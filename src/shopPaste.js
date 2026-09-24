@@ -1,52 +1,137 @@
 const RENAME = [
-  [/overnight oats|rolled oats|old fashioned oats/i, 'rolled oats'],
-  [/kodiak/i, 'kodiak pancake mix'],
+  [/kodiak/i, 'Kodiak pancake mix'],
+  [/fairlife shake/i, 'Fairlife protein shake'],
   [/fairlife/i, 'Fairlife milk'],
-  [/skyr/i, 'skyr yogurt'],
-  [/greek yogurt|nonfat yogurt/i, 'Greek yogurt'],
-  [/cottage cheese/i, 'cottage cheese'],
-  [/egg white/i, 'egg whites'],
+  [/overnight oats|dry oats|rolled oats/i, 'old fashioned oats'],
+  [/chia/i, 'chia seeds'],
+  [/skyr/i, 'Icelandic yogurt'],
+  [/whipped cottage|cottage cheese/i, 'cottage cheese'],
+  [/greek yogurt|plain greek/i, 'Greek yogurt'],
+  [/egg white/i, 'liquid egg whites'],
   [/^eggs?$/i, 'eggs'],
   [/rotisserie/i, 'rotisserie chicken'],
-  [/chicken breast/i, 'chicken breast'],
+  [/chicken sausage/i, 'chicken sausage'],
+  [/ground chicken/i, 'ground chicken'],
+  [/chicken thigh/i, 'chicken thighs'],
+  [/chicken breast/i, 'boneless chicken breast'],
   [/ground turkey/i, 'ground turkey'],
-  [/turkey breast|sliced turkey/i, 'sliced turkey'],
-  [/ahi|tuna steak/i, 'ahi tuna'],
+  [/turkey burger/i, 'turkey burgers'],
+  [/sliced turkey|turkey deli/i, 'sliced turkey'],
+  [/tuna pouch/i, 'tuna pouch'],
   [/canned tuna|tuna can/i, 'canned tuna'],
+  [/ahi|tuna steak/i, 'ahi tuna'],
+  [/canned salmon/i, 'canned salmon'],
+  [/smoked salmon/i, 'smoked salmon'],
+  [/salmon/i, 'salmon fillet'],
   [/shrimp/i, 'shrimp'],
-  [/salmon/i, 'salmon'],
-  [/lean ground beef|bolognese beef|ground beef/i, 'ground beef'],
+  [/cod/i, 'cod fillet'],
+  [/white fish/i, 'white fish fillet'],
+  [/flank steak/i, 'flank steak'],
+  [/pork tenderloin/i, 'pork tenderloin'],
+  [/ground beef|lean ground/i, 'lean ground beef'],
+  [/bison/i, 'ground bison'],
   [/steak|sirloin/i, 'sirloin steak'],
-  [/tofu/i, 'tofu'],
+  [/extra firm tofu|tofu/i, 'extra firm tofu'],
   [/tempeh/i, 'tempeh'],
+  [/edamame/i, 'edamame'],
+  [/protein powder/i, 'protein powder'],
+  [/protein bagel/i, 'protein bagel'],
   [/almond butter/i, 'almond butter'],
   [/peanut butter/i, 'peanut butter'],
+  [/cashew butter/i, 'cashew butter'],
   [/olive oil/i, 'olive oil'],
-  [/sourdough/i, 'sourdough bread'],
+  [/olives/i, 'olives'],
+  [/pesto/i, 'pesto'],
+  [/dark chocolate/i, 'dark chocolate'],
   [/ezekiel/i, 'Ezekiel bread'],
+  [/sourdough/i, 'sourdough bread'],
   [/english muffin/i, 'English muffins'],
-  [/tortilla/i, 'flour tortillas'],
+  [/pita/i, 'pita bread'],
+  [/granola/i, 'granola'],
+  [/chickpea pasta/i, 'chickpea pasta'],
+  [/dry pasta|pasta/i, 'pasta'],
+  [/flour tortilla/i, 'flour tortillas'],
+  [/corn tortilla/i, 'corn tortillas'],
+  [/brown rice/i, 'brown rice'],
+  [/white rice/i, 'white rice'],
+  [/quinoa/i, 'quinoa'],
+  [/farro/i, 'farro'],
+  [/black beans/i, 'black beans'],
+  [/chickpeas/i, 'chickpeas'],
+  [/lentils/i, 'lentils'],
+  [/hummus/i, 'hummus'],
+  [/salsa/i, 'salsa'],
   [/rice cake/i, 'rice cakes'],
+  [/crackers/i, 'crackers'],
+  [/pretzels/i, 'pretzels'],
   [/sweet potato/i, 'sweet potatoes'],
+  [/butternut/i, 'butternut squash'],
+  [/cauliflower rice/i, 'cauliflower rice'],
+  [/cabbage slaw|coleslaw/i, 'coleslaw mix'],
   [/baby spinach|spinach/i, 'spinach'],
+  [/romaine/i, 'romaine lettuce'],
   [/mixed greens|spring mix/i, 'spring mix'],
   [/bell pepper/i, 'bell peppers'],
-  [/grape/i, 'grapes'],
-  [/strawberr|blueberr|raspberr|mixed berr/i, 'berries'],
-  [/pineapple/i, 'canned pineapple'],
+  [/green beans/i, 'green beans'],
+  [/sugar snap/i, 'sugar snap peas'],
+  [/snap peas/i, 'sugar snap peas'],
+  [/mixed berr|blueberr|strawberr|raspberr/i, 'mixed berries'],
+  [/grape/i, 'red grapes'],
+  [/pineapple/i, 'pineapple'],
+  [/frozen mango|mango/i, 'frozen mango'],
+  [/watermelon/i, 'watermelon'],
   [/banana/i, 'bananas'],
   [/apple/i, 'apples'],
+  [/orange/i, 'oranges'],
+  [/peach/i, 'peaches'],
+  [/kiwi/i, 'kiwi'],
+  [/dates/i, 'Medjool dates'],
+  [/avocado/i, 'avocados'],
+  [/guacamole/i, 'guacamole'],
+  [/string cheese/i, 'string cheese'],
+  [/babybel/i, 'Mini Babybel'],
+  [/halloumi/i, 'halloumi cheese'],
+  [/cheddar/i, 'cheddar cheese'],
+  [/parmesan/i, 'parmesan cheese'],
+  [/feta/i, 'feta cheese'],
+  [/butter\b/i, 'butter'],
+  [/jicama/i, 'jicama'],
+  [/kimchi/i, 'kimchi'],
+  [/pickles/i, 'dill pickles'],
+  [/asparagus/i, 'asparagus'],
+  [/mushrooms/i, 'white mushrooms'],
+  [/zucchini/i, 'zucchini'],
+  [/cucumber/i, 'cucumber'],
+  [/celery/i, 'celery'],
+  [/kale/i, 'kale'],
+  [/radish/i, 'radishes'],
+  [/onion/i, 'yellow onion'],
+  [/potatoes/i, 'russet potatoes'],
+  [/peas\b/i, 'frozen peas'],
+  [/corn\b/i, 'frozen corn'],
+  [/carrots/i, 'carrots'],
+  [/broccoli/i, 'broccoli'],
+  [/cauliflower/i, 'cauliflower'],
+  [/beets/i, 'beets'],
 ]
 
-const DROP = /leftover|cooked|grilled|chopped|sliced|fresh|raw|plain|nonfat|low fat|extra virgin|house/gi
+function tidy(name) {
+  return String(name || '')
+    .replace(/\d+%/g, ' ')
+    .replace(/,\s*(cooked|raw|dry|fresh)\b/gi, ' ')
+    .replace(/\b(leftover|cooked|grilled|chopped|sliced|fresh|raw|plain|nonfat|low[- ]fat|extra virgin|house|dry)\b/gi, ' ')
+    .replace(/[,._/]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
 export function shopSearchName(name) {
-  const raw = String(name || '').trim()
+  const raw = tidy(name)
   if (!raw) return ''
   for (const [re, out] of RENAME) {
-    if (re.test(raw)) return out
+    if (re.test(raw) || re.test(String(name || ''))) return out
   }
-  return raw.replace(DROP, ' ').replace(/\s+/g, ' ').trim()
+  return raw
 }
 
 export function buildInstacartText(grocery) {
@@ -56,7 +141,7 @@ export function buildInstacartText(grocery) {
     section.items.forEach((item) => {
       const name = shopSearchName(item.name)
       const key = name.toLowerCase()
-      if (!name || seen.has(key)) return
+      if (!name || key.length < 3 || seen.has(key)) return
       seen.add(key)
       lines.push(name)
     })
