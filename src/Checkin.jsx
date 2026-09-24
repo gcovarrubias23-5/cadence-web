@@ -1,6 +1,7 @@
 import { PULSE_COPY } from './checkin.js'
 import { WATER_GOAL } from './track.js'
 import { ProgressBars } from './bars.jsx'
+import { formatKcalRange } from './kcalRange.js'
 
 export function Checkin({
   marks,
@@ -69,14 +70,14 @@ export function Checkin({
 
       <section className="card">
         <div className="goal-title">Next week’s numbers</div>
-        <p className="note" style={{ marginTop: 0 }}>These follow the check-in.</p>
+        <p className="note" style={{ marginTop: 0 }}>Protein, carbs, and fat stay exact. Calories are a band so you are not chasing one number.</p>
         <div className="goal-grid" style={{ marginTop: 14 }}>
           <MarkInput label="protein" value={marks.protein} onChange={(v) => onPatch('protein', Number(v) || 0)} />
           <MarkInput label="carbs" value={marks.carbs} onChange={(v) => onPatch('carbs', Number(v) || 0)} />
           <MarkInput label="fat" value={marks.fat} onChange={(v) => onPatch('fat', Number(v) || 0)} />
           <div className="goal-field">
             <span>calories</span>
-            <div className="kcal-readout">{Math.round(goal.kcal)}</div>
+            <div className="kcal-readout">{formatKcalRange(goal.kcal)}</div>
           </div>
         </div>
       </section>
