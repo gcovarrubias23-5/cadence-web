@@ -11,15 +11,19 @@ Alternate subtitles if taken:
 - Eat the week, then adjust
 
 ## Promotional text (170 characters, can change anytime)
-Six plates a day, water beside them, and a grocery list you can take to the store. After seven days we ask if you had enough. Next week follows you.
+Come in. We will build a week that fits you — six plates a day, a way to track your water, and a grocery list you can carry into the store or use to order online.
+
+(162 characters. Same sentence as the welcome screen.)
 
 ## Description
-Cadence is a week of plates for one person.
+Come in. We will build a week that fits you — six plates a day, a way to track your water, and a grocery list you can carry into the store or use to order online.
 
-You answer a few questions. We size the first week. You cook, eat, and drink. After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
+After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
+
+You answer a few questions. We size the first week. You cook, eat, and drink.
 
 Kitchen
-Tick a plate when you eat. Track your water with glasses. Calories are a band so you are not chasing one number. Protein, carbs, and fat stay exact.
+Tick a plate when you eat. Track your water. Calories are a band so you are not chasing one number. Protein, carbs, and fat stay exact.
 
 Build
 Keep the week we made, or invent a plate from protein, carbs, and fat. Save it. Use it again.
@@ -32,7 +36,7 @@ Weight when you want it. How the week went. Foods to skip. Every three months we
 
 Cadence is not a doctor and not an allergy certificate. We hide the obvious wrong plate. You still read a label.
 
-Two weeks to try the whole kitchen. Cooking notes are part of the paid layer when that ships.
+Two weeks on us. No card tonight. Cooking notes come with the paid layer when that ships.
 
 ## Keywords (100 characters, comma-separated, no spaces after commas if you need room)
 meal plan,macros,grocery list,protein,meal prep,water tracker,calories,nutrition,food planner,diet
