@@ -27,7 +27,7 @@ function load(key, fallback) {
   }
 }
 
-export function Profile({ profile, onSave, onCheckin }) {
+export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
   const [form, setForm] = useState(() => ({
     units: profile.units || 'us',
     age: profile.age || '',
@@ -177,6 +177,11 @@ export function Profile({ profile, onSave, onCheckin }) {
         <button className="change" type="button" onClick={saveWeekToHistory}>
           Save this week to history
         </button>
+        {onSpinWeek && (
+          <button className="change" type="button" onClick={onSpinWeek}>
+            Spin a new week of plates
+          </button>
+        )}
       </details>
     </>
   )
