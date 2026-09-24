@@ -54,29 +54,29 @@ export function Start({ onDone }) {
     <div className="app">
       <header>
         <div>
-          <div className="brand">Cadence</div>
-          <div className="eyebrow">Your plates. Your pace.</div>
+          <div className="brand" style={{ fontSize: 22 }}>Cadence</div>
+          <div className="eyebrow" style={{ fontSize: 15 }}>Glad you are here</div>
         </div>
       </header>
 
       {id === 'welcome' && (
         <>
           <section className="hero">
-            <h1 style={{ fontSize: 'clamp(36px, 9vw, 56px)', lineHeight: 1.1, marginBottom: 16 }}>Welcome to Cadence.</h1>
-            <p style={{ fontSize: 20, lineHeight: 1.45 }}>
-              Six plates a day. Water beside them. A list that sounds like a store, not a lab. After a week we ask how the food sat, and next week follows.
+            <h1 style={{ fontSize: 'clamp(44px, 11vw, 68px)', lineHeight: 1.05, margin: '8px 0 20px' }}>You made it.</h1>
+            <p style={{ fontSize: 22, lineHeight: 1.5, maxWidth: 34 + 'rem' }}>
+              Come in. We will build a week that fits you — six plates, water beside them, and a list you can take to the store. After seven days we listen. Next week follows how the food sat.
             </p>
           </section>
           <section className="card">
-            <div className="goal-title">Two weeks on us</div>
-            <p className="note" style={{ marginTop: 0, fontSize: 16 }}>
-              Kitchen, list, and the weekly check-in. No card to start. Stay if the rhythm fits.
+            <div className="goal-title" style={{ fontSize: 20 }}>Two weeks on us</div>
+            <p className="note" style={{ marginTop: 8, fontSize: 18, lineHeight: 1.45 }}>
+              The whole kitchen is open. No card tonight. Stay when it feels like home.
             </p>
           </section>
           <section className="card">
-            <div className="goal-title">When you are ready</div>
-            <p className="note" style={{ marginTop: 0, fontSize: 16 }}>
-              Keep the same kitchen month to month or by the year. Cooking notes come with the paid layer. Checkout is still a preview.
+            <div className="goal-title" style={{ fontSize: 20 }}>When you are ready</div>
+            <p className="note" style={{ marginTop: 8, fontSize: 18, lineHeight: 1.45 }}>
+              Keep going by the month or the year. Cooking notes come with the paid layer. Checkout is still a preview.
             </p>
             <button className="btn btn-ghost" type="button" onClick={() => setPay((v) => !v)}>{pay ? 'Hide plans' : 'See plans'}</button>
             {pay && (
@@ -162,7 +162,7 @@ export function Start({ onDone }) {
         </>
       )}
 
-      <button className="btn" type="button" disabled={!ready && id !== 'welcome' && id !== 'result'} onClick={next}>
+      <button className="btn" type="button" style={id === 'welcome' ? { fontSize: 20, padding: '16px 20px' } : undefined} disabled={!ready && id !== 'welcome' && id !== 'result'} onClick={next}>
         {id === 'welcome' ? 'Get started' : id === 'result' ? 'Take me to the kitchen' : 'Continue'}
       </button>
       {step > 0 && id !== 'result' && (
