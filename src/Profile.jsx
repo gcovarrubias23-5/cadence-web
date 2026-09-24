@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { AVOIDS } from './avoid.js'
+import { STYLES } from './dietStyle.js'
 import { SeasonAsk } from './SeasonAsk.jsx'
 import { Adherence } from './Adherence.jsx'
 import { WeightLog } from './WeightLog.jsx'
@@ -39,6 +40,7 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
     weight: profile.weight || '',
     activity: profile.activity || 'steady',
     goal: profile.goal || 'hold',
+    style: profile.style || '',
     avoid: profile.avoid || [],
   }))
   const [tick, setTick] = useState(0)
@@ -68,7 +70,7 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
   }
   function save() {
     writeReview()
-    onSave({ ...form, avoid: form.avoid || [], goalReview: new Date().toISOString() }, math)
+    onSave({ ...form, avoid: form.avoid || [], style: form.style || '', goalReview: new Date().toISOString() }, math)
   }
   function saveWeekToHistory() {
     const eaten = load('cadence.eaten', {})
@@ -139,6 +141,16 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
         {GOALS.map((g) => (
           <button key={g.id} type="button" className={form.goal === g.id ? 'option on' : 'option'} onClick={() => patch('goal', g.id)}>
             <strong>{g.label}</strong><span>{g.line}</span>
+          </button>
+        ))}
+      </section>
+
+      <section className="card">
+        <div className="goal-title">How you eat</div>
+        <p className="note" style={{ marginTop: 0 }}>This hides plates that do not fit. Save to rebuild the week.</p>
+        {STYLES.map((s) => (
+          <button key={s.id || 'none'} type="button" className={(form.style || '') === s.id ? 'option on' : 'option'} onClick={() => patch('style', s.id)}>
+            <strong>{s.label}</strong><span>{s.line}</span>
           </button>
         ))}
       </section>
