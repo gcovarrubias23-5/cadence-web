@@ -1,19 +1,18 @@
 import { shopQty } from './shopQty.js'
+import { buildInstacartText } from './shopPaste.js'
 
-export function buildShopText(grocery, goal) {
-  const lines = [
-    'Cadence list',
-    `Aim for about ${Math.round(goal.protein)} protein, ${Math.round(goal.carbs)} carbs, ${Math.round(goal.fat)} fat a day`,
-    '',
-  ]
+export function buildShopText(grocery) {
+  return buildInstacartText(grocery)
+}
+
+export function buildReadableList(grocery, goal) {
+  const lines = []
   grocery.forEach((section) => {
-    lines.push(section.name.toUpperCase())
     section.items.forEach((item) => {
-      lines.push(`- ${item.name} — ${shopQty(item)}`)
+      lines.push(`${item.name} (${shopQty(item)})`)
     })
-    lines.push('')
   })
-  lines.push('Pay in your usual grocery app.')
+  if (goal) lines.push('', `About ${Math.round(goal.protein)}g protein a day`)
   return lines.join('\n')
 }
 
@@ -23,17 +22,5 @@ export const STORES = [
     name: 'Instacart',
     blurb: 'Paste the list there and check out like you always do.',
     state: 'We cannot drop it in your cart yet.',
-  },
-  {
-    id: 'walmart',
-    name: 'Walmart',
-    blurb: 'Same idea — shop in the Walmart app.',
-    state: 'Opens Walmart from here.',
-  },
-  {
-    id: 'list',
-    name: 'I will shop it',
-    blurb: 'Copy or text the list to yourself.',
-    state: 'Ready now.',
   },
 ]
