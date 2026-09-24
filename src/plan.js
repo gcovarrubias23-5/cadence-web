@@ -1,5 +1,6 @@
 import { MEALS, BREAKFASTS, LUNCHES, DINNERS, WEEK_LABEL } from './catalog.js'
 import { EXTRA_MEALS, EXTRA_BY_SLOT } from './catalogExtras.js'
+import { ADD_MEALS, ADD_BY_SLOT } from './catalogAdd.js'
 import { SNACK_MEALS, SNACKS } from './snacks.js'
 import { STYLE_MEALS, STYLE_BY_SLOT } from './catalogStyle.js'
 import { mealHitsAvoid, safeMeals } from './avoid.js'
@@ -19,7 +20,7 @@ export const SLOTS = [
 const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
 
 export function mealOf(id, custom = []) {
-  return MEALS[id] || EXTRA_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
+  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
 }
 
 export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
@@ -27,8 +28,8 @@ export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
   if (slot === 'breakfast') base = BREAKFASTS.map((id) => MEALS[id])
   if (slot === 'lunch') base = LUNCHES.map((id) => MEALS[id])
   if (slot === 'dinner') base = DINNERS.map((id) => MEALS[id])
-  const extraIds = EXTRA_BY_SLOT[slot] || []
-  const extras = extraIds.map((id) => EXTRA_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
+  const extraIds = [...(EXTRA_BY_SLOT[slot] || []), ...(ADD_BY_SLOT[slot] || [])]
+  const extras = extraIds.map((id) => EXTRA_MEALS[id] || ADD_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
   const styleKey = SNACK_SLOTS.includes(slot) ? 'snack' : slot
   const styled = (STYLE_BY_SLOT[styleKey] || []).map((id) => STYLE_MEALS[id]).filter(Boolean)
   const yours = custom.filter((m) => {
