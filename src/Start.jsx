@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { setPlan, startTrial } from './trial.js'
 import { formatKcalRange } from './kcalRange.js'
+import { InstallHint } from './InstallHint.jsx'
 
 const STEPS = ['welcome', 'age', 'sex', 'size', 'move', 'goal', 'result']
 
@@ -77,6 +78,7 @@ export function Start({ onDone }) {
               The whole kitchen is open. No card tonight. Stay when it feels like home.
             </p>
           </section>
+          <InstallHint />
           <section className="card">
             <div className="goal-title" style={{ fontSize: 20 }}>When you are ready</div>
             <p className="note" style={{ marginTop: 8, fontSize: 18, lineHeight: 1.45 }}>
