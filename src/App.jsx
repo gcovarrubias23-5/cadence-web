@@ -29,6 +29,8 @@ import { Profile } from './Profile.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import { archiveWeek } from './weekHistory.js'
+import { weekTurned } from './rotateWeek.js'
+import { spinMenus } from './weekSpin.js'
 import {
   WATER_GOAL,
   addGlass,
@@ -105,6 +107,11 @@ export default function App() {
     const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
     return () => clearTimeout(t)
   }, [tab, openDay, openSlot])
+  useEffect(() => {
+    if (!weekTurned()) return
+    const next = spinMenus(custom, avoid)
+    setPicks(next.picks)
+  }, [])
 
   const DAYS = useMemo(() => hydrate(picks, custom), [picks, custom])
   const goal = useMemo(() => goalFromMarks(marks), [marks])
@@ -123,11 +130,19 @@ export default function App() {
   const daysLeft = daysUntilCheckin(lastCheckin)
 
   function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
+  function spinWeek() {
+    const next = spinMenus(custom, avoid)
+    setPicks(next.picks)
+  }
   function pulse(move) {
-    archiveWeek({ plates: weekPlates, plateGoal, drinks: weekWater, waterGoal: waterGoalWeek })
+    archiveWeek({ plates: weekPlates, plateGoal, drinks: weekWater, waterGoal: waterGoalWeek }, move)
     setMarks((prev) => applyPulse(prev, move))
     setLastMove(move)
     setLastCheckin(new Date().toISOString())
+    spinWeek()
+    setEaten({})
+    setWater({})
+    setTab('you')
   }
   function finishStart(form, math) {
     const now = new Date().toISOString()
@@ -220,7 +235,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Tick a plate when you eat. Use + glass or tap a circle for water.</p>
+            <p>Tick a plate when you eat. Use + glass or tap a circle for water. New plates land after check-in or when the week turns.</p>
           </section>
           {due && (
             <section className="card" style={{ borderColor: 'var(--accent)' }}>
@@ -341,7 +356,7 @@ export default function App() {
       )}
 
       {tab === 'you' && (
-        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} />
+        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} onSpinWeek={spinWeek} />
       )}
 
       {picking && (
