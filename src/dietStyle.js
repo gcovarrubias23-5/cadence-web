@@ -18,6 +18,7 @@ function carbsOf(meal) {
 
 export function mealFitsStyle(meal, style) {
   if (!style || !meal) return true
+  if (meal.style && meal.style !== style) return false
   const text = blob(meal)
   if (style === 'keto') {
     if (KETO_NO.test(text)) return false
@@ -27,6 +28,25 @@ export function mealFitsStyle(meal, style) {
     return !PLANT.test(text)
   }
   return true
+}
+
+export function nameKey(name) {
+  return String(name || '')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean)
+    .sort()
+    .join(' ')
+}
+
+export function uniqueMeals(list) {
+  const seen = new Set()
+  return (list || []).filter((meal) => {
+    const key = nameKey(meal?.name)
+    if (!key || seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 export function readStyle() {
