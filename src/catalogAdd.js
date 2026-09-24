@@ -47,7 +47,6 @@ export const ADD_MEALS = {
     foods: [
       f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '5 oz chicken' }),
       f('Chickpea pasta, cooked', 140, 18, 45, 4.9, 'Pantry', { house: '1 cup chickpea pasta' }),
-      f('Marinara skip', 0, 0, 0, 0, 'Pantry', { house: '', pantry: true }),
       f('Broccoli, cooked', 156, 3.7, 11, 0.6, 'Produce', { house: '1 cup broccoli' }),
     ],
   },
