@@ -7,12 +7,23 @@ import { WeightLog } from './WeightLog.jsx'
 import { About } from './About.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 import { isCheckinDue } from './weekGate.js'
+import { archiveWeek } from './weekHistory.js'
+import { SLOTS } from './plan.js'
+import { WATER_GOAL, dayEatenCount, glassesFor } from './track.js'
 
 function readLastCheckin() {
   try {
     return JSON.parse(localStorage.getItem('cadence.lastCheckin') || 'null')
   } catch {
     return null
+  }
+}
+
+function load(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback))
+  } catch {
+    return fallback
   }
 }
 
@@ -58,6 +69,15 @@ export function Profile({ profile, onSave, onCheckin }) {
     writeReview()
     onSave({ ...form, avoid: form.avoid || [], goalReview: new Date().toISOString() }, math)
   }
+  function saveWeekToHistory() {
+    const eaten = load('cadence.eaten', {})
+    const water = load('cadence.water', {})
+    const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+    const plates = days.reduce((n, id) => n + dayEatenCount(eaten, id, SLOTS), 0)
+    const drinks = days.reduce((n, id) => n + glassesFor(water, id), 0)
+    archiveWeek({ plates, plateGoal: 42, drinks, waterGoal: days.length * WATER_GOAL })
+    setTick((n) => n + 1)
+  }
 
   return (
     <>
@@ -68,7 +88,7 @@ export function Profile({ profile, onSave, onCheckin }) {
       </section>
 
       <WeightLog units={form.units} />
-      <Adherence />
+      <Adherence key={tick} />
 
       <SeasonAsk onYou={() => document.getElementById('move-goal')?.scrollIntoView({ behavior: 'smooth' })} onStay={() => setTick((n) => n + 1)} />
 
@@ -132,7 +152,7 @@ export function Profile({ profile, onSave, onCheckin }) {
           const on = skips.includes(a.id)
           return (
             <button key={a.id} type="button" className={on ? 'option on' : 'option'} onClick={() => toggleAvoid(a.id)}>
-              <strong>{a.label}{on ? ' \u00b7 on' : ''}</strong>
+              <strong>{a.label}{on ? ' · on' : ''}</strong>
               <span>{on ? 'Tap to allow this food again' : a.line}</span>
             </button>
           )
@@ -150,12 +170,14 @@ export function Profile({ profile, onSave, onCheckin }) {
       <About />
       <details className="card">
         <summary className="qty">Preview tools</summary>
-        <p className="note">Only for trying the 90-day card before launch.</p>
+        <p className="note">Only for trying cards before launch.</p>
         <button className="change" type="button" onClick={() => { pretendSeasonDue(); setTick((n) => n + 1) }}>
           Pretend 3 months passed
         </button>
+        <button className="change" type="button" onClick={saveWeekToHistory}>
+          Save this week to history
+        </button>
       </details>
-      <span style={{ display: 'none' }}>{tick}</span>
     </>
   )
 }
