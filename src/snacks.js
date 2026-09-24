@@ -15,7 +15,7 @@ export const SNACK_MEALS = {
     id: 'grapesTurkey', name: 'Grapes and turkey', time: '3 min', slot: 'snack',
     foods: [
       f('Grapes', 100, 0.7, 18, 0.2, 'Produce', { house: '20 grapes' }),
-      f('Sliced turkey deli', 56, 10, 1, 1, 'Protein', { house: '2 oz turkey' }),
+      f('Sliced turkey deli', 56, 10, 1, 1, 'Protein', { house: '2 oz roasted turkey' }),
       f('Cheddar', 28, 7, 0.3, 9, 'Dairy', { house: '1 oz cheese' }),
     ],
   },
@@ -30,7 +30,7 @@ export const SNACK_MEALS = {
     id: 'riceCake', name: 'Rice cake and turkey', time: '3 min', slot: 'snack',
     foods: [
       f('Rice cake', 9, 0.7, 7, 0.1, 'Pantry', { house: '1 rice cake' }),
-      f('Sliced turkey deli', 56, 10, 1, 1, 'Protein', { house: '2 oz turkey' }),
+      f('Sliced turkey deli', 56, 10, 1, 1, 'Protein', { house: '2 oz roasted turkey' }),
       f('Almond butter', 16, 3.5, 3, 9, 'Pantry', { house: '1 Tbsp almond butter' }),
     ],
   },
@@ -63,9 +63,10 @@ export const SNACK_MEALS = {
     ],
   },
   shakeSnack: {
-    id: 'shakeSnack', name: 'Fairlife shake', time: '1 min', slot: 'snack',
+    id: 'shakeSnack', name: 'Protein shake', time: '2 min', slot: 'snack',
     foods: [
-      f('Fairlife shake', 240, 19, 7, 2.9, 'Dairy', { house: '1 Fairlife shake' }),
+      f('Protein powder', 30, 24, 3, 1.5, 'Pantry', { house: '1 scoop protein' }),
+      f('Milk', 240, 8, 12, 5, 'Dairy', { house: '1 cup milk' }),
     ],
   },
   chocolateYogurt: {

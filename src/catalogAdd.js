@@ -27,10 +27,11 @@ export const ADD_MEALS = {
       f('Mixed berries', 70, 0.7, 9, 0.3, 'Produce', { house: '1/2 cup berries' }),
     ],
   },
-  fairlifeBanana: {
-    id: 'fairlifeBanana', name: 'Fairlife and banana', time: '3 min', slot: 'breakfast',
+  shakeBanana: {
+    id: 'shakeBanana', name: 'Protein shake and banana', time: '3 min', slot: 'breakfast',
     foods: [
-      f('Fairlife shake', 240, 19, 7, 2.9, 'Dairy', { house: '1 Fairlife shake' }),
+      f('Protein powder', 30, 24, 3, 1.5, 'Pantry', { house: '1 scoop protein' }),
+      f('Milk', 240, 8, 12, 5, 'Dairy', { house: '1 cup milk' }),
       f('Banana', 118, 1.3, 27, 0.4, 'Produce', { house: '1 banana' }),
     ],
   },
@@ -107,7 +108,7 @@ export const ADD_MEALS = {
 }
 
 export const ADD_BY_SLOT = {
-  breakfast: ['smokedSalmonEggs', 'englishMuffinEgg', 'cottageBerryToast', 'fairlifeBanana'],
+  breakfast: ['smokedSalmonEggs', 'englishMuffinEgg', 'cottageBerryToast', 'shakeBanana'],
   lunch: ['porkRicePlate', 'chickpeaChicken', 'hummusPita', 'turkeyPita'],
   dinner: ['porkSweetPotato', 'codAsparagus', 'chickenCauliSkillet', 'halloumiVeg'],
 }
