@@ -5,7 +5,6 @@ import {
   SLOTS,
   mealOf,
   cleanWeek,
-  firstSafe,
   dropCustom,
 } from './plan.js'
 import {
@@ -29,9 +28,11 @@ import { List } from './List.jsx'
 import { Profile } from './Profile.jsx'
 import { scrollAnchorToTop } from './scroll.js'
 import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
+import { archiveWeek } from './weekHistory.js'
 import {
   WATER_GOAL,
   addGlass,
+  removeGlass,
   dayEatenCount,
   glassesFor,
   setGlasses,
@@ -123,6 +124,7 @@ export default function App() {
 
   function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
   function pulse(move) {
+    archiveWeek({ plates: weekPlates, plateGoal, drinks: weekWater, waterGoal: waterGoalWeek })
     setMarks((prev) => applyPulse(prev, move))
     setLastMove(move)
     setLastCheckin(new Date().toISOString())
@@ -140,7 +142,6 @@ export default function App() {
     setProfile({ ...form, targets: math, done: true })
     if (math) setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
     setPicks((prev) => cleanWeek(prev, custom, nextAvoid))
-    setTab('week')
   }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
@@ -179,6 +180,7 @@ export default function App() {
     setPicks((prev) => prev.map((row) => ({ ...row, [slot]: mealId })))
   }
   function sip(dayId) { setWater((prev) => addGlass(prev, dayId)) }
+  function pour(dayId) { setWater((prev) => removeGlass(prev, dayId)) }
 
   async function copyList(text) {
     const body = typeof text === 'string' ? text : shopText
@@ -218,7 +220,7 @@ export default function App() {
         <>
           <section className="hero">
             <h1>Today’s plan.</h1>
-            <p>Tick a plate when you eat. Tap water when you drink.</p>
+            <p>Tick a plate when you eat. Use + glass or tap a circle for water.</p>
           </section>
           {due && (
             <section className="card" style={{ borderColor: 'var(--accent)' }}>
@@ -245,13 +247,20 @@ export default function App() {
                   </span>
                 </button>
                 <div style={{ padding: '0 4px 12px' }}>
-                  <ProgressBars ate={ate} drinks={drinks} onAddWater={() => sip(d.id)} />
-                  <div className="glasses" style={{ marginTop: 10 }}>
+                  <ProgressBars
+                    ate={ate}
+                    drinks={drinks}
+                    onAddWater={() => sip(d.id)}
+                    onRemoveWater={() => pour(d.id)}
+                  />
+                  <p className="note" style={{ margin: '8px 0 0' }}>Tap a glass to set the count.</p>
+                  <div className="glasses" style={{ marginTop: 8 }}>
                     {Array.from({ length: WATER_GOAL }, (_, i) => (
                       <button
                         key={i}
                         type="button"
                         className={i < drinks ? 'glass on' : 'glass'}
+                        aria-label={`${i + 1} glasses`}
                         onClick={() => setWater((prev) => setGlasses(prev, d.id, i + 1 === drinks ? i : i + 1))}
                       />
                     ))}
