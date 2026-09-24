@@ -1,10 +1,6 @@
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
 import { kitchenFor } from './kitchenNotes.js'
-
-function sizeOf(food) {
-  const raw = String(food.house || '').replace(/palm[- ]size /i, '').replace(/palm of /i, '').replace(/\bpalm\b/gi, '').replace(/\s+/g, ' ').trim()
-  return raw
-}
+import { formatPortion } from './portion.js'
 
 export function Meal({ label, meal, factor }) {
   if (!meal) return null
@@ -27,16 +23,18 @@ export function Meal({ label, meal, factor }) {
 
         <div className="goal-title" style={{ marginTop: 12 }}>On the plate</div>
         <ul className="foods">
-          {plated.map((food) => (
-            <li key={food.name + food.grams}>
-              <strong>{food.name}</strong>
-              <div className="qty" style={{ marginTop: 4 }}>{formatG(food.grams)}</div>
-              {sizeOf(food) && <div className="qty">{sizeOf(food)}</div>}
-              <div className="qty" style={{ marginTop: 4 }}>
-                {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
-              </div>
-            </li>
-          ))}
+          {plated.map((food) => {
+            const portion = formatPortion(food)
+            return (
+              <li key={food.name + food.grams}>
+                <strong>{food.name}</strong>
+                <div className="qty" style={{ marginTop: 4 }}>{formatG(food.grams)}{portion ? ` · ${portion}` : ''}</div>
+                <div className="qty" style={{ marginTop: 4 }}>
+                  {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
+                </div>
+              </li>
+            )
+          })}
         </ul>
 
         {kitchen && (
