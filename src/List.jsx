@@ -22,6 +22,7 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
   const allOn = totalItems > 0 && left === 0
   const dayMeta = days.find((d) => d.id === dayId)
   const showSteak = groceryHasSteak(grocery)
+  const sameCount = pasteCount === totalItems
 
   function selectAll() {
     setChecked((prev) => {
@@ -40,7 +41,15 @@ export function List({ days, factors, goal, checked, setChecked, copied, onCopy,
     <>
       <section className="hero">
         <h1>{span === 'day' ? `Buy for ${dayMeta?.day || 'today'}.` : 'Buy for the week.'}</h1>
-        <p>{left} of {totalItems} still unchecked. Copy sends {pasteCount} store names.</p>
+        <p>
+          {left} of {totalItems} still unchecked.
+          {sameCount
+            ? ` Copy pastes ${pasteCount} names.`
+            : ` ${totalItems} on this list. Copy pastes ${pasteCount} names.`}
+        </p>
+        {!sameCount && (
+          <p className="note">Two foods can share one Instacart name, so the paste is shorter.</p>
+        )}
       </section>
 
       <div className="card" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
