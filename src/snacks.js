@@ -14,7 +14,7 @@ export const SNACK_MEALS = {
   },
   grapesTurkey: {
     id: 'grapesTurkey', name: 'Grapes and turkey', time: '3 min', slot: 'snack',
-    steps: ['20 grapes.', '2 oz turkey.', 'Optional: 1 oz cheese.'],
+    steps: ['20 grapes.', '2 oz turkey.', '1 oz cheese.'],
     foods: [
       f('Grapes', 100, 0.7, 18, 0.2, 'Produce', { house: '20 grapes' }),
       f('Sliced turkey deli', 56, 10, 1, 1, 'Protein', { house: '2 oz turkey' }),
@@ -48,10 +48,10 @@ export const SNACK_MEALS = {
   },
   yogurtSnack: {
     id: 'yogurtSnack', name: 'Yogurt cup', time: '2 min', slot: 'snack',
-    steps: ['3/4 cup Greek yogurt.', 'A handful of berries.'],
+    steps: ['3/4 cup Greek yogurt.', '1/2 cup berries.'],
     foods: [
       f('Plain Greek yogurt', 170, 17, 6, 0.8, 'Dairy', { house: '3/4 cup yogurt' }),
-      f('Mixed berries', 50, 0.5, 6, 0.2, 'Produce', { house: 'a handful of berries' }),
+      f('Mixed berries', 50, 0.5, 6, 0.2, 'Produce', { house: '1/2 cup berries' }),
     ],
   },
 }
