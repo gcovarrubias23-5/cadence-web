@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { setPlan, startTrial } from './trial.js'
+import { formatKcalRange } from './kcalRange.js'
 
 const STEPS = ['welcome', 'age', 'sex', 'size', 'move', 'goal', 'result']
 
@@ -154,12 +155,13 @@ export function Start({ onDone }) {
           <section className="card">
             <div className="goal-title">The math</div>
             <p className="note" style={{ marginTop: 0 }}>BMI {math.bmi} · {math.bmiText}. BMI is a screen, not a verdict.</p>
-            <p className="note">At rest about {math.bmr} calories. With your movement about {math.tdee}. First target {math.kcal}.</p>
+            <p className="note">Protein, carbs, and fat are exact. Calories are a band so you are not chasing one number.</p>
+            <p className="note">At rest about {math.bmr} calories. With your movement about {math.tdee}. First target {formatKcalRange(math.kcal)}.</p>
             <div className="goal-grid" style={{ marginTop: 12 }}>
               <Readout label="protein" value={`${math.protein} g`} />
               <Readout label="carbs" value={`${math.carbs} g`} />
               <Readout label="fat" value={`${math.fat} g`} />
-              <Readout label="calories" value={math.kcal} />
+              <Readout label="calories" value={formatKcalRange(math.kcal)} />
             </div>
           </section>
         </>
