@@ -1,8 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Source+Sans+3:wght@400;600;700&display=swap");
 :root {
-  --bg: #f3eee4; --ink: #1a1714; --muted: #5e574e; --card: #fffcf6;
-  --accent: #215e4c; --accent-soft: #dce8e2; --line: #e2d6c4;
-  --serif: "Fraunces", Georgia, serif; --sans: "Source Sans 3", system-ui, sans-serif;
+  --bg: #F5F0E8;
+  --ink: #2A2622;
+  --muted: #5e574e;
+  --card: #fffcf6;
+  --accent: #2F7D4A;
+  --accent-soft: #dce8e2;
+  --water: #3B6F8A;
+  --honey: #C4A35A;
+  --line: #e2d6c4;
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Source Sans 3", system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--ink); }

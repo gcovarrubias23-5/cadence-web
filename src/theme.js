@@ -1,0 +1,5 @@
+export const GREEN = '#2F7D4A'
+export const WATER = '#3B6F8A'
+export const HONEY = '#C4A35A'
+export const LINEN = '#F5F0E8'
+export const INK = '#2A2622'
