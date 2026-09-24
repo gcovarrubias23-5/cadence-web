@@ -4,7 +4,7 @@ import { ADD_MEALS, ADD_BY_SLOT } from './catalogAdd.js'
 import { SNACK_MEALS, SNACKS } from './snacks.js'
 import { STYLE_MEALS, STYLE_BY_SLOT } from './catalogStyle.js'
 import { mealHitsAvoid, safeMeals } from './avoid.js'
-import { mealFitsStyle, readStyle } from './dietStyle.js'
+import { mealFitsStyle, readStyle, uniqueMeals } from './dietStyle.js'
 
 export { WEEK_LABEL }
 
@@ -31,12 +31,16 @@ export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
   const extraIds = [...(EXTRA_BY_SLOT[slot] || []), ...(ADD_BY_SLOT[slot] || [])]
   const extras = extraIds.map((id) => EXTRA_MEALS[id] || ADD_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
   const styleKey = SNACK_SLOTS.includes(slot) ? 'snack' : slot
-  const styled = (STYLE_BY_SLOT[styleKey] || []).map((id) => STYLE_MEALS[id]).filter(Boolean)
+  const styled = (STYLE_BY_SLOT[styleKey] || [])
+    .map((id) => STYLE_MEALS[id])
+    .filter(Boolean)
+    .filter((m) => !style || !m.style || m.style === style)
+    .map((m) => ({ ...m, fresh: true }))
   const yours = custom.filter((m) => {
     if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
     return m.slot === slot || (m.slot === 'snack' && SNACK_SLOTS.includes(slot)) || !m.slot
   })
-  return safeMeals([...yours, ...styled, ...extras, ...base], avoid).filter((m) => mealFitsStyle(m, style))
+  return uniqueMeals(safeMeals([...yours, ...styled, ...extras, ...base], avoid).filter((m) => mealFitsStyle(m, style)))
 }
 
 export function firstSafe(slot, custom = [], avoid = [], style = readStyle()) {
