@@ -67,7 +67,7 @@ export function Start({ onDone }) {
               Come in. We will build a week that fits you — six plates a day, water beside them, and a grocery list you can carry into the store or use to order online.
             </p>
             <p style={{ fontSize: 20, lineHeight: 1.5, maxWidth: '34rem', marginTop: 14 }}>
-              After seven days we listen. Next week follows how the food sat.
+              After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
             </p>
           </section>
           <section className="card">
@@ -149,7 +149,7 @@ export function Start({ onDone }) {
         <>
           <section className="hero">
             <h1>Here is your first week.</h1>
-            <p>Resting burn and daily burn come from Mifflin–St Jeor times how you move. The goal only nudges that number. The weekly check-in will tune it from how the food sat.</p>
+            <p>After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.</p>
           </section>
           <section className="card">
             <div className="goal-title">The math</div>
