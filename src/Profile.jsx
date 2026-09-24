@@ -10,6 +10,7 @@ import { isCheckinDue } from './weekGate.js'
 import { archiveWeek } from './weekHistory.js'
 import { SLOTS } from './plan.js'
 import { WATER_GOAL, dayEatenCount, glassesFor } from './track.js'
+import { formatKcalRange } from './kcalRange.js'
 
 function readLastCheckin() {
   try {
@@ -162,7 +163,7 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
       {math && (
         <section className="card">
           <div className="goal-title">New targets</div>
-          <p className="note">{math.kcal} cal · {math.protein}g protein · {math.carbs}g carbs · {math.fat}g fat</p>
+          <p className="note">{formatKcalRange(math.kcal)} cal · {math.protein}g protein · {math.carbs}g carbs · {math.fat}g fat</p>
         </section>
       )}
 
