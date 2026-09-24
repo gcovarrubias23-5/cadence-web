@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { SLOTS } from './plan.js'
 import { WATER_GOAL, dayEatenCount, glassesFor } from './track.js'
 import { GREEN, WATER } from './theme.js'
+import { loadHistory, writeCurrentWeek } from './weekHistory.js'
 
 const DAYS = [
   { id: 'mon', label: 'M' },
@@ -20,6 +22,14 @@ function load(key) {
   }
 }
 
+function when(iso) {
+  try {
+    return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  } catch {
+    return ''
+  }
+}
+
 export function Adherence() {
   const eaten = load('cadence.eaten')
   const water = load('cadence.water')
@@ -29,6 +39,13 @@ export function Adherence() {
   const waterGoal = DAYS.length * WATER_GOAL
   const platePct = Math.round((plates / plateGoal) * 100)
   const waterPct = Math.round((drinks / waterGoal) * 100)
+  const [past, setPast] = useState(() => loadHistory().filter((h) => !h.open))
+
+  useEffect(() => {
+    writeCurrentWeek({ plates, plateGoal, drinks, waterGoal })
+    setPast(loadHistory().filter((h) => !h.open))
+  }, [plates, drinks, plateGoal, waterGoal])
+
   const lines = DAYS.map((d) => {
     const p = dayEatenCount(eaten, d.id, SLOTS)
     const w = glassesFor(water, d.id)
@@ -70,6 +87,21 @@ export function Adherence() {
           </div>
         ))}
       </div>
+      {past.length > 0 && (
+        <>
+          <div className="goal-title" style={{ marginTop: 18 }}>Earlier weeks</div>
+          {past.slice(0, 8).map((h) => (
+            <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, padding: '8px 0', borderTop: '1px solid var(--line)' }}>
+              <span className="qty">Week of {when(h.at)}</span>
+              <span className="qty">
+                <span style={{ color: GREEN, fontWeight: 700 }}>{h.platePct}% plates</span>
+                {' · '}
+                <span style={{ color: WATER, fontWeight: 700 }}>{h.waterPct}% water</span>
+              </span>
+            </div>
+          ))}
+        </>
+      )}
     </section>
   )
 }
