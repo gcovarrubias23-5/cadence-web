@@ -55,28 +55,34 @@ export function Start({ onDone }) {
       <header>
         <div>
           <div className="brand">Cadence</div>
-          <div className="eyebrow">A rhythm, not a streak</div>
+          <div className="eyebrow">Your plates. Your pace.</div>
         </div>
       </header>
 
       {id === 'welcome' && (
         <>
           <section className="hero">
-            <h1>Eat on a cadence. Not on a guilt calendar.</h1>
-            <p>Other apps open with 80 screens or a card before you have seen a plate. We open with two weeks free. No card. Six plates. Water. A list you can shop. One honest check-in after the first week.</p>
+            <h1 style={{ fontSize: 'clamp(36px, 9vw, 56px)', lineHeight: 1.1, marginBottom: 16 }}>Welcome to Cadence.</h1>
+            <p style={{ fontSize: 20, lineHeight: 1.45 }}>
+              Six plates a day. Water beside them. A list that sounds like a store, not a lab. After a week we ask how the food sat, and next week follows.
+            </p>
           </section>
           <section className="card">
-            <div className="goal-title">Two weeks free</div>
-            <p className="note" style={{ marginTop: 0 }}>The kitchen, the list, and the weekly feel check. We do not take a card to start. If it fits, stay. If it does not, you leave with nothing charged.</p>
+            <div className="goal-title">Two weeks on us</div>
+            <p className="note" style={{ marginTop: 0, fontSize: 16 }}>
+              Kitchen, list, and the weekly check-in. No card to start. Stay if the rhythm fits.
+            </p>
           </section>
           <section className="card">
-            <div className="goal-title">Stay after</div>
-            <p className="note" style={{ marginTop: 0 }}>Month-to-month or a year when you are ready. Cooking notes are the paid layer later. Checkout is not live in this preview.</p>
+            <div className="goal-title">When you are ready</div>
+            <p className="note" style={{ marginTop: 0, fontSize: 16 }}>
+              Keep the same kitchen month to month or by the year. Cooking notes come with the paid layer. Checkout is still a preview.
+            </p>
             <button className="btn btn-ghost" type="button" onClick={() => setPay((v) => !v)}>{pay ? 'Hide plans' : 'See plans'}</button>
             {pay && (
               <>
-                <button className="option" type="button" onClick={() => setPlan('month')}><strong>Month</strong><span>Stay after the two weeks. Price set at launch.</span></button>
-                <button className="option" type="button" onClick={() => setPlan('year')}><strong>Year</strong><span>Same kitchen. Better rate when we publish it.</span></button>
+                <button className="option" type="button" onClick={() => setPlan('month')}><strong>Month</strong><span>Stay after the two weeks. Price at launch.</span></button>
+                <button className="option" type="button" onClick={() => setPlan('year')}><strong>Year</strong><span>Same kitchen. A better year rate when we publish it.</span></button>
               </>
             )}
           </section>
