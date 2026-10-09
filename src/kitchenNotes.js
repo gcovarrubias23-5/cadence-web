@@ -220,6 +220,88 @@ export const KITCHEN = {
   yogurtSnack: note('No heat.', [
     'Yogurt in a cup. Berries on top.',
   ], { time: '2 min' }),
+  ketoEggsAvocado: note('Skillet only. Spinach last.', [
+    'Warm a nonstick skillet on medium with the oil.',
+    'Crack the eggs. Cook until the whites set. Yolks as you like.',
+    'Wilt the spinach in the pan for the last 20 seconds.',
+    'Plate. Half the avocado on the side. Salt at the table.',
+  ], { time: '8 min', done: 'Whites set. Spinach just soft.' }),
+  ketoYogurtCucumber: note('Bowl only. Oil last.', [
+    'Yogurt in a bowl.',
+    'Dice the cucumber. Salt it. Let it sit 2 minutes if you want it less watery.',
+    'Cucumber on the yogurt. Oil on top.',
+  ], { time: '4 min' }),
+  ketoSalmonGreens: note('One sheet pan. Broccoli first.', [
+    'Heat the oven to 425.',
+    'Line a rimmed sheet pan with parchment.',
+    'Toss broccoli with half the oil. Roast 8 minutes.',
+    'Push it aside. Salmon skin-down if it has skin. Rest of the oil on the fish.',
+    'Roast 10 to 12 minutes more. Lemon at the table.',
+  ], { time: '25 min', done: 'Salmon flakes at the thickest part. Broccoli still a little firm.' }),
+  ketoSteakEggs: note('Hot skillet. Steak first, then eggs.', [
+    'Pat the steak dry. Salt it.',
+    'Heat a skillet until very hot. Thin film of oil.',
+    '3 to 4 minutes a side for a pink center. Rest the steak.',
+    'Same pan, medium heat. Butter. Fry the eggs until the whites set.',
+    'Slice the steak across the grain. Eggs beside it.',
+  ], { time: '18 min', done: 'Steak rested. Whites set.' }),
+  ketoBurgerBowl: note('Skillet for the turkey. Cheese off the heat.', [
+    'Heat a skillet on medium-high. Turkey in a thin layer.',
+    'Wait for brown before you stir. Salt as it cooks.',
+    'Off the heat, melt the cheddar on the turkey.',
+    'Bowl: lettuce, turkey, cheese. Oil on top.',
+  ], { time: '15 min', done: 'Turkey browned, no pink left.' }),
+  ketoShrimpCabbage: note('Hot pan. Fast shrimp.', [
+    'Pat the shrimp dry. Salt them.',
+    'Heat a skillet on medium-high with the oil.',
+    'Shrimp in one layer, 2 minutes a side. Do not crowd.',
+    'Plate on the cabbage. Lime at the table.',
+  ], { time: '12 min', done: 'Shrimp pink and curled. No gray spots.' }),
+  ketoCheeseSnack: note('No heat.', [
+    'Plate turkey and cheese. That is the snack.',
+  ], { time: '2 min' }),
+  ketoEggSnack: note('Nonstick skillet.', [
+    'Warm a nonstick skillet on medium.',
+    'Scramble the eggs until just set.',
+    'Off the heat, melt the cheddar on the eggs.',
+  ], { time: '8 min', done: 'Eggs glossy, not dry.' }),
+  carnSteakEggs: note('Hot skillet. Steak first, then eggs.', [
+    'Pat the steak dry. Salt it.',
+    'Heat a skillet until very hot. Thin film of oil or butter.',
+    '3 to 4 minutes a side for a pink center. Rest the steak.',
+    'Same pan, medium. Butter. Fry the eggs until the whites set.',
+    'Slice the steak across the grain. Eggs beside it.',
+  ], { time: '18 min', done: 'Steak rested. Whites set.' }),
+  carnSalmonButter: note('Sheet pan or skillet. Butter at the end.', [
+    'Heat the oven to 425, or a skillet on medium-high.',
+    'Salmon skin-down if it has skin. Salt it.',
+    'Roast 12 to 14 minutes, or sear 4 minutes a side.',
+    'Butter on the hot fish. Rest 2 minutes.',
+  ], { time: '20 min', done: 'Thickest part flakes.' }),
+  carnBeefEggs: note('Skillet. Beef first.', [
+    'Heat a skillet on medium-high. Beef in a thin layer.',
+    'Wait for brown before you stir. Salt as it cooks.',
+    'Push the beef aside. Fry the eggs in the same pan.',
+  ], { time: '15 min', done: 'Beef browned. Whites set.' }),
+  carnChickenEggs: note('Chicken is already cooked. Eggs need the pan.', [
+    'Warm the chicken if you want it hot.',
+    'Fry the eggs in a nonstick skillet on medium until the whites set.',
+    'Eggs beside the chicken.',
+  ], { time: '10 min', done: 'Whites set.' }),
+  carnEggs: note('Nonstick skillet. Cheese off the heat.', [
+    'Warm a nonstick skillet on medium with the butter.',
+    'Scramble the eggs until just set.',
+    'Off the heat, melt the cheddar on the eggs.',
+  ], { time: '8 min', done: 'Eggs glossy. Cheese melted.' }),
+  carnYogurt: note('No heat.', [
+    'Yogurt in a bowl. That is the plate.',
+  ], { time: '1 min' }),
+  carnTurkeyCheese: note('No heat.', [
+    'Plate turkey and cheese.',
+  ], { time: '2 min' }),
+  carnEggSnack: note('Nonstick skillet.', [
+    'Fry or scramble the eggs on medium until the whites set.',
+  ], { time: '6 min', done: 'Whites set.' }),
 }
 
 const BY_NAME = {
@@ -264,6 +346,20 @@ const BY_NAME = {
   'Rice cake and turkey': 'riceCake',
   'Dates and cheese': 'datesCheese',
   'Yogurt cup': 'yogurtSnack',
+  'Eggs and avocado': 'ketoEggsAvocado',
+  'Yogurt and cucumber': 'ketoYogurtCucumber',
+  'Salmon and broccoli': 'ketoSalmonGreens',
+  'Steak and eggs': 'carnSteakEggs',
+  'Burger bowl': 'ketoBurgerBowl',
+  'Shrimp and cabbage': 'ketoShrimpCabbage',
+  'Cheese and turkey': 'ketoCheeseSnack',
+  'Eggs and cheddar': 'carnEggs',
+  'Salmon and butter': 'carnSalmonButter',
+  'Beef and eggs': 'carnBeefEggs',
+  'Chicken and eggs': 'carnChickenEggs',
+  'Plain yogurt': 'carnYogurt',
+  'Turkey and cheese': 'carnTurkeyCheese',
+  'Two eggs': 'carnEggSnack',
 }
 
 export function kitchenFor(meal) {
