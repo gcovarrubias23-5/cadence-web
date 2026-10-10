@@ -34,7 +34,7 @@ export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
   const styled = (STYLE_BY_SLOT[styleKey] || [])
     .map((id) => STYLE_MEALS[id])
     .filter(Boolean)
-    .filter((m) => !style || !m.style || m.style === style)
+    .filter((m) => (style ? (!m.style || m.style === style) : !m.style))
     .map((m) => ({ ...m, fresh: true }))
   const yours = custom.filter((m) => {
     if (SNACK_SLOTS.includes(slot)) return m.slot === 'snack' || SNACK_SLOTS.includes(m.slot)
@@ -52,12 +52,12 @@ export function firstSafe(slot, custom = [], avoid = [], style = readStyle()) {
 }
 
 export function cleanWeek(picks, custom = [], avoid = [], style = readStyle()) {
-  if (!avoid?.length && !style) return picks
   return picks.map((row) => {
     const next = { ...row }
     SLOTS.forEach((slot) => {
       const meal = mealOf(row[slot.id], custom)
-      if (mealHitsAvoid(meal, avoid) || !mealFitsStyle(meal, style)) {
+      const taggedOther = Boolean(meal?.style) && meal.style !== style
+      if (mealHitsAvoid(meal, avoid) || !mealFitsStyle(meal, style) || taggedOther) {
         next[slot.id] = firstSafe(slot.id, custom, avoid, style)
       }
     })
