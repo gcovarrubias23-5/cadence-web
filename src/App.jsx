@@ -145,17 +145,23 @@ export default function App() {
   }
   function finishStart(form, math) {
     const now = new Date().toISOString()
-    setProfile({ ...form, avoid: form.avoid || [], targets: math, done: true })
+    const nextStyle = form.style || ''
+    const nextProfile = { ...form, avoid: form.avoid || [], style: nextStyle, targets: math, done: true }
+    try { localStorage.setItem('cadence.profile', JSON.stringify(nextProfile)) } catch {}
+    setProfile(nextProfile)
     setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
-    setPicks((prev) => cleanWeek(prev, custom, form.avoid || []))
+    setPicks((prev) => cleanWeek(prev, custom, form.avoid || [], nextStyle))
     setLastCheckin(now)
     setTab('week')
   }
   function saveProfile(form, math) {
     const nextAvoid = form.avoid || []
-    setProfile({ ...form, targets: math, done: true })
+    const nextStyle = form.style || ''
+    const nextProfile = { ...form, style: nextStyle, targets: math, done: true }
+    try { localStorage.setItem('cadence.profile', JSON.stringify(nextProfile)) } catch {}
+    setProfile(nextProfile)
     if (math) setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
-    setPicks((prev) => cleanWeek(prev, custom, nextAvoid))
+    setPicks((prev) => cleanWeek(prev, custom, nextAvoid, nextStyle))
   }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
@@ -175,7 +181,7 @@ export default function App() {
     setCustom(nextCustom)
     setPicks(nextPicks)
   }
-  function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid)); setPicking(null) }
+  function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid, profile?.style || '')); setPicking(null) }
   function copyDay(dayId) {
     const src = picks.find((row) => row.id === dayId)
     if (!src) return
