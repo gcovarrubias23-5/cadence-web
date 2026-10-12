@@ -3,6 +3,7 @@ import { EXTRA_MEALS, EXTRA_BY_SLOT } from './catalogExtras.js'
 import { ADD_MEALS, ADD_BY_SLOT } from './catalogAdd.js'
 import { SNACK_MEALS, SNACKS } from './snacks.js'
 import { STYLE_MEALS, STYLE_BY_SLOT } from './catalogStyle.js'
+import { MORE_MEALS, MORE_BY_SLOT } from './styleMore.js'
 import { mealHitsAvoid, safeMeals } from './avoid.js'
 import { mealFitsStyle, readStyle, uniqueMeals } from './dietStyle.js'
 
@@ -20,7 +21,7 @@ export const SLOTS = [
 const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
 
 export function mealOf(id, custom = []) {
-  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
+  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || MORE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
 }
 
 export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
@@ -31,8 +32,8 @@ export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
   const extraIds = [...(EXTRA_BY_SLOT[slot] || []), ...(ADD_BY_SLOT[slot] || [])]
   const extras = extraIds.map((id) => EXTRA_MEALS[id] || ADD_MEALS[id]).filter(Boolean).map((m) => ({ ...m, fresh: true }))
   const styleKey = SNACK_SLOTS.includes(slot) ? 'snack' : slot
-  const styled = (STYLE_BY_SLOT[styleKey] || [])
-    .map((id) => STYLE_MEALS[id])
+  const styled = [...(STYLE_BY_SLOT[styleKey] || []), ...(MORE_BY_SLOT[styleKey] || [])]
+    .map((id) => STYLE_MEALS[id] || MORE_MEALS[id])
     .filter(Boolean)
     .filter((m) => (style ? (!m.style || m.style === style) : !m.style))
     .map((m) => ({ ...m, fresh: true }))
