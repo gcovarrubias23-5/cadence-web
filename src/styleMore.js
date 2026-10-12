@@ -171,6 +171,13 @@ export const MORE_MEALS = {
       f('Cottage cheese', 110, 12, 4, 2.5, 'Dairy', { house: '1/2 cup cottage cheese' }),
     ],
   },
+  carnBeefCheese: {
+    id: 'carnBeefCheese', name: 'Beef and cheddar', time: '12 min', slot: 'snack', style: 'carnivore',
+    foods: [
+      f('Lean ground beef', 80, 16, 0, 7, 'Protein', { house: '3 oz beef' }),
+      f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheddar' }),
+    ],
+  },
   ketoBaconEggs: {
     id: 'ketoBaconEggs', name: 'Bacon and eggs', time: '12 min', slot: 'breakfast', style: 'keto',
     foods: [
