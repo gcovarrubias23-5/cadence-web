@@ -1,5 +1,5 @@
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
-import { kitchenFor } from './kitchenNotes.js'
+import { kitchenFor } from './kitchenBridge.js'
 import { formatPortion } from './portion.js'
 
 export function Meal({ label, meal, factor }) {
