@@ -96,4 +96,83 @@ export const STYLE_NOTES = {
     'Brown the beef. Salt as it cooks.',
     'Off the heat, melt the cheddar on top.',
   ], { time: '12 min', done: 'Beef browned. Cheese melted.' }),
+  ketoBaconEggs: note('Skillet. Bacon first.', [
+    'Cook bacon until crisp. Drain if you like.',
+    'Push aside. Eggs until the whites set.',
+    'Spinach in for the last 20 seconds.',
+  ], { time: '12 min', done: 'Bacon crisp. Whites set.' }),
+  ketoCheddarOmelet: note('Skillet. Cheese off the heat.', [
+    'Beat the eggs. Cook on medium until almost set.',
+    'Add cheddar. Fold. Off the heat.',
+  ], { time: '10 min', done: 'Omelet set. Cheese melted.' }),
+  ketoSmokedSalmonEggs: note('Eggs on the side.', [
+    'Fry or scramble the eggs until the whites set.',
+    'Smoked salmon and avocado on the plate.',
+  ], { time: '8 min', done: 'Whites set.' }),
+  ketoChickenAvocado: note('No cook for the chicken.', [
+    'Warm the chicken if you want it hot.',
+    'Avocado and lettuce on the plate. Oil over.',
+  ], { time: '8 min' }),
+  ketoTunaAvocado: note('No heat.', [
+    'Tuna and avocado mixed or side by side. Oil over.',
+  ], { time: '6 min' }),
+  ketoLambGreens: note('Skillet. Lamb first.', [
+    'Brown the lamb. Salt as it cooks.',
+    'Broccoli with the oil on the side or in the pan.',
+  ], { time: '20 min', done: 'Lamb browned. Broccoli tender.' }),
+  ketoRibeyeAsparagus: note('Hot skillet. Steak first.', [
+    'Pat the ribeye dry. Salt it. Sear 4 to 5 minutes a side. Rest.',
+    'Asparagus with butter on the side.',
+  ], { time: '20 min', done: 'Steak rested. Asparagus tender.' }),
+  ketoPorkChopsCauli: note('Skillet or sheet pan.', [
+    'Salt the chops. Cook 4 to 5 minutes a side or to 145. Rest.',
+    'Cauliflower with the oil.',
+  ], { time: '22 min', done: 'Pork 145. Cauliflower warm.' }),
+  ketoSalmonCauli: note('Fish first.', [
+    'Salmon skin-down if it has skin. 4 minutes a side or until it flakes.',
+    'Cauliflower with the oil on the side.',
+  ], { time: '22 min', done: 'Salmon flakes. Cauliflower warm.' }),
+  ketoOlivesTurkey: note('No heat.', [
+    'Olives and turkey on a plate.',
+  ], { time: '2 min' }),
+  ketoCheeseCucumber: note('No heat.', [
+    'Cheddar and cucumber slices.',
+  ], { time: '3 min' }),
+  carnBaconEggs: note('Skillet. Bacon first.', [
+    'Cook bacon until crisp.',
+    'Push aside. Butter. Eggs until the whites set.',
+  ], { time: '12 min', done: 'Bacon crisp. Whites set.' }),
+  carnPorkEggsBreakfast: note('Skillet. Pork first.', [
+    'Salt the pork. Cook 3 to 4 minutes a side or to 145. Rest.',
+    'Same pan, butter, eggs until the whites set.',
+  ], { time: '14 min', done: 'Pork 145. Whites set.' }),
+  carnLambEggs: note('Skillet. Lamb first.', [
+    'Brown the lamb. Salt as it cooks.',
+    'Push aside. Butter. Eggs until the whites set.',
+  ], { time: '14 min', done: 'Lamb browned. Whites set.' }),
+  carnRibeyeButter: note('Hot skillet.', [
+    'Pat the ribeye dry. Salt it. Sear 4 minutes a side. Rest.',
+    'Butter on the hot steak.',
+  ], { time: '16 min', done: 'Steak rested. Butter melted.' }),
+  carnChickenThighButter: note('Skillet or oven.', [
+    'Salt the thighs. Cook skin-side down first until crisp, then flip, to 165. Rest.',
+    'Butter on the hot chicken.',
+  ], { time: '20 min', done: 'Chicken 165. Butter melted.' }),
+  carnGroundBeefCheese: note('Skillet. Cheese off the heat.', [
+    'Brown the beef. Salt as it cooks.',
+    'Off the heat, melt the cheddar on top. Butter if you want.',
+  ], { time: '15 min', done: 'Beef browned. Cheese melted.' }),
+  carnPorkButter: note('Skillet.', [
+    'Salt the pork. Cook 4 to 5 minutes a side or to 145. Rest.',
+    'Butter on the hot pork.',
+  ], { time: '18 min', done: 'Pork 145. Butter melted.' }),
+  carnBaconCheese: note('No heat or warm bacon.', [
+    'Bacon and cheddar on a plate.',
+  ], { time: '8 min' }),
+  carnEggButter: note('Skillet.', [
+    'Fry the eggs in butter until the whites set.',
+  ], { time: '6 min', done: 'Whites set.' }),
+  carnCottageButter: note('No heat.', [
+    'Cottage cheese with butter stirred in if you like.',
+  ], { time: '1 min' }),
 }
