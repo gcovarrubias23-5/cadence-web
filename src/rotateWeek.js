@@ -1,5 +1,6 @@
 import { DEFAULT_WEEK, SLOTS, optionsFor } from './plan.js'
 import { mondayOf } from './weekHistory.js'
+import { readStyle } from './dietStyle.js'
 
 const SEED_KEY = 'cadence.weekSeed'
 const START_KEY = 'cadence.weekStart'
@@ -28,13 +29,13 @@ export function weekTurned() {
   }
 }
 
-export function buildVariedWeek(custom = [], avoid = [], seed = 1) {
+export function buildVariedWeek(custom = [], avoid = [], seed = 1, style = readStyle()) {
   const used = {}
   SLOTS.forEach((slot) => { used[slot.id] = new Set() })
   return DEFAULT_WEEK.map((day, di) => {
     const next = { id: day.id, day: day.day }
     SLOTS.forEach((slot, si) => {
-      const opts = optionsFor(slot.id, custom, avoid)
+      const opts = optionsFor(slot.id, custom, avoid, style)
       const ids = opts.map((m) => m.id).filter(Boolean)
       const fresh = ids.filter((id) => !used[slot.id].has(id))
       const pool = fresh.length ? fresh : ids
@@ -51,7 +52,7 @@ export function buildVariedWeek(custom = [], avoid = [], seed = 1) {
   })
 }
 
-export function nextVariedWeek(custom, avoid, seed) {
+export function nextVariedWeek(custom, avoid, seed, style = readStyle()) {
   const n = (Number(seed) || 0) + 1
-  return { seed: n, picks: buildVariedWeek(custom, avoid, n) }
+  return { seed: n, picks: buildVariedWeek(custom, avoid, n, style) }
 }
