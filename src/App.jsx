@@ -48,8 +48,6 @@ const TABS = [
   { id: 'you', label: 'You' },
 ]
 
-const SNACK_IDS = ['snack1', 'snack2', 'snack3']
-
 function hydrate(picks, custom) {
   return picks.map((row) => {
     const day = { ...row }
@@ -108,7 +106,7 @@ export default function App() {
   }, [tab, openDay, openSlot])
   useEffect(() => {
     if (!weekTurned()) return
-    const next = spinMenus(custom, avoid)
+    const next = spinMenus(custom, avoid, profile?.style || '')
     setPicks(next.picks)
   }, [])
 
@@ -129,8 +127,8 @@ export default function App() {
   const daysLeft = daysUntilCheckin(lastCheckin)
 
   function patch(field, value) { setMarks((prev) => ({ ...prev, [field]: value })) }
-  function spinWeek() {
-    const next = spinMenus(custom, avoid)
+  function spinWeek(style) {
+    const next = spinMenus(custom, avoid, style ?? profile?.style ?? '')
     setPicks(next.picks)
   }
   function pulse(move) {
@@ -150,7 +148,7 @@ export default function App() {
     try { localStorage.setItem('cadence.profile', JSON.stringify(nextProfile)) } catch {}
     setProfile(nextProfile)
     setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
-    setPicks((prev) => cleanWeek(prev, custom, form.avoid || [], nextStyle))
+    setPicks(spinMenus(custom, form.avoid || [], nextStyle).picks)
     setLastCheckin(now)
     setTab('week')
   }
@@ -161,13 +159,13 @@ export default function App() {
     try { localStorage.setItem('cadence.profile', JSON.stringify(nextProfile)) } catch {}
     setProfile(nextProfile)
     if (math) setMarks((prev) => ({ ...prev, protein: math.protein, carbs: math.carbs, fat: math.fat }))
-    setPicks((prev) => cleanWeek(prev, custom, nextAvoid, nextStyle))
+    setPicks(spinMenus(custom, nextAvoid, nextStyle).picks)
   }
   function choose(dayId, slot, mealId) {
     setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
     setPicking(null)
   }
-  function savePlate(meal, slotId) {
+  function savePlate(meal) {
     setCustom((prev) => [meal, ...prev.filter((m) => m.id !== meal.id)])
     if (picking?.dayId) {
       setPicks((prev) => prev.map((row) => (row.id === picking.dayId ? { ...row, [picking.slot]: meal.id } : row)))
@@ -181,7 +179,7 @@ export default function App() {
     setCustom(nextCustom)
     setPicks(nextPicks)
   }
-  function resetWeek() { setPicks(cleanWeek(DEFAULT_WEEK, custom, avoid, profile?.style || '')); setPicking(null) }
+  function resetWeek() { setPicks(spinMenus(custom, avoid, profile?.style || '').picks); setPicking(null) }
   function copyDay(dayId) {
     const src = picks.find((row) => row.id === dayId)
     if (!src) return
@@ -317,7 +315,7 @@ export default function App() {
       )}
 
       {tab === 'you' && (
-        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} onSpinWeek={spinWeek} />
+        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} onSpinWeek={() => spinWeek()} />
       )}
 
       {picking && (
