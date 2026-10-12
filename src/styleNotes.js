@@ -3,11 +3,11 @@ function note(preview, locked, extra = {}) {
 }
 
 export const STYLE_NOTES = {
-  ketoSausageEggs: note('Skillet. Sausage first.', [
-    'Warm a skillet on medium. Sausage until hot through.',
-    'Push aside. Eggs until the whites set.',
-    'Spinach in for the last 20 seconds.',
-  ], { time: '12 min', done: 'Sausage hot. Whites set.' }),
+  ketoSausageEggs: note('Skillet. Sausage first so the pan is hot for the eggs.', [
+    'Heat a skillet over medium. Cook the sausage until hot through and lightly browned, about 4–5 minutes.',
+    'Push it aside. Crack in the eggs and cook until the whites are fully set.',
+    'Add the spinach for the last 20 seconds until just wilted.',
+  ], { time: '12 min', done: 'Sausage is hot. Egg whites are set.' }),
   ketoFetaEggs: note('Skillet. Cheese off the heat.', [
     'Scramble the eggs on medium until just set.',
     'Off the heat, crumble feta on top.',
@@ -17,16 +17,16 @@ export const STYLE_NOTES = {
     'Brown the turkey on medium-high. Salt as it cooks.',
     'Push aside. Fry the eggs until the whites set.',
   ], { time: '12 min', done: 'Turkey browned. Whites set.' }),
-  ketoSteakGreens: note('Hot skillet. Broccoli first or microwave.', [
-    'Warm the broccoli with the oil.',
-    'Pat the steak dry. Salt it. Sear 3 to 4 minutes a side.',
-    'Rest the steak. Slice across the grain.',
-  ], { time: '20 min', done: 'Steak rested. Broccoli tender.' }),
+  ketoSteakGreens: note('Hot skillet. Broccoli can be warmed in the pan or microwave.', [
+    'Warm the broccoli with the oil until tender.',
+    'Pat the steak dry and salt it. Sear 3–4 minutes per side over medium-high.',
+    'Rest the steak 3–5 minutes, then slice against the grain.',
+  ], { time: '20 min', done: 'Steak has rested. Broccoli is tender.' }),
   ketoShrimpAvocado: note('Hot pan. Fast shrimp.', [
-    'Pat the shrimp dry. Salt them.',
-    'Hot skillet, thin oil. 2 minutes a side.',
-    'Cucumber and avocado on the plate.',
-  ], { time: '12 min', done: 'Shrimp pink and curled.' }),
+    'Pat the shrimp dry and salt them.',
+    'Heat a skillet over medium-high with a thin film of oil. Cook shrimp 2 minutes per side until pink and curled.',
+    'Plate with cucumber and avocado.',
+  ], { time: '12 min', done: 'Shrimp are pink and curled.' }),
   ketoPorkGreens: note('Skillet or sheet pan.', [
     'Salt the pork. Cook 4 to 5 minutes a side or to 145.',
     'Rest 3 minutes. Green beans with the oil.',
@@ -50,18 +50,18 @@ export const STYLE_NOTES = {
     'Fry or scramble the eggs until the whites set.',
     'Olives on the side.',
   ], { time: '8 min', done: 'Whites set.' }),
-  carnBeefBreakfast: note('Skillet. Beef first.', [
-    'Brown the beef. Salt as it cooks.',
-    'Push aside. Butter. Eggs until the whites set.',
-  ], { time: '14 min', done: 'Beef browned. Whites set.' }),
+  carnBeefBreakfast: note('Skillet. Beef first so the pan is hot for the eggs.', [
+    'Heat a skillet over medium-high. Brown the beef, salting as it cooks, until no pink remains.',
+    'Push the beef aside. Add the butter and fry the eggs until the whites are fully set.',
+  ], { time: '14 min', done: 'Beef is browned. Egg whites are set.' }),
   carnChickenBreakfast: note('Chicken is cooked. Eggs need the pan.', [
     'Warm the chicken if you want it hot.',
     'Fry the eggs in butter until the whites set.',
   ], { time: '10 min', done: 'Whites set.' }),
-  carnSteakBreakfast: note('Hot skillet. Steak first.', [
-    'Pat the steak dry. Salt it. 3 to 4 minutes a side. Rest.',
-    'Same pan, butter, eggs until the whites set.',
-  ], { time: '16 min', done: 'Steak rested. Whites set.' }),
+  carnSteakBreakfast: note('Hot skillet. Steak first, then eggs in the same pan.', [
+    'Pat the steak dry and salt it. Sear 3–4 minutes per side. Rest.',
+    'In the same pan over medium, add butter and fry the eggs until the whites are fully set.',
+  ], { time: '16 min', done: 'Steak has rested. Egg whites are set.' }),
   carnSalmonEggsLunch: note('Fish first, then eggs.', [
     'Salmon skin-down if it has skin. 4 minutes a side or until it flakes.',
     'Eggs in the same pan until the whites set.',
@@ -97,14 +97,14 @@ export const STYLE_NOTES = {
     'Off the heat, melt the cheddar on top.',
   ], { time: '12 min', done: 'Beef browned. Cheese melted.' }),
   ketoBaconEggs: note('Skillet. Bacon first.', [
-    'Cook bacon until crisp. Drain if you like.',
-    'Push aside. Eggs until the whites set.',
-    'Spinach in for the last 20 seconds.',
-  ], { time: '12 min', done: 'Bacon crisp. Whites set.' }),
-  ketoCheddarOmelet: note('Skillet. Cheese off the heat.', [
-    'Beat the eggs. Cook on medium until almost set.',
-    'Add cheddar. Fold. Off the heat.',
-  ], { time: '10 min', done: 'Omelet set. Cheese melted.' }),
+    'Cook the bacon over medium until crisp, about 5–6 minutes. Drain excess fat if you like.',
+    'Push aside. Cook the eggs until the whites are fully set.',
+    'Add the spinach for the last 20 seconds until just wilted.',
+  ], { time: '12 min', done: 'Bacon is crisp. Egg whites are set.' }),
+  ketoCheddarOmelet: note('Skillet. Cheese goes in off the heat so it melts without overcooking.', [
+    'Beat the eggs. Heat a nonstick skillet over medium and cook until the eggs are almost set, about 2 minutes.',
+    'Add the cheddar, fold the omelet, and take it off the heat so the cheese melts gently.',
+  ], { time: '10 min', done: 'Omelet is set. Cheese is melted.' }),
   ketoSmokedSalmonEggs: note('Eggs on the side.', [
     'Fry or scramble the eggs until the whites set.',
     'Smoked salmon and avocado on the plate.',
@@ -121,9 +121,9 @@ export const STYLE_NOTES = {
     'Broccoli with the oil on the side or in the pan.',
   ], { time: '20 min', done: 'Lamb browned. Broccoli tender.' }),
   ketoRibeyeAsparagus: note('Hot skillet. Steak first.', [
-    'Pat the ribeye dry. Salt it. Sear 4 to 5 minutes a side. Rest.',
-    'Asparagus with butter on the side.',
-  ], { time: '20 min', done: 'Steak rested. Asparagus tender.' }),
+    'Pat the ribeye dry and salt it. Sear 4–5 minutes per side over medium-high. Rest 5 minutes.',
+    'Warm the asparagus with the butter until tender.',
+  ], { time: '20 min', done: 'Steak has rested. Asparagus is tender.' }),
   ketoPorkChopsCauli: note('Skillet or sheet pan.', [
     'Salt the chops. Cook 4 to 5 minutes a side or to 145. Rest.',
     'Cauliflower with the oil.',
@@ -154,14 +154,14 @@ export const STYLE_NOTES = {
     'Pat the ribeye dry. Salt it. Sear 4 minutes a side. Rest.',
     'Butter on the hot steak.',
   ], { time: '16 min', done: 'Steak rested. Butter melted.' }),
-  carnChickenThighButter: note('Skillet or oven.', [
-    'Salt the thighs. Cook skin-side down first until crisp, then flip, to 165. Rest.',
-    'Butter on the hot chicken.',
-  ], { time: '20 min', done: 'Chicken 165. Butter melted.' }),
-  carnGroundBeefCheese: note('Skillet. Cheese off the heat.', [
-    'Brown the beef. Salt as it cooks.',
-    'Off the heat, melt the cheddar on top. Butter if you want.',
-  ], { time: '15 min', done: 'Beef browned. Cheese melted.' }),
+  carnChickenThighButter: note('Skillet or oven. Skin-side down first for crisp skin.', [
+    'Salt the thighs. Cook skin-side down over medium until the skin is crisp, then flip and cook to 165°F. Rest 3 minutes.',
+    'Add the butter to the hot chicken so it melts over the top.',
+  ], { time: '20 min', done: 'Chicken reaches 165°F. Butter is melted.' }),
+  carnGroundBeefCheese: note('Skillet. Cheese off the heat so it melts without drying the beef.', [
+    'Brown the beef over medium-high, salting as it cooks, until no pink remains.',
+    'Off the heat, melt the cheddar on top. Add butter if you want.',
+  ], { time: '15 min', done: 'Beef is browned. Cheese is melted.' }),
   carnPorkButter: note('Skillet.', [
     'Salt the pork. Cook 4 to 5 minutes a side or to 145. Rest.',
     'Butter on the hot pork.',
