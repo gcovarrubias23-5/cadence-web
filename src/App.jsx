@@ -100,8 +100,9 @@ export default function App() {
   useEffect(() => { localStorage.setItem('cadence.profile', JSON.stringify(profile)) }, [profile])
   useEffect(() => { localStorage.setItem('cadence.custom', JSON.stringify(custom)) }, [custom])
   useEffect(() => {
-    if (tab !== 'week' || !openDay || !openSlot) return
-    const t = setTimeout(() => scrollAnchorToTop(`${openDay}-${openSlot}`), 40)
+    if (tab !== 'week' || !openDay) return
+    const id = openSlot ? `${openDay}-${openSlot}` : openDay
+    const t = setTimeout(() => scrollAnchorToTop(id), 40)
     return () => clearTimeout(t)
   }, [tab, openDay, openSlot])
   useEffect(() => {
