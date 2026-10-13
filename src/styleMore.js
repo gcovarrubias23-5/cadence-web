@@ -301,13 +301,6 @@ export const MORE_MEALS = {
       f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
-  carnCottageButter: {
-    id: 'carnCottageButter', name: 'Cottage and butter', time: '1 min', slot: 'snack', style: 'carnivore',
-    foods: [
-      f('Cottage cheese', 110, 12, 4, 2.5, 'Dairy', { house: '1/2 cup cottage cheese' }),
-      f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
-    ],
-  },
 
   carnBeefBatch: {
     id: 'carnBeefBatch', name: 'Ground beef portion', time: '15 min', slot: 'dinner', style: 'carnivore',

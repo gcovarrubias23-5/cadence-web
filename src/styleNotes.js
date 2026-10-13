@@ -172,9 +172,6 @@ export const STYLE_NOTES = {
   carnEggButter: note('Skillet.', [
     'Fry the eggs in butter until the whites set.',
   ], { time: '6 min', done: 'Whites set.' }),
-  carnCottageButter: note('No heat.', [
-    'Cottage cheese with butter stirred in if you like.',
-  ], { time: '1 min' }),
   carnBeefBatch: note('Batch brown, portion with the fat.', [
     'Brown 3–5 lb of 80/20 ground beef with salt over medium-high. Let it color before you stir.',
     'Portion into containers with some of the rendered fat.',
