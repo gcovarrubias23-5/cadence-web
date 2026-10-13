@@ -256,7 +256,12 @@ export default function App() {
             const drinks = glassesFor(water, d.id)
             return (
               <article className="card day" key={d.id} data-anchor={d.id}>
-                <button className="day-head" type="button" onClick={() => { setOpenDay(open ? '' : d.id); setOpenSlot('') }}>
+                <button className="day-head" type="button" onClick={() => {
+                    const next = open ? '' : d.id
+                    setOpenDay(next)
+                    setOpenSlot('')
+                    if (next) setTimeout(() => scrollAnchorToTop(next), 0)
+                  }}>
                   <span>
                     <span className="day-name">{d.day}</span>
                     <DayMacros kcal={goal.kcal} protein={totals.protein} carbs={totals.carbs} fat={totals.fat} />
