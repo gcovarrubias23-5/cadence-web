@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
 import { kitchenFor } from './kitchenBridge.js'
 import { formatPortion } from './portion.js'
@@ -8,6 +9,7 @@ export function Meal({ label, meal, factor }) {
   const plateTotals = sumFoods(plated)
   const kitchen = kitchenFor(meal)
   const mins = kitchen?.time || meal.time
+  const [recipeOpen, setRecipeOpen] = useState(false)
 
   return (
     <div className="meal-row">
@@ -39,17 +41,37 @@ export function Meal({ label, meal, factor }) {
 
         {kitchen && (
           <div className="card" style={{ margin: '12px 0', padding: 12 }}>
-            <div className="goal-title">How to cook it</div>
-            <p className="note" style={{ marginTop: 6 }}>
-              {kitchen.preview}{mins ? ` · ${mins}` : ''}
-            </p>
-            {kitchen.ahead ? <p className="note">{kitchen.ahead}</p> : null}
-            <ol className="steps">
-              {kitchen.locked.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ol>
-            {kitchen.done ? <p className="note">Note: {kitchen.done}</p> : null}
+            <button
+              type="button"
+              onClick={() => setRecipeOpen((v) => !v)}
+              style={{
+                all: 'unset',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                cursor: 'pointer',
+                gap: 8,
+              }}
+              aria-expanded={recipeOpen}
+            >
+              <div className="goal-title" style={{ margin: 0 }}>How to cook it</div>
+              <span style={{ fontSize: 18, lineHeight: 1 }}>{recipeOpen ? '−' : '+'}</span>
+            </button>
+            {recipeOpen && (
+              <>
+                <p className="note" style={{ marginTop: 8 }}>
+                  {kitchen.preview}{mins ? ` · ${mins}` : ''}
+                </p>
+                {kitchen.ahead ? <p className="note">{kitchen.ahead}</p> : null}
+                <ol className="steps">
+                  {kitchen.locked.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+                {kitchen.done ? <p className="note">Note: {kitchen.done}</p> : null}
+              </>
+            )}
           </div>
         )}
 
