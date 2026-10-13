@@ -49,7 +49,7 @@ export function Meal({ label, meal, factor }) {
                 <li key={step}>{step}</li>
               ))}
             </ol>
-            {kitchen.done ? <p className="note">Done when: {kitchen.done}</p> : null}
+            {kitchen.done ? <p className="note">Note: {kitchen.done}</p> : null}
           </div>
         )}
 
