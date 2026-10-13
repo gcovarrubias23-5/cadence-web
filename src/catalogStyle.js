@@ -167,14 +167,6 @@ export const STYLE_MEALS = {
       f('Cucumber', 50, 0.3, 2, 0.1, 'Produce', { house: '1/2 cup cucumber' }),
     ],
   },
-  carnSteakEggs: {
-    id: 'carnSteakEggs', name: 'Steak and eggs', time: '18 min', slot: 'dinner', style: 'carnivore',
-    foods: [
-      f('Flank steak', 180, 38, 0, 14, 'Protein', { house: '6 oz steak' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Butter', 10, 0, 0, 11, 'Dairy', { house: '2 tsp butter' }),
-    ],
-  },
   carnSalmonButter: {
     id: 'carnSalmonButter', name: 'Salmon and butter', time: '20 min', slot: 'dinner', style: 'carnivore',
     foods: [
@@ -194,13 +186,6 @@ export const STYLE_MEALS = {
     foods: [
       f('Cod', 170, 31, 0, 1.2, 'Protein', { house: '6 oz cod' }),
       f('Butter', 14, 0, 0, 15, 'Dairy', { house: '1 Tbsp butter' }),
-    ],
-  },
-  carnBeefEggs: {
-    id: 'carnBeefEggs', name: 'Beef and eggs', time: '15 min', slot: 'lunch', style: 'carnivore',
-    foods: [
-      f('Lean ground beef', 170, 34, 0, 14, 'Protein', { house: '6 oz beef' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
     ],
   },
   carnShrimpButter: {
@@ -276,7 +261,7 @@ export const STYLE_MEALS = {
 
 export const STYLE_BY_SLOT = {
   breakfast: ['ketoEggsAvocado', 'ketoYogurtCucumber', 'ketoSmokedSalmon', 'ketoCottageBowl', 'ketoHalloumiEggs', 'carnEggs', 'carnYogurt', 'carnSalmonEggs', 'carnCottage'],
-  lunch: ['ketoBurgerBowl', 'ketoShrimpCabbage', 'ketoTunaBowl', 'ketoChickenSalad', 'ketoAhiPlate', 'carnBeefEggs', 'carnShrimpButter'],
-  dinner: ['ketoSalmonGreens', 'ketoSteakEggs', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSteakEggs', 'carnSalmonButter', 'carnBeefButter', 'carnCodButter'],
+  lunch: ['ketoBurgerBowl', 'ketoShrimpCabbage', 'ketoTunaBowl', 'ketoChickenSalad', 'ketoAhiPlate', 'carnShrimpButter'],
+  dinner: ['ketoSalmonGreens', 'ketoSteakEggs', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSalmonButter', 'carnBeefButter', 'carnCodButter'],
   snack: ['ketoCheeseSnack', 'ketoEggSnack', 'ketoOlivesCheese', 'ketoSmokedSnack', 'ketoYogurtSnack', 'carnTurkeyCheese', 'carnEggSnack', 'carnCheeseSnack', 'carnYogurtSnack', 'carnSalmonSnack'],
 }
