@@ -175,4 +175,54 @@ export const STYLE_NOTES = {
   carnCottageButter: note('No heat.', [
     'Cottage cheese with butter stirred in if you like.',
   ], { time: '1 min' }),
+  carnBeefBatch: note('Batch brown, portion with the fat.', [
+    'Brown 3–5 lb of 80/20 ground beef with salt over medium-high. Let it color before you stir.',
+    'Portion into containers with some of the rendered fat.',
+    'To serve: reheat a portion in a skillet over medium until hot. Optional: mix in a little cooked liver.',
+  ], { time: '15 min reheat', done: 'Beef is hot through. Fat is melted back in.' }),
+  carnChuckRoast: note('Slow-cook or braise once. Portion with juices.', [
+    'Salt a chuck roast or brisket. Slow-cook or braise until tender, then shred or slice.',
+    'Store with some of the juices.',
+    'To serve: reheat a portion with a spoonful of juices until hot.',
+  ], { time: '10 min reheat', done: 'Meat is hot and still moist.' }),
+  carnBaconHardEggs: note('Cook a package of bacon and a dozen eggs once.', [
+    'Cook a full package of bacon until crisp. Hard-boil a dozen eggs.',
+    'Portion 3–4 strips of bacon and 2–3 eggs per container.',
+    'To serve: warm the bacon briefly if you want it hot. Eggs can stay cold.',
+  ], { time: '5 min', done: 'Bacon is warm if you want it. Eggs are ready.' }),
+  carnThighsBatch: note('Roast or air-fry a tray of skin-on thighs.', [
+    'Salt bone-in, skin-on chicken thighs. Roast or air-fry until the skin is crisp and the meat reaches 165°F.',
+    'Store skin-side up.',
+    'To serve: reheat and briefly re-crisp the skin under a broiler or in a hot skillet if you want.',
+  ], { time: '8 min reheat', done: 'Thighs are hot. Skin can be re-crisped if desired.' }),
+  carnRibeyePortion: note('Cook several steaks to medium-rare. Best within 2–3 days.', [
+    'Salt ribeyes or NY strips. Cook to medium-rare. Cool quickly and refrigerate.',
+    'To serve: reheat gently in a skillet and finish with butter.',
+  ], { time: '8 min reheat', done: 'Steak is warm through. Butter is melted on top.' }),
+  carnPorkBelly: note('Roast or pan-cook until crisp outside and tender inside.', [
+    'Salt pork belly or thick-cut bacon. Roast or pan-cook until the outside is crisp and the inside is tender.',
+    'Portion and store.',
+    'To serve: reheat in a skillet until the edges crisp again.',
+  ], { time: '10 min reheat', done: 'Outside is crisp. Inside is hot.' }),
+  carnSalmonPortion: note('Cook earlier in the week. Fish is more perishable.', [
+    'Pan-sear or bake skin-on salmon in butter until it flakes.',
+    'Portion and refrigerate. Best eaten within 2–3 days.',
+    'To serve: reheat gently or eat cold. Keep canned sardines as a no-cook backup.',
+  ], { time: '10 min', done: 'Salmon flakes and is hot (or cold if preferred).' }),
+  carnLiverBeef: note('Mix 10–20% liver into a ground beef batch.', [
+    'Cook beef liver until just done. Chop or blend it.',
+    'Mix 10–20% into a batch of browned ground beef so the flavor stays mild.',
+    'Portion and store. Reheat a portion in a skillet.',
+  ], { time: '12 min', done: 'Mixture is hot. Liver is evenly mixed.' }),
+  carnLambPortion: note('Roast a shoulder or batch of chops for variety.', [
+    'Salt a lamb shoulder or chops. Roast until tender.',
+    'Slice or portion and store.',
+    'To serve: reheat a portion until hot.',
+  ], { time: '10 min reheat', done: 'Lamb is hot and tender.' }),
+  carnScramblePack: note('Scramble a large batch in bacon fat. Portion with extra bacon.', [
+    'Cook a batch of bacon. Scramble eggs in the bacon fat until just set.',
+    'Portion the scramble with extra cooked bacon into containers.',
+    'To serve: reheat gently in a skillet or microwave until hot.',
+  ], { time: '8 min reheat', done: 'Scramble is hot. Bacon is crisp or warm.' }),
+
 }

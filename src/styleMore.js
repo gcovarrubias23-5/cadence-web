@@ -339,11 +339,83 @@ export const MORE_MEALS = {
       f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
+
+  carnBeefBatch: {
+    id: 'carnBeefBatch', name: 'Ground beef portion', time: '15 min', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Ground beef 80/20', 170, 28, 0, 22, 'Protein', { house: '6 oz beef' }),
+      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnChuckRoast: {
+    id: 'carnChuckRoast', name: 'Chuck roast portion', time: '10 min reheat', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Chuck roast, cooked', 170, 38, 0, 16, 'Protein', { house: '6 oz roast' }),
+      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnBaconHardEggs: {
+    id: 'carnBaconHardEggs', name: 'Bacon and hard-boiled eggs', time: '5 min', slot: 'breakfast', style: 'carnivore',
+    foods: [
+      f('Bacon', 60, 9, 0.7, 18, 'Protein', { house: '3 strips bacon' }),
+      f('Eggs, hard-boiled', 100, 13, 1, 10, 'Protein', { house: '2 hard-boiled eggs' }),
+    ],
+  },
+  carnThighsBatch: {
+    id: 'carnThighsBatch', name: 'Chicken thighs portion', time: '8 min reheat', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Chicken thigh, skin-on', 180, 30, 0, 18, 'Protein', { house: '2 small thighs' }),
+      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnRibeyePortion: {
+    id: 'carnRibeyePortion', name: 'Ribeye portion', time: '8 min reheat', slot: 'lunch', style: 'carnivore',
+    foods: [
+      f('Ribeye', 170, 32, 0, 22, 'Protein', { house: '6 oz ribeye' }),
+      f('Butter', 10, 0, 0, 11, 'Dairy', { house: '2 tsp butter' }),
+    ],
+  },
+  carnPorkBelly: {
+    id: 'carnPorkBelly', name: 'Pork belly portion', time: '10 min reheat', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Pork belly', 140, 18, 0, 28, 'Protein', { house: '5 oz pork belly' }),
+    ],
+  },
+  carnSalmonPortion: {
+    id: 'carnSalmonPortion', name: 'Salmon portion', time: '10 min', slot: 'lunch', style: 'carnivore',
+    foods: [
+      f('Salmon fillet', 140, 28, 0, 18, 'Protein', { house: '5 oz salmon' }),
+      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnLiverBeef: {
+    id: 'carnLiverBeef', name: 'Beef and liver portion', time: '12 min', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Ground beef 80/20', 140, 23, 0, 18, 'Protein', { house: '5 oz beef' }),
+      f('Beef liver', 30, 7, 1, 1.5, 'Protein', { house: '1 oz liver' }),
+      f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnLambPortion: {
+    id: 'carnLambPortion', name: 'Lamb roast portion', time: '10 min reheat', slot: 'dinner', style: 'carnivore',
+    foods: [
+      f('Lamb shoulder, cooked', 170, 30, 0, 20, 'Protein', { house: '6 oz lamb' }),
+      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
+  carnScramblePack: {
+    id: 'carnScramblePack', name: 'Egg and bacon scramble', time: '8 min reheat', slot: 'breakfast', style: 'carnivore',
+    foods: [
+      f('Eggs', 150, 19, 1.5, 15, 'Protein', { house: '3 large eggs' }),
+      f('Bacon', 40, 6, 0.5, 12, 'Protein', { house: '2 strips bacon' }),
+      f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
+    ],
+  },
 }
 
 export const MORE_BY_SLOT = {
-  breakfast: ['ketoSausageEggs', 'ketoFetaEggs', 'ketoTurkeyBreakfast', 'ketoBaconEggs', 'ketoCheddarOmelet', 'ketoSmokedSalmonEggs', 'carnBeefBreakfast', 'carnChickenBreakfast', 'carnSteakBreakfast', 'carnBaconEggs', 'carnPorkEggsBreakfast'],
-  lunch: ['ketoSteakGreens', 'ketoShrimpAvocado', 'ketoPorkGreens', 'ketoChickenAvocado', 'ketoTunaAvocado', 'ketoLambGreens', 'carnSalmonEggsLunch', 'carnSteakCheese', 'carnCodEggs', 'carnLambEggs', 'carnRibeyeButter'],
-  dinner: ['ketoBisonCauli', 'ketoAhiBroccoli', 'ketoTurkeyCauli', 'ketoRibeyeAsparagus', 'ketoPorkChopsCauli', 'ketoSalmonCauli', 'carnShrimpEggs', 'carnTurkeyButter', 'carnChickenButter', 'carnChickenThighButter', 'carnGroundBeefCheese', 'carnPorkButter'],
+  breakfast: ['ketoSausageEggs', 'ketoFetaEggs', 'ketoTurkeyBreakfast', 'ketoBaconEggs', 'ketoCheddarOmelet', 'ketoSmokedSalmonEggs', 'carnBeefBreakfast', 'carnChickenBreakfast', 'carnSteakBreakfast', 'carnBaconEggs', 'carnPorkEggsBreakfast', 'carnBaconHardEggs', 'carnScramblePack'],
+  lunch: ['ketoSteakGreens', 'ketoShrimpAvocado', 'ketoPorkGreens', 'ketoChickenAvocado', 'ketoTunaAvocado', 'ketoLambGreens', 'carnSalmonEggsLunch', 'carnSteakCheese', 'carnCodEggs', 'carnLambEggs', 'carnRibeyeButter', 'carnRibeyePortion', 'carnSalmonPortion'],
+  dinner: ['ketoBisonCauli', 'ketoAhiBroccoli', 'ketoTurkeyCauli', 'ketoRibeyeAsparagus', 'ketoPorkChopsCauli', 'ketoSalmonCauli', 'carnBeefBatch', 'carnChuckRoast', 'carnThighsBatch', 'carnPorkBelly', 'carnLiverBeef', 'carnLambPortion', 'carnTurkeyButter', 'carnChickenButter', 'carnChickenThighButter', 'carnGroundBeefCheese', 'carnPorkButter'],
   snack: ['ketoStringCheese', 'ketoEggsOlives', 'ketoOlivesTurkey', 'ketoCheeseCucumber', 'carnStringCheese', 'carnCottageSnack', 'carnBeefCheese', 'carnBaconCheese', 'carnEggButter', 'carnCottageButter'],
 }
