@@ -26,9 +26,10 @@ export function formatPortion(food) {
 
   if (!g) return house
 
-  if (name === 'eggs' || name.endsWith(' eggs') || name === 'egg') {
+  if (/\begg/.test(name) && !name.includes('egg white')) {
     if (house && /egg/i.test(house)) return house
-    const n = Math.max(1, Math.round(g / 50))
+    const base = Number(food?.baseGrams) || g
+    const n = Math.max(1, Math.round(base / 50))
     return n === 1 ? '1 large egg' : `${n} large eggs`
   }
 

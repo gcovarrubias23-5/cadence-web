@@ -25,12 +25,15 @@ export function Meal({ label, meal, factor }) {
 
         <div className="goal-title" style={{ marginTop: 12 }}>On the plate</div>
         <ul className="foods">
-          {plated.map((food) => {
-            const portion = formatPortion(food)
+          {plated.map((food, i) => {
+            const base = meal.foods[i]
+            const isEgg = /\begg/i.test(food.name) && !/egg white/i.test(food.name)
+            const shown = isEgg ? { ...food, grams: base.grams, baseGrams: base.grams } : food
+            const portion = formatPortion(shown)
             return (
               <li key={food.name + food.grams}>
                 <strong>{food.name}</strong>
-                <div className="qty" style={{ marginTop: 4 }}>{formatG(food.grams)}{portion ? ` · ${portion}` : ''}</div>
+                <div className="qty" style={{ marginTop: 4 }}>{formatG(shown.grams)}{portion ? ` · ${portion}` : ''}</div>
                 <div className="qty" style={{ marginTop: 4 }}>
                   {formatMacro(food.protein)} protein · {formatMacro(food.carbs)} carbs · {formatMacro(food.fat)} fat
                 </div>
