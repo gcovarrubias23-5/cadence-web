@@ -110,11 +110,12 @@ export const KITCHEN = {
     'Butter the outside of the bread. Cheese inside.',
     'Grill on medium until both sides are brown and the cheese melts.',
   ], { time: '12 min', done: 'Cheese melted. Bread brown, not black.' }),
-  rotisserieBowl: note('Warm the grain. Do not recook the chicken.', [
-    'Warm the quinoa with a splash of water.',
-    'Pull the chicken into bite-size pieces.',
-    'Bowl: quinoa, chicken, cauli rice, salsa.',
-  ], { time: '8 min' }),
+  rotisserieBowl: note('Serves 1 · Prep 2 min · Cook 4 min', [
+    'Warm the quinoa. Heat a small pan over medium. Add the quinoa with 1–2 tbsp water. Cover and warm 2–3 minutes until steaming. The water keeps it from drying out.',
+    'Shred the chicken. Pull the rotisserie chicken into bite-size pieces. It is already cooked, so do not put it in a hot pan.',
+    'Warm the cauliflower rice. Microwave the cauliflower rice 60–90 seconds until hot, or warm it in a pan with a splash of water.',
+    'Assemble. Put the quinoa and cauliflower rice in a bowl. Top with the chicken and salsa. The residual heat warms the chicken without drying it.',
+  ], { time: '8 min', done: 'Most common miss: reheating the chicken in a dry pan. It turns stringy. Keep it off the heat and let the warm grains bring it up to temperature.' }),
   whippedCottage: note('Two minutes with a blender or a fork.', [
     'Blend or whip the cottage cheese until smooth.',
     'Peach on top. Rice cakes on the side.',
