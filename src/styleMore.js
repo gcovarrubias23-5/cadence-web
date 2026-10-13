@@ -30,7 +30,7 @@ export const MORE_MEALS = {
   ketoSteakGreens: {
     id: 'ketoSteakGreens', name: 'Steak and broccoli', time: '20 min', slot: 'lunch', style: 'keto',
     foods: [
-      f('Flank steak', 140, 30, 0, 11, 'Protein', { house: '5 oz steak' }),
+      f('Flank steak', 140, 29.4, 0, 11, 'Protein', { house: '5 oz steak' }),
       f('Broccoli, cooked', 156, 3.7, 11, 0.6, 'Produce', { house: '1 cup broccoli' }),
       f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '2 tsp oil' }),
     ],
@@ -92,7 +92,7 @@ export const MORE_MEALS = {
   carnBeefBreakfast: {
     id: 'carnBeefBreakfast', name: 'Beef and eggs breakfast', time: '14 min', slot: 'breakfast', style: 'carnivore',
     foods: [
-      f('Lean ground beef', 120, 24, 0, 10, 'Protein', { house: '4 oz beef' }),
+      f('Lean ground beef', 120, 31.2, 0, 10, 'Protein', { house: '4 oz beef' }),
       f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
       f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
     ],
@@ -116,7 +116,7 @@ export const MORE_MEALS = {
   carnSteakCheese: {
     id: 'carnSteakCheese', name: 'Steak and cheddar', time: '16 min', slot: 'lunch', style: 'carnivore',
     foods: [
-      f('Flank steak', 140, 30, 0, 11, 'Protein', { house: '5 oz steak' }),
+      f('Flank steak', 140, 29.4, 0, 11, 'Protein', { house: '5 oz steak' }),
       f('Cheddar', 28, 7, 0.3, 9, 'Dairy', { house: '1 oz cheddar' }),
       f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
     ],
@@ -151,7 +151,7 @@ export const MORE_MEALS = {
   carnBeefCheese: {
     id: 'carnBeefCheese', name: 'Beef and cheddar', time: '12 min', slot: 'snack', style: 'carnivore',
     foods: [
-      f('Lean ground beef', 80, 16, 0, 7, 'Protein', { house: '3 oz beef' }),
+      f('Lean ground beef', 80, 20.8, 0, 7, 'Protein', { house: '3 oz beef' }),
       f('Cheddar', 20, 5, 0.2, 7, 'Dairy', { house: '1 slice cheddar' }),
     ],
   },
@@ -267,7 +267,7 @@ export const MORE_MEALS = {
   carnGroundBeefCheese: {
     id: 'carnGroundBeefCheese', name: 'Ground beef and cheddar', time: '15 min', slot: 'dinner', style: 'carnivore',
     foods: [
-      f('Lean ground beef', 170, 34, 0, 14, 'Protein', { house: '6 oz beef' }),
+      f('Lean ground beef', 170, 44.2, 0, 14, 'Protein', { house: '6 oz beef' }),
       f('Cheddar', 28, 7, 0.3, 9, 'Dairy', { house: '1 oz cheddar' }),
       f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
     ],
@@ -275,7 +275,7 @@ export const MORE_MEALS = {
   carnPorkButter: {
     id: 'carnPorkButter', name: 'Pork and butter', time: '18 min', slot: 'dinner', style: 'carnivore',
     foods: [
-      f('Pork tenderloin', 170, 43, 0, 7, 'Protein', { house: '6 oz pork' }),
+      f('Pork tenderloin', 170, 44.2, 0, 7, 'Protein', { house: '6 oz pork' }),
       f('Butter', 10, 0, 0, 11, 'Dairy', { house: '2 tsp butter' }),
     ],
   },

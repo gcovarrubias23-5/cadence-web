@@ -169,7 +169,7 @@ export const STYLE_MEALS = {
   carnBeefButter: {
     id: 'carnBeefButter', name: 'Ground beef and butter', time: '15 min', slot: 'dinner', style: 'carnivore',
     foods: [
-      f('Lean ground beef', 180, 36, 0, 15, 'Protein', { house: '6 oz beef' }),
+      f('Lean ground beef', 180, 46.8, 0, 15, 'Protein', { house: '6 oz beef' }),
       f('Butter', 10, 0, 0, 11, 'Dairy', { house: '2 tsp butter' }),
     ],
   },

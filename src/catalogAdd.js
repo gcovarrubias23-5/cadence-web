@@ -39,14 +39,14 @@ export const ADD_MEALS = {
     id: 'porkRicePlate', name: 'Pork and rice', time: '18 min', slot: 'lunch',
     foods: [
       f('Pork tenderloin', 140, 36, 0, 5.6, 'Protein', { house: '5 oz pork' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Green beans, cooked', 125, 2.3, 9, 0.3, 'Produce', { house: '1 cup green beans' }),
     ],
   },
   chickpeaChicken: {
     id: 'chickpeaChicken', name: 'Chicken and chickpea pasta', time: '20 min', slot: 'lunch',
     foods: [
-      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '5 oz chicken' }),
+      f('Cooked chicken breast', 140, 43.4, 0, 3, 'Protein', { house: '5 oz chicken' }),
       f('Chickpea pasta, cooked', 140, 18, 45, 4.9, 'Pantry', { house: '1 cup chickpea pasta' }),
       f('Broccoli, cooked', 156, 3.7, 11, 0.6, 'Produce', { house: '1 cup broccoli' }),
     ],
@@ -83,7 +83,7 @@ export const ADD_MEALS = {
     foods: [
       f('Cod', 170, 31, 0, 1.2, 'Protein', { house: '6 oz cod' }),
       f('Asparagus', 100, 2.2, 3.9, 0.1, 'Produce', { house: '8 asparagus spears' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '2 tsp oil' }),
     ],
   },

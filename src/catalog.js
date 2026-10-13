@@ -75,10 +75,10 @@ export const MEALS = {
     id: 'chickenSalad', name: 'Chicken salad plate', time: '12 min', slot: 'lunch',
     steps: ['Use 5 oz cooked chicken.', 'Bowl: 2 handfuls lettuce, 1/2 cup tomatoes, 1/2 cup rice.', 'Drizzle 2 tsp oil.'],
     foods: [
-      f('Cooked chicken breast', 140, 31, 0, 3, 'Protein', { house: '1 palm of chicken' }),
+      f('Cooked chicken breast', 140, 43.4, 0, 3, 'Protein', { house: '1 palm of chicken' }),
       f('Romaine', 80, 1, 2.5, 0.2, 'Produce', { house: '2 handfuls lettuce' }),
       f('Tomato', 80, 0.7, 4, 0.2, 'Produce', { house: '1/2 cup chopped tomato' }),
-      f('Brown rice, cooked', 100, 2, 22, 0.4, 'Pantry', { house: '1/2 cup cooked rice' }),
+      f('Brown rice, cooked', 100, 2.6, 22, 0.4, 'Pantry', { house: '1/2 cup cooked rice' }),
       f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '2 tsp oil' }),
     ],
   },
@@ -117,7 +117,7 @@ export const MEALS = {
     id: 'salmonPlate', name: 'Salmon and cucumber plate', time: '10 min', slot: 'lunch',
     steps: ['Flake 1 can salmon.', 'Plate with 1/2 cup cucumber, 8 cherry tomatoes, and 6 crackers.', 'Add 1 oz feta.'],
     foods: [
-      f('Canned salmon', 113, 22, 0, 6, 'Protein', { house: '1 can salmon, drained' }),
+      f('Canned salmon', 113, 22.6, 0, 6, 'Protein', { house: '1 can salmon, drained' }),
       f('Cucumber', 80, 0.5, 3, 0.1, 'Produce', { house: '1/2 cup cucumber' }),
       f('Cherry tomatoes', 80, 0.7, 4, 0.2, 'Produce', { house: '8 cherry tomatoes' }),
       f('Feta', 28, 4, 1, 6, 'Dairy', { house: '1 oz feta' }),
@@ -150,8 +150,8 @@ export const MEALS = {
     steps: ['Brown 5 oz ground turkey.', 'Add 3/4 cup rice, 1/3 cup beans, 1 cup cabbage, 3 Tbsp salsa.', 'Top with 1/3 avocado.'],
     foods: [
       f('Ground turkey 93%', 150, 28, 0, 12, 'Protein', { house: '5 oz turkey' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
-      f('Black beans', 80, 6, 14, 0.4, 'Pantry', { house: '1/3 cup beans' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Black beans', 80, 7.1, 14, 0.4, 'Pantry', { house: '1/3 cup beans' }),
       f('Cabbage slaw', 70, 1, 5, 0.1, 'Produce', { house: '1 cup cabbage' }),
       f('Salsa', 40, 0.6, 3, 0.2, 'Pantry', { house: '3 Tbsp salsa' }),
       f('Avocado', 50, 1, 4, 7, 'Produce', { house: '1/3 avocado' }),
@@ -163,7 +163,7 @@ export const MEALS = {
     foods: [
       f('Salmon fillet', 170, 34, 0, 22, 'Protein', { house: '1 palm-size fillet' }),
       f('Green beans', 150, 2.7, 10, 0.3, 'Produce', { house: '2 handfuls green beans' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Lemon', 20, 0.2, 2, 0.1, 'Produce', { house: '2 lemon wedges' }),
       f('Olive oil', 8, 0, 0, 8, 'Pantry', { house: '1 tsp oil' }),
     ],
@@ -197,7 +197,7 @@ export const MEALS = {
     steps: ['Brown 5 oz turkey with 1/2 small onion.', 'Add 1/2 cup beans, 3/4 cup tomatoes, 1/2 cup broth.', 'Simmer 25 minutes.', 'Shred 1 slice of cheddar on top.'],
     foods: [
       f('Ground turkey 93%', 150, 28, 0, 12, 'Protein', { house: '5 oz turkey' }),
-      f('Black beans', 120, 9, 21, 0.6, 'Pantry', { house: '1/2 cup beans' }),
+      f('Black beans', 120, 10.7, 21, 0.6, 'Pantry', { house: '1/2 cup beans' }),
       f('Crushed tomatoes', 200, 3, 14, 0.4, 'Pantry', { house: '3/4 cup tomatoes' }),
       f('Onion', 60, 0.7, 6, 0.1, 'Produce', { house: '1/2 small onion' }),
       f('Chicken broth', 120, 1, 1, 0.2, 'Pantry', { house: '1/2 cup broth' }),
@@ -210,7 +210,7 @@ export const MEALS = {
     foods: [
       f('Chicken breast', 170, 36, 0, 4, 'Protein', { house: '1 palm of chicken' }),
       f('Stir-fry vegetables', 180, 4, 12, 0.5, 'Produce', { house: '2 cups mixed vegetables' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Teriyaki sauce', 30, 1, 6, 0, 'Pantry', { house: '2 Tbsp teriyaki' }),
       f('Olive oil', 5, 0, 0, 5, 'Pantry', { house: '1 tsp oil' }),
     ],

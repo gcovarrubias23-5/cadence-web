@@ -74,7 +74,7 @@ export const EXTRA_MEALS = {
     steps: ['1 cup edamame.', '3/4 cup rice.', 'Hummus and snap peas.'],
     foods: [
       f('Edamame', 155, 19, 14, 8, 'Protein', { house: '1 cup edamame' }),
-      f('Brown rice, cooked', 150, 3, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
+      f('Brown rice, cooked', 150, 3.9, 33, 0.5, 'Pantry', { house: '3/4 cup cooked rice' }),
       f('Hummus', 45, 3.6, 6, 4.5, 'Pantry', { house: '3 Tbsp hummus' }),
       f('Sugar snap peas', 60, 1.7, 4, 0.1, 'Produce', { house: '1 cup snap peas' }),
     ],
