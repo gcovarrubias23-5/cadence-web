@@ -21,7 +21,7 @@ export const SLOTS = [
 const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
 
 export function mealOf(id, custom = []) {
-  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || MORE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtGrapes
+  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || MORE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtBerries
 }
 
 export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
@@ -49,7 +49,7 @@ export function firstSafe(slot, custom = [], avoid = [], style = readStyle()) {
   if (list[0]?.id) return list[0].id
   if (style === 'carnivore') return slot === 'dinner' ? 'carnSteakEggs' : slot === 'lunch' ? 'carnBeefEggs' : SNACK_SLOTS.includes(slot) ? 'carnTurkeyCheese' : 'carnEggs'
   if (style === 'keto') return slot === 'dinner' ? 'ketoSteakEggs' : slot === 'lunch' ? 'ketoBurgerBowl' : SNACK_SLOTS.includes(slot) ? 'ketoCheeseSnack' : 'ketoEggsAvocado'
-  return slot === 'dinner' ? 'lemonChicken' : 'yogurtGrapes'
+  return slot === 'dinner' ? 'lemonChicken' : 'yogurtBerries'
 }
 
 export function cleanWeek(picks, custom = [], avoid = [], style = readStyle()) {
@@ -87,7 +87,7 @@ export const DEFAULT_WEEK = [
   { id: 'tue', day: 'Tuesday', breakfast: 'eggToast', snack1: 'berriesCottage', lunch: 'turkeySandwich', snack2: 'yogurtSnack', dinner: 'tacoBowl', snack3: 'datesCheese' },
   { id: 'wed', day: 'Wednesday', breakfast: 'yogurtBerries', snack1: 'datesCheese', lunch: 'shrimpTacos', snack2: 'appleCottage', dinner: 'lemonChicken', snack3: 'yogurtSnack' },
   { id: 'thu', day: 'Thursday', breakfast: 'proteinShake', snack1: 'grapesTurkey', lunch: 'ahiBowl', snack2: 'riceCake', dinner: 'stirFry', snack3: 'berriesCottage' },
-  { id: 'fri', day: 'Friday', breakfast: 'yogurtGrapes', snack1: 'yogurtSnack', lunch: 'salmonPlate', snack2: 'berriesCottage', dinner: 'bolognese', snack3: 'appleCottage' },
+  { id: 'fri', day: 'Friday', breakfast: 'yogurtBerries', snack1: 'yogurtSnack', lunch: 'salmonPlate', snack2: 'berriesCottage', dinner: 'bolognese', snack3: 'appleCottage' },
   { id: 'sat', day: 'Saturday', breakfast: 'pancakes', snack1: 'appleCottage', lunch: 'cottageBowl', snack2: 'datesCheese', dinner: 'steakTacos', snack3: 'grapesTurkey' },
   { id: 'sun', day: 'Sunday', breakfast: 'eggAvocado', snack1: 'riceCake', lunch: 'tomatoGrilledCheese', snack2: 'grapesTurkey', dinner: 'chili', snack3: 'yogurtSnack' },
 ]

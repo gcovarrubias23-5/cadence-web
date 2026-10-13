@@ -3,26 +3,8 @@ function f(name, grams, protein, carbs, fat, aisle, extra = {}) {
 }
 
 export const MEALS = {
-  yogurtGrapes: {
-    id: 'yogurtGrapes', name: 'Yogurt bowl with grapes', time: '5 min', slot: 'breakfast',
-    steps: ['Put 3/4 cup Greek yogurt in a bowl.', 'Add 15 grapes and 3 Tbsp granola.'],
-    foods: [
-      f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
-      f('Grapes', 80, 0.6, 14, 0.2, 'Produce', { house: '15 grapes' }),
-      f('Granola', 30, 3, 19, 5, 'Pantry', { house: '3 Tbsp granola' }),
-    ],
-  },
-  yogurtBanana: {
-    id: 'yogurtBanana', name: 'Yogurt bowl with banana', time: '5 min', slot: 'breakfast',
-    steps: ['3/4 cup yogurt.', 'Slice 1/2 banana on top. Add 2 Tbsp granola.'],
-    foods: [
-      f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
-      f('Banana', 60, 0.7, 14, 0.2, 'Produce', { house: '1/2 banana' }),
-      f('Granola', 20, 2, 13, 3.3, 'Pantry', { house: '2 Tbsp granola' }),
-    ],
-  },
   yogurtBerries: {
-    id: 'yogurtBerries', name: 'Yogurt bowl with berries', time: '5 min', slot: 'breakfast',
+    id: 'yogurtBerries', name: 'Yogurt bowl', time: '5 min', slot: 'breakfast',
     steps: ['3/4 cup yogurt.', 'Add 1/2 cup berries and 2 Tbsp granola.'],
     foods: [
       f('Plain Greek yogurt', 200, 20, 7, 1, 'Dairy', { house: '3/4 cup yogurt' }),
@@ -256,12 +238,12 @@ export const MEALS = {
   },
 }
 
-export const BREAKFASTS = ['yogurtGrapes', 'yogurtBanana', 'yogurtBerries', 'eggToast', 'eggAvocado', 'oatmeal', 'proteinShake', 'pancakes']
+export const BREAKFASTS = ['yogurtBerries', 'eggToast', 'eggAvocado', 'oatmeal', 'proteinShake', 'pancakes']
 export const LUNCHES = ['turkeySandwich', 'chickenSalad', 'tunaWrap', 'shrimpTacos', 'cottageBowl', 'salmonPlate', 'tomatoGrilledCheese']
 export const DINNERS = ['lemonChicken', 'tacoBowl', 'salmon', 'bolognese', 'steakTacos', 'chili', 'stirFry', 'bakedFish', 'burgerNight']
 
 export const DEFAULT_WEEK = [
-  { id: 'mon', day: 'Monday', breakfast: 'yogurtGrapes', lunch: 'turkeySandwich', dinner: 'lemonChicken' },
+  { id: 'mon', day: 'Monday', breakfast: 'yogurtBerries', lunch: 'turkeySandwich', dinner: 'lemonChicken' },
   { id: 'tue', day: 'Tuesday', breakfast: 'eggToast', lunch: 'chickenSalad', dinner: 'tacoBowl' },
   { id: 'wed', day: 'Wednesday', breakfast: 'oatmeal', lunch: 'shrimpTacos', dinner: 'salmon' },
   { id: 'thu', day: 'Thursday', breakfast: 'yogurtBerries', lunch: 'tunaWrap', dinner: 'stirFry' },
@@ -273,7 +255,7 @@ export const DEFAULT_WEEK = [
 export const WEEK_LABEL = 'This week'
 
 export function mealOf(id) {
-  return MEALS[id] || MEALS.yogurtGrapes
+  return MEALS[id] || MEALS.yogurtBerries
 }
 
 export function optionsFor(slot) {

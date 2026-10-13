@@ -9,16 +9,6 @@ function note(preview, locked, extra = {}) {
 }
 
 export const KITCHEN = {
-  yogurtGrapes: note('Bowl only. No heat.', [
-    'Spoon the yogurt into a bowl.',
-    'Add the grapes.',
-    'Granola last so it stays crisp.',
-  ], { time: '3 min' }),
-  yogurtBanana: note('Bowl only. No heat.', [
-    'Spoon the yogurt into a bowl.',
-    'Slice the banana on top.',
-    'Granola last so it stays crisp.',
-  ], { time: '3 min' }),
   yogurtBerries: note('Bowl only. No heat.', [
     'Spoon the yogurt into a bowl.',
     'Add the berries.',
@@ -371,9 +361,7 @@ export const KITCHEN = {
 }
 
 const BY_NAME = {
-  'Yogurt bowl with grapes': 'yogurtGrapes',
-  'Yogurt bowl with banana': 'yogurtBanana',
-  'Yogurt bowl with berries': 'yogurtBerries',
+      'Yogurt bowl with berries': 'yogurtBerries',
   'Eggs and toast': 'eggToast',
   'Eggs and avocado toast': 'eggAvocado',
   'Oatmeal and eggs': 'oatmeal',
