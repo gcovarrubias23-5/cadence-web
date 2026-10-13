@@ -44,6 +44,7 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
     avoid: profile.avoid || [],
   }))
   const [tick, setTick] = useState(0)
+  const [saved, setSaved] = useState(false)
   const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
   const math = useMemo(() => {
     try { return buildTargets(form) } catch { return null }
@@ -71,6 +72,8 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
   function save() {
     writeReview()
     onSave({ ...form, avoid: form.avoid || [], style: form.style || '', goalReview: new Date().toISOString() }, math)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2500)
   }
   function saveWeekToHistory() {
     const eaten = load('cadence.eaten', {})
@@ -179,7 +182,10 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
         </section>
       )}
 
-      <button className="btn" type="button" disabled={!math} onClick={save}>Save profile</button>
+      <button className="btn" type="button" disabled={!math} onClick={save} style={saved ? { background: 'var(--accent)' } : undefined}>
+        {saved ? 'Saved' : 'Save profile'}
+      </button>
+      {saved && <p className="note" style={{ textAlign: 'center', marginTop: 8 }}>Profile saved. Your week will use these settings.</p>}
       <About />
       <details className="card">
         <summary className="qty">Preview tools</summary>
