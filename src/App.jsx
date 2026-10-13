@@ -239,6 +239,7 @@ export default function App() {
           <section className="hero">
             <h1>Today’s plan.</h1>
             <p>Tick a plate when you eat. Calories are a band. Protein, carbs, and fat stay exact.</p>
+            <p className="note">Tap a day to see the plates.</p>
           </section>
           {due && (
             <section className="card" style={{ borderColor: 'var(--accent)' }}>

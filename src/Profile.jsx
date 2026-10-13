@@ -75,6 +75,37 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
+
+  function downloadData() {
+    const keys = ['cadence.profile', 'cadence.week', 'cadence.eaten', 'cadence.water', 'cadence.custom', 'cadence.marks', 'cadence.lastCheckin', 'cadence.weight']
+    const data = {}
+    keys.forEach((key) => {
+      const raw = localStorage.getItem(key)
+      if (raw) data[key] = JSON.parse(raw)
+    })
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'cadence-backup.json'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+  function restoreData(file) {
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result)
+        Object.entries(data).forEach(([key, value]) => {
+          if (key.startsWith('cadence.')) localStorage.setItem(key, JSON.stringify(value))
+        })
+        window.location.reload()
+      } catch {
+        alert('That file could not be read.')
+      }
+    }
+    reader.readAsText(file)
+  }
   function saveWeekToHistory() {
     const eaten = load('cadence.eaten', {})
     const water = load('cadence.water', {})
@@ -186,6 +217,15 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
         {saved ? 'Saved' : 'Save profile'}
       </button>
       {saved && <p className="note" style={{ textAlign: 'center', marginTop: 8 }}>Profile saved. Your week will use these settings.</p>}
+      <section className="card">
+        <div className="goal-title">Your data</div>
+        <p className="note" style={{ marginTop: 0 }}>Download a backup, or restore one from another phone.</p>
+        <button className="btn btn-ghost" type="button" onClick={downloadData}>Download my data</button>
+        <label className="btn btn-ghost" style={{ display: 'inline-block', marginTop: 8, cursor: 'pointer' }}>
+          Restore from file
+          <input type="file" accept="application/json" hidden onChange={(e) => e.target.files?.[0] && restoreData(e.target.files[0])} />
+        </label>
+      </section>
       <About />
       <details className="card">
         <summary className="qty">Preview tools</summary>

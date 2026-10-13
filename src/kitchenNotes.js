@@ -14,13 +14,12 @@ export const KITCHEN = {
     'Add the berries.',
     'Granola last so it stays crisp.',
   ], { time: '3 min' }),
-  eggToast: note('Toaster and one skillet. Eggs stay glossy.', [
-    'Toast the bread until golden.',
-    'Heat a nonstick skillet over medium. Add the spinach and stir for 20–30 seconds until just wilted.',
-    'Add the eggs. Stir gently until the whites set and the yolks stay glossy, about 1–2 minutes.',
-    'Off the heat, fold in the cheese so it melts without drying the eggs.',
-    'Spoon the eggs onto the toast.',
-  ], { time: '8 min', done: 'Eggs look set and glossy, not dry. Cheese melted.' }),
+  eggToast: note('Serves 1 · Prep 2 min · Cook 6 min', [
+    'Toast. Toast the bread until deep golden.',
+    'Wilt. Medium skillet. Spinach 20–30 seconds until just wilted.',
+    'Eggs. Stir until the whites set and the yolks stay glossy, about 1–2 minutes.',
+    'Finish. Off the heat, fold in the cheese. Spoon onto the toast.',
+  ], { time: '8 min', done: 'Eggs glossy, not dry. Cheese melted.' }),
   eggAvocado: note('Toaster and one skillet. Whites set, yolks your way.', [
     'Toast the bread until golden.',
     'Mash the avocado onto the warm toast with a pinch of salt.',
@@ -80,13 +79,11 @@ export const KITCHEN = {
     'Warm the tortilla 10 seconds in a dry pan if you want it soft.',
     'Tuna and lettuce in the wrap. Orange on the side.',
   ], { time: '6 min' }),
-  shrimpTacos: note('Hot skillet. Fast shrimp. Do not crowd the pan.', [
-    'Pat the shrimp dry and salt them.',
-    'Heat a skillet over medium-high until hot. Add a thin film of oil.',
-    'Add shrimp in a single layer. Cook 2 minutes per side until pink and curled. Do not crowd.',
-    'Warm the tortillas in a dry pan for 10–15 seconds each.',
-    'Build: shrimp, cabbage, salsa, and lime.',
-  ], { time: '12 min', done: 'Shrimp pink and curled with no gray spots.' }),
+  shrimpTacos: note('Serves 1 · Prep 3 min · Cook 8 min', [
+    'Cook. Pat shrimp dry and salt. Medium-high skillet, thin film of oil. Single layer, 2 minutes per side until pink and curled.',
+    'Warm. Tortillas in a dry pan, 10–15 seconds each.',
+    'Build. Shrimp, cabbage, salsa, lime.',
+  ], { time: '12 min', done: 'Shrimp pink and curled. No gray spots.' }),
   cottageBowl: note('Bowl only.', [
     'Cottage cheese in a bowl.',
     'Pineapple on top. Pretzels on the side so they stay crisp.',
@@ -121,14 +118,12 @@ export const KITCHEN = {
     'Warm the edamame in a splash of water or the microwave.',
     'Plate: rice, edamame, hummus, snap peas.',
   ], { time: '6 min' }),
-  lemonChicken: note('One sheet pan. Potato first so it finishes with the chicken.', [
-    'Heat the oven to 425°F.',
-    'Line a rimmed sheet pan with parchment (or oiled foil).',
-    'Cut the potato into wedges. Toss the chicken thighs and potato with oil, salt, and lemon. Spread in one layer.',
-    'Roast 15 minutes.',
-    'Add the broccoli. Roast 12–15 minutes more.',
-    'Rest 3 minutes. Spoon the pan juices over everything.',
-  ], { time: '35 min', done: 'Chicken reaches 165°F in the thickest part. Potato is tender.' }),
+  lemonChicken: note('Serves 1 · Prep 8 min · Cook 30 min', [
+    'Heat. Oven to 425°F (220°C). Line a sheet pan.',
+    'Toss. Potato wedges, chicken, oil, salt, lemon. One layer.',
+    'Roast. 15 minutes. Add broccoli. Roast 12–15 more minutes.',
+    'Rest. 3 minutes. Spoon the juices over the plate.',
+  ], { time: '35 min', done: 'Chicken reaches 165°F. Potato tender.' }),
   tacoBowl: note('Skillet for the turkey. Let it brown before you stir.', [
     'Heat a skillet over medium-high. Add the turkey in a thin layer.',
     'Let it brown undisturbed for 2–3 minutes, then stir and salt as it cooks until no pink remains.',
@@ -142,12 +137,12 @@ export const KITCHEN = {
     'Push the beans aside. Place the salmon on the pan, skin-side down if it has skin. Roast 10–12 minutes more.',
     'Plate with rice. Lemon at the table.',
   ], { time: '25 min', done: 'The thickest part of the salmon flakes easily.' }),
-  bolognese: note('Pot for the sauce, pot for the pasta. Brown the turkey before you add liquid.', [
-    'Brown the turkey with the onion and garlic over medium-high. Let it color before you stir so it does not steam.',
-    'Add the tomatoes. Simmer uncovered 20 minutes until the sauce thickens.',
-    'Boil the pasta in salted water until just tender. Drain.',
-    'Toss the pasta with the sauce. Parmesan on top. Lettuce on the side.',
-  ], { time: '30 min', done: 'Sauce is thick. Pasta is just tender.' }),
+  bolognese: note('Serves 1 · Prep 5 min · Cook 25 min', [
+    'Brown. Medium-high. Turkey, onion, garlic. Let it color before you stir.',
+    'Simmer. Add tomatoes. Uncovered 20 minutes until thick.',
+    'Pasta. Boil in salted water until just tender. Drain.',
+    'Plate. Toss with sauce. Parmesan on top. Lettuce on the side.',
+  ], { time: '30 min', done: 'Sauce thick. Pasta tender, not mushy.' }),
   steakTacos: note('Hot skillet for the steak. Rest before you slice.', [
     'Pat the steak dry and salt both sides.',
     'Heat a skillet until very hot. Add a thin film of oil.',
@@ -160,12 +155,11 @@ export const KITCHEN = {
     'Add the beans, tomatoes, and broth. Simmer 25 minutes, stirring occasionally, until thick.',
     'Serve with cheddar on top.',
   ], { time: '35 min', done: 'Chili is thick enough to sit on a spoon.' }),
-  stirFry: note('Hot skillet or wok. Chicken first, vegetables second.', [
-    'Cut the chicken into strips and pat dry.',
-    'Heat the oil until it shimmers. Cook the chicken until opaque and cooked through, about 4–5 minutes.',
-    'Add the vegetables. Stir-fry 4–5 minutes until crisp-tender.',
-    'Stir in the teriyaki off high heat. Serve over rice.',
-  ], { time: '20 min', done: 'Chicken is cooked through. Vegetables still have some bite.' }),
+  stirFry: note('Serves 1 · Prep 5 min · Cook 12 min', [
+    'Chicken. Cut into strips and pat dry. Hot oil. Cook 4–5 minutes until opaque.',
+    'Vegetables. Stir-fry 4–5 minutes until crisp-tender.',
+    'Finish. Teriyaki off high heat. Serve over rice.',
+  ], { time: '20 min', done: 'Chicken cooked through. Vegetables still have some bite.' }),
   bakedFish: note('One sheet pan.', [
     'Heat the oven to 400.',
     'Line a rimmed sheet pan with parchment. Oil the paper if you use foil.',
