@@ -223,45 +223,41 @@ export const STYLE_NOTES = {
   ], { time: '8 min reheat', done: 'Scramble is hot. Bacon is crisp or warm.' }),
 
   ketoSmokedSalmon: note('Serves 1 · Prep 2 min · Cook 3 min', [
-    'Heat the pan. Warm a medium nonstick skillet over medium for 1–2 minutes. Add a thin film of oil.',
-    'Cook the eggs. Crack in the eggs and cook 2–3 minutes until the whites are fully set and the edges look firm. Leave the yolks as you like them.',
-    'Plate. Slide the eggs onto a plate. Add the smoked salmon and spinach beside them. Salmon stays cold so it keeps its texture.',
-  ], { time: '8 min', done: 'Most common miss: cooking the eggs until the whites turn rubbery. Pull them as soon as the whites are set.' }),
+    'Cook the eggs. Medium skillet, thin film of oil. Cook 2–3 minutes until the whites are set. Yolks your way.',
+    'Plate. Eggs, smoked salmon, and spinach. Leave the salmon cold.',
+  ], { time: '8 min', done: 'Pull the eggs as soon as the whites set so they stay soft.' }),
   ketoCottageBowl: note('Serves 1 · Prep 2 min · Cook 0 min', [
     'Bowl. Spoon the cottage cheese into a bowl. Add the olives and cucumber. No heat needed.',
   ], { time: '3 min', done: 'No common miss. Ready as soon as it is plated.' }),
   ketoHalloumiEggs: note('Serves 1 · Prep 2 min · Cook 8 min', [
-    'Brown the halloumi. Heat a medium skillet over medium-high. Cook the halloumi 2–3 minutes per side until deep golden and it releases easily. Leaving it alone lets it brown.',
-    'Cook the eggs. Push the halloumi aside. Crack in the eggs and cook 2–3 minutes until the whites are fully set.',
-    'Wilt the spinach. Add the spinach for the last 20–30 seconds until just wilted. Spinach shrinks fast; do not leave it longer.',
-  ], { time: '10 min', done: 'Most common miss: flipping the halloumi too soon. Wait until it releases from the pan.' }),
-  ketoPorkBroccoli: note('Serves 1 · Prep 3 min · Cook 12 min', [
-    'Dry and season. Pat the pork dry and salt it (about ¼ tsp kosher salt). Dry meat browns better.',
-    'Sear. Heat a medium skillet over medium-high. Sear the pork 3–4 minutes per side until deep golden and it releases. For a thicker piece, lower the heat and cook 2–3 more minutes until the center is no longer pink (165°F / 74°C if you have a thermometer).',
-    'Warm the broccoli. Warm the broccoli with a little oil in the same pan or the microwave until steaming, about 1–2 minutes.',
-    'Rest and plate. Rest the pork 2 minutes, then slice and plate with the broccoli.',
-  ], { time: '20 min', done: 'Most common miss: moving the pork too soon. Let it sit until it releases so it browns.' }),
+    'Brown. Medium-high skillet. Halloumi 2–3 minutes per side until deep golden and it releases.',
+    'Eggs. Push the halloumi aside. Cook the eggs 2–3 minutes until the whites are set.',
+    'Spinach. Add for the last 20 seconds until just wilted.',
+  ], { time: '10 min', done: 'Wait until the halloumi releases before you flip it.' }),
+  ketoPorkBroccoli: note('Serves 1 · Prep 2 min · Cook 12 min', [
+    'Sear. Pat the pork dry and salt it. Medium-high skillet, 3–4 minutes per side until deep golden and it releases. Thicker pieces: 2–3 more minutes until no pink (165°F / 74°C).',
+    'Warm. Broccoli with a little oil, 1–2 minutes until steaming.',
+    'Rest and plate. Rest the pork 2 minutes, then slice.',
+  ], { time: '20 min', done: 'Let the pork release from the pan before you flip it.' }),
   ketoCodGreens: note('Serves 1 · Prep 2 min · Cook 10 min', [
-    'Dry and season. Pat the cod dry and salt it (about ¼ tsp kosher salt). Dry fish browns instead of sticking.',
-    'Cook the cod. Heat a medium skillet over medium with a thin film of oil. Cook 3–4 minutes per side until the flesh turns opaque and flakes easily with a fork.',
-    'Warm the beans. Warm the green beans until steaming, about 1–2 minutes. Finish with lemon and a drizzle of oil.',
-  ], { time: '15 min', done: 'Most common miss: overcooking the cod. Pull it as soon as it flakes so it stays moist.' }),
-  ketoChickenThigh: note('Serves 1 · Prep 3 min · Cook 16 min', [
-    'Dry and season. Pat the thigh dry and salt it (about ¼ tsp kosher salt). Dry skin crisps better.',
-    'Crisp the skin. Heat a medium skillet over medium. Place the thigh skin-side down. Cook 6–8 minutes without moving until the skin is deep golden and releases easily. Flip and cook 5–7 more minutes until the juices run clear (165°F / 74°C if you have a thermometer).',
-    'Warm the cauliflower. Warm the cauliflower with a little oil until steaming, about 1–2 minutes.',
-    'Rest and plate. Rest the thigh 2 minutes, then plate with the cauliflower.',
-  ], { time: '22 min', done: 'Most common miss: moving the thigh too soon. Let the skin release on its own so it stays crisp and intact.' }),
+    'Cook. Pat the cod dry and salt it. Medium skillet, thin film of oil. 3–4 minutes per side until it flakes.',
+    'Warm. Green beans, 1–2 minutes until steaming. Lemon and a drizzle of oil.',
+  ], { time: '15 min', done: 'Pull the cod as soon as it flakes. Longer makes it dry.' }),
+  ketoChickenThigh: note('Serves 1 · Prep 2 min · Cook 16 min', [
+    'Crisp. Pat the thigh dry and salt it. Medium skillet, skin-side down 6–8 minutes until deep golden and it releases. Flip 5–7 minutes until the juices run clear (165°F / 74°C).',
+    'Warm. Cauliflower with a little oil, 1–2 minutes until steaming.',
+    'Rest and plate. Rest the thigh 2 minutes.',
+  ], { time: '22 min', done: 'Let the skin release on its own before you flip it.' }),
   ketoTunaBowl: note('Serves 1 · Prep 2 min · Cook 0 min', [
     'Drain and plate. Drain the tuna well. Plate with cucumber, a drizzle of oil, and lemon. No heat needed.',
   ], { time: '4 min', done: 'Most common miss: not draining the tuna. Extra liquid makes the plate soggy.' }),
   ketoChickenSalad: note('Serves 1 · Prep 3 min · Cook 0 min', [
     'Plate. Place the chicken over the lettuce. Add avocado and a drizzle of oil. Use cold or warm chicken; no further cooking.',
   ], { time: '5 min', done: 'No common miss. Ready as soon as it is plated.' }),
-  ketoAhiPlate: note('Serves 1 · Prep 2 min · Cook 2 min', [
-    'Sear if raw. If the ahi is raw, pat it dry and salt it. Heat a skillet over high. Sear 30–45 seconds per side until the outside is browned and the inside is still rare. Rest 1 minute. If it is already seared, skip this step.',
-    'Plate. Slice and plate with cucumber, avocado, and a drizzle of oil.',
-  ], { time: '8 min', done: 'Most common miss: searing too long. Ahi dries out fast. Pull it while the inside is still rare.' }),
+  ketoAhiPlate: note('Serves 1 · Prep 1 min · Cook 2 min', [
+    'Sear if raw. High heat, 30–45 seconds per side until the outside is browned and the inside is still rare. Rest 1 minute. Skip if already seared.',
+    'Plate. Slice. Cucumber, avocado, drizzle of oil.',
+  ], { time: '8 min', done: 'Pull the ahi while the inside is still rare.' }),
   ketoOlivesCheese: note('Serves 1 · Prep 1 min · Cook 0 min', [
     'Plate. Set the olives and cheese together. No heat needed.',
   ], { time: '1 min', done: 'No common miss. Ready as soon as it is plated.' }),
@@ -271,23 +267,21 @@ export const STYLE_NOTES = {
   ketoYogurtSnack: note('Serves 1 · Prep 1 min · Cook 0 min', [
     'Bowl. Spoon the yogurt into a bowl and add the cucumber. No heat needed.',
   ], { time: '2 min', done: 'No common miss. Ready as soon as it is plated.' }),
-  carnBeefButter: note('Serves 1 · Prep 2 min · Cook 8 min', [
-    'Brown the beef. Heat a medium skillet over medium-high. Add the beef and break it into pieces. Cook 5–7 minutes until no pink remains and some pieces are golden. Let it sit briefly so it browns instead of steaming.',
-    'Finish with butter. Off the heat, stir in the butter until melted. The residual heat melts the butter and coats the beef.',
-  ], { time: '12 min', done: 'Most common miss: stirring constantly. Let the beef sit so it browns.' }),
-  carnCodButter: note('Serves 1 · Prep 2 min · Cook 8 min', [
-    'Dry and season. Pat the cod dry and salt it (about ¼ tsp kosher salt). Dry fish browns instead of sticking.',
-    'Cook. Heat a medium skillet over medium with a thin film of oil or butter. Cook 3–4 minutes per side until the flesh turns opaque and flakes easily with a fork.',
-    'Finish. Add the butter in the last minute so it melts over the fish.',
-  ], { time: '12 min', done: 'Most common miss: overcooking. Pull the cod as soon as it flakes so it stays moist.' }),
-  carnShrimpButter: note('Serves 1 · Prep 2 min · Cook 4 min', [
-    'Dry and season. Pat the shrimp dry and salt them lightly. Dry shrimp sear instead of steaming.',
-    'Cook. Heat a medium skillet over medium-high with the butter. Cook the shrimp 1–2 minutes per side until they turn pink and curl into a C shape. A tight O means they are overcooked.',
-  ], { time: '8 min', done: 'Most common miss: cooking until the shrimp curl into a tight O. Pull them at a loose C so they stay tender.' }),
+  carnBeefButter: note('Serves 1 · Prep 1 min · Cook 8 min', [
+    'Brown. Medium-high skillet. Break the beef into pieces. Cook 5–7 minutes until no pink and some pieces are golden.',
+    'Finish. Off the heat, stir in the butter until melted.',
+  ], { time: '12 min', done: 'Let the beef sit so it browns before you stir it.' }),
+  carnCodButter: note('Serves 1 · Prep 1 min · Cook 8 min', [
+    'Cook. Pat the cod dry and salt it. Medium skillet, thin film of oil. 3–4 minutes per side until it flakes.',
+    'Finish. Butter in the last minute.',
+  ], { time: '12 min', done: 'Pull the cod as soon as it flakes. Longer makes it dry.' }),
+  carnShrimpButter: note('Serves 1 · Prep 1 min · Cook 4 min', [
+    'Cook. Pat the shrimp dry and salt them. Medium-high skillet with butter. 1–2 minutes per side until pink and curled into a loose C.',
+  ], { time: '8 min', done: 'A tight O means overcooked. Pull them at a loose C.' }),
   carnSalmonEggs: note('Serves 1 · Prep 1 min · Cook 4 min', [
-    'Cook the eggs. Heat a medium nonstick skillet over medium with the butter. Cook the eggs 2–3 minutes until the whites are fully set and the edges look firm.',
-    'Plate. Slide the eggs onto a plate and add the smoked salmon beside them. Salmon stays cold so it keeps its texture.',
-  ], { time: '8 min', done: 'Most common miss: cooking the eggs until the whites turn rubbery. Pull them as soon as the whites are set.' }),
+    'Cook. Medium skillet with butter. Eggs 2–3 minutes until the whites are set.',
+    'Plate. Eggs and smoked salmon. Leave the salmon cold.',
+  ], { time: '8 min', done: 'Pull the eggs as soon as the whites set so they stay soft.' }),
   carnCheeseSnack: note('Serves 1 · Prep 1 min · Cook 4 min', [
     'Cook the eggs. Heat a small nonstick skillet over medium with a little butter. Fry or scramble the eggs 2–3 minutes until the whites are fully set.',
     'Add cheese. Place the cheese on top or on the side. Residual heat softens it.',

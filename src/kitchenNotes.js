@@ -111,11 +111,11 @@ export const KITCHEN = {
     'Grill on medium until both sides are brown and the cheese melts.',
   ], { time: '12 min', done: 'Cheese melted. Bread brown, not black.' }),
   rotisserieBowl: note('Serves 1 · Prep 2 min · Cook 4 min', [
-    'Warm the quinoa. Heat a small pan over medium. Add the quinoa with 1–2 tbsp water. Cover and warm 2–3 minutes until steaming. The water keeps it from drying out.',
-    'Shred the chicken. Pull the rotisserie chicken into bite-size pieces. It is already cooked, so do not put it in a hot pan.',
-    'Warm the cauliflower rice. Microwave the cauliflower rice 60–90 seconds until hot, or warm it in a pan with a splash of water.',
-    'Assemble. Put the quinoa and cauliflower rice in a bowl. Top with the chicken and salsa. The residual heat warms the chicken without drying it.',
-  ], { time: '8 min', done: 'Most common miss: reheating the chicken in a dry pan. It turns stringy. Keep it off the heat and let the warm grains bring it up to temperature.' }),
+    'Warm the quinoa. Small pan, medium heat, 1–2 tbsp water. Cover 2–3 minutes until steaming.',
+    'Shred the chicken. Pull it into bite-size pieces. Leave it off the heat.',
+    'Warm the cauliflower rice. Microwave 60–90 seconds until hot.',
+    'Assemble. Quinoa, cauliflower rice, chicken, salsa.',
+  ], { time: '8 min', done: 'Do not reheat the chicken in a dry pan. It turns stringy.' }),
   whippedCottage: note('Two minutes with a blender or a fork.', [
     'Blend or whip the cottage cheese until smooth.',
     'Peach on top. Rice cakes on the side.',
@@ -304,63 +304,58 @@ export const KITCHEN = {
     'Fry or scramble the eggs on medium until the whites set.',
   ], { time: '6 min', done: 'Whites set.' }),
   smokedSalmonEggs: note('Serves 1 · Prep 2 min · Cook 3 min', [
-    'Heat the pan. Warm a medium nonstick skillet over medium heat for 1–2 minutes. Add a thin film of oil. The pan is ready when a drop of water skitters.',
-    'Cook the eggs. Crack in the eggs and cook 2–3 minutes until the whites are fully set and the edges look firm. Leave the yolks as you like them. Cooking longer dries the whites.',
-    'Plate. Slide the eggs onto a plate. Add the smoked salmon and a handful of spinach beside them. Salmon stays cold so it keeps its texture.',
-  ], { time: '8 min', done: 'Most common miss: cooking the eggs until the whites turn rubbery. Pull them as soon as the whites are set.' }),
+    'Cook the eggs. Medium skillet, thin film of oil. Cook 2–3 minutes until the whites are set. Yolks your way.',
+    'Plate. Eggs, smoked salmon, and spinach. Leave the salmon cold.',
+  ], { time: '8 min', done: 'Pull the eggs as soon as the whites set so they stay soft.' }),
   englishMuffinEgg: note('Serves 1 · Prep 2 min · Cook 4 min', [
-    'Toast. Toast the English muffin until deep golden, about 2–3 minutes. Warm bread holds the egg better.',
-    'Cook the egg. Heat a small nonstick skillet over medium. Cook the egg 2–3 minutes until the white is fully set and no longer translucent. Cover the pan for the last minute if you want the top set.',
-    'Assemble. Slide the egg onto the muffin and top with the cheese. The residual heat melts the cheese.',
-  ], { time: '8 min', done: 'Most common miss: under-toasting the muffin. It turns soggy under the egg. Toast until deep golden.' }),
-  cottageBerryToast: note('Serves 1 · Prep 2 min · Cook 2 min', [
-    'Toast. Toast the bread until deep golden, about 2 minutes. Warm toast keeps the cottage cheese from sliding.',
-    'Top. Spread the cottage cheese on the warm toast, then add the berries. No further cooking.',
-  ], { time: '5 min', done: 'Most common miss: cold toast. Warm it so the cheese softens slightly and stays in place.' }),
+    'Toast. Toast the English muffin until deep golden, about 2 minutes.',
+    'Cook the egg. Medium skillet. Cook 2–3 minutes until the white is fully set.',
+    'Assemble. Egg on the muffin, cheese on top.',
+  ], { time: '8 min', done: 'Toast the muffin until deep golden or it turns soggy under the egg.' }),
+  cottageBerryToast: note('Serves 1 · Prep 1 min · Cook 2 min', [
+    'Toast. Toast the bread until deep golden, about 2 minutes.',
+    'Top. Cottage cheese, then berries.',
+  ], { time: '5 min', done: 'Toast the bread so the cheese stays in place.' }),
   shakeBanana: note('Serves 1 · Prep 2 min · Cook 0 min', [
-    'Shake. Add the protein powder and milk to a shaker. Shake 20–30 seconds until no dry powder remains. A blender works if you want the banana blended in.',
-    'Serve. Drink the shake. Eat the banana on the side, or blend it in for a thicker texture.',
-  ], { time: '3 min', done: 'Most common miss: dry clumps. Shake longer or blend if the powder is still gritty.' }),
-  porkRicePlate: note('Serves 1 · Prep 5 min · Cook 15 min', [
-    'Dry and season. Pat the pork dry with a paper towel and salt it (about ¼ tsp kosher salt). Dry meat browns instead of steaming.',
-    'Sear. Heat a medium skillet over medium-high. Sear the pork 3–4 minutes per side until deep golden and it releases easily. For a thicker piece, lower the heat and cook 2–3 more minutes until the center is no longer pink (165°F / 74°C if you have a thermometer).',
-    'Warm the sides. Warm the rice and green beans in the microwave or a small pan until steaming, about 1–2 minutes.',
-    'Rest and plate. Rest the pork 2 minutes, then slice and plate with the rice and beans. Resting keeps the juices in the meat.',
-  ], { time: '20 min', done: 'Most common miss: moving the pork too soon. Let it sit until it releases from the pan so it browns.' }),
-  chickpeaChicken: note('Serves 1 · Prep 2 min · Cook 6 min', [
-    'Warm. Heat a medium skillet over medium. Add the chicken, pasta, and broccoli with 1–2 tbsp water. Cover and warm 4–6 minutes, stirring once, until everything is steaming hot. The water steams the broccoli without drying the chicken.',
-    'Season. Add a pinch of salt (about ⅛ tsp) and taste. Add more only if it still tastes flat.',
-  ], { time: '10 min', done: 'Most common miss: no water in the pan. The chicken dries out. Add a splash so it steams.' }),
-  hummusPita: note('Serves 1 · Prep 3 min · Cook 0 min', [
-    'Warm (optional). Warm the pita in a dry skillet over medium for 30–60 seconds per side until soft and lightly toasted, or leave it cold.',
-    'Assemble. Spoon the hummus onto the pita. Add cucumber and chickpeas. No further cooking.',
-  ], { time: '5 min', done: 'Most common miss: cold pita that cracks. A quick warm in a dry pan makes it flexible.' }),
-  turkeyPita: note('Serves 1 · Prep 3 min · Cook 0 min', [
-    'Warm (optional). Warm the pita in a dry skillet over medium for 30–60 seconds per side until soft, or leave it cold.',
-    'Fill. Add the turkey, lettuce, and apple slices. The apple adds crunch; slice it thin so it fits.',
-  ], { time: '5 min', done: 'Most common miss: overfilling. Use a light hand so the pita stays closed.' }),
-  porkSweetPotato: note('Serves 1 · Prep 5 min · Cook 18 min', [
-    'Dry and season. Pat the pork dry and salt it (about ¼ tsp kosher salt). Dry meat browns better.',
-    'Cook the pork. Heat a medium skillet over medium-high. Sear 3–4 minutes per side until deep golden and it releases. For a thicker piece, lower to medium and cook 3–5 more minutes until the center is no longer pink (165°F / 74°C if you have a thermometer).',
-    'Warm the sides. Warm the sweet potato and asparagus in the microwave or a pan until steaming, about 1–2 minutes. Drizzle with a little oil.',
-    'Rest and plate. Rest the pork 2 minutes, then slice and plate with the vegetables.',
-  ], { time: '25 min', done: 'Most common miss: not resting the pork. Juices run out if you slice it immediately.' }),
-  codAsparagus: note('Serves 1 · Prep 3 min · Cook 10 min', [
-    'Dry and season. Pat the cod dry and salt it (about ¼ tsp kosher salt). Dry fish browns instead of sticking.',
-    'Cook the cod. Heat a medium skillet over medium with a thin film of oil. Cook 3–4 minutes per side until the flesh turns opaque and flakes easily with a fork. Fish is done when it flakes; do not wait for it to firm up hard.',
-    'Warm the sides. Warm the asparagus and rice until steaming, about 1–2 minutes. Drizzle with a little oil.',
-    'Plate. Place the cod over the rice with the asparagus.',
-  ], { time: '18 min', done: 'Most common miss: overcooking the cod. It turns dry and chalky. Pull it as soon as it flakes.' }),
-  chickenCauliSkillet: note('Serves 1 · Prep 3 min · Cook 12 min', [
-    'Brown the chicken. Heat 1 tsp oil in a large skillet over medium-high. Add the ground chicken and break it into pieces. Cook 5–6 minutes until no pink remains and some pieces are golden. Browning adds flavor.',
-    'Add vegetables. Add the cauliflower rice and peppers. Cook 4–5 more minutes, stirring, until the cauliflower is tender and the peppers are soft. The cauliflower should no longer look raw and white.',
-    'Season. Add a pinch of salt (about ¼ tsp) and taste. Add more only if it tastes flat.',
-  ], { time: '15 min', done: 'Most common miss: not browning the chicken first. It steams and stays pale. Let it sit before stirring.' }),
-  halloumiVeg: note('Serves 1 · Prep 3 min · Cook 8 min', [
-    'Brown the halloumi. Heat 1 tsp oil in a medium skillet over medium-high. Cook the halloumi 2–3 minutes per side until deep golden and it releases easily. Halloumi browns best when the pan is hot and you leave it alone.',
-    'Add vegetables. Add the zucchini and chickpeas. Cook 3–4 minutes, stirring once, until the zucchini is soft and the chickpeas are hot.',
-    'Season. Halloumi is already salty. Add only a light pinch of salt if the zucchini tastes flat.',
-  ], { time: '12 min', done: 'Most common miss: flipping the halloumi too soon. It sticks and tears. Wait until it releases.' }),
+    'Shake. Protein powder and milk. Shake 20–30 seconds until smooth.',
+    'Serve. Drink it. Banana on the side, or blend it in.',
+  ], { time: '3 min', done: 'Shake until no dry powder remains.' }),
+  porkRicePlate: note('Serves 1 · Prep 3 min · Cook 12 min', [
+    'Sear. Pat the pork dry and salt it. Medium-high skillet, 3–4 minutes per side until deep golden and it releases. Thicker pieces: lower the heat 2–3 more minutes until no pink (165°F / 74°C).',
+    'Warm. Rice and green beans, 1–2 minutes until steaming.',
+    'Rest and plate. Rest the pork 2 minutes, then slice.',
+  ], { time: '20 min', done: 'Let the pork release from the pan before you flip it.' }),
+  chickpeaChicken: note('Serves 1 · Prep 1 min · Cook 6 min', [
+    'Warm. Medium skillet. Chicken, pasta, and broccoli with 1–2 tbsp water. Cover 4–6 minutes until steaming.',
+    'Season. Pinch of salt.',
+  ], { time: '10 min', done: 'Add a splash of water so the chicken does not dry out.' }),
+  hummusPita: note('Serves 1 · Prep 2 min · Cook 0 min', [
+    'Warm. Dry skillet, medium, 30–60 seconds per side. Or leave it cold.',
+    'Assemble. Hummus, cucumber, chickpeas.',
+  ], { time: '5 min', done: 'Warm the pita if it cracks when you fold it.' }),
+  turkeyPita: note('Serves 1 · Prep 2 min · Cook 0 min', [
+    'Warm. Dry skillet, medium, 30–60 seconds per side. Or leave it cold.',
+    'Fill. Turkey, lettuce, thin apple slices.',
+  ], { time: '5 min', done: 'Do not overfill or the pita will not close.' }),
+  porkSweetPotato: note('Serves 1 · Prep 3 min · Cook 15 min', [
+    'Sear. Pat the pork dry and salt it. Medium-high skillet, 3–4 minutes per side until deep golden and it releases. Thicker pieces: medium heat 3–5 more minutes until no pink (165°F / 74°C).',
+    'Warm. Sweet potato and asparagus, 1–2 minutes until steaming. Drizzle of oil.',
+    'Rest and plate. Rest the pork 2 minutes, then slice.',
+  ], { time: '25 min', done: 'Rest the pork 2 minutes before you slice it.' }),
+  codAsparagus: note('Serves 1 · Prep 2 min · Cook 10 min', [
+    'Cook. Pat the cod dry and salt it. Medium skillet, thin film of oil. 3–4 minutes per side until it flakes.',
+    'Warm. Asparagus and rice, 1–2 minutes until steaming. Drizzle of oil.',
+    'Plate. Cod over the rice with asparagus.',
+  ], { time: '18 min', done: 'Pull the cod as soon as it flakes. Longer makes it dry.' }),
+  chickenCauliSkillet: note('Serves 1 · Prep 2 min · Cook 10 min', [
+    'Brown. Large skillet, medium-high, 1 tsp oil. Ground chicken, 5–6 minutes until no pink and some pieces are golden.',
+    'Add. Cauliflower rice and peppers. Cook 4–5 minutes until the cauliflower is tender.',
+    'Season. Pinch of salt.',
+  ], { time: '15 min', done: 'Let the chicken sit so it browns before you stir it.' }),
+  halloumiVeg: note('Serves 1 · Prep 2 min · Cook 8 min', [
+    'Brown. Medium-high skillet, 1 tsp oil. Halloumi 2–3 minutes per side until deep golden and it releases.',
+    'Add. Zucchini and chickpeas. Cook 3–4 minutes until the zucchini is soft.',
+  ], { time: '12 min', done: 'Wait until the halloumi releases before you flip it.' }),
   stringApple: note('Serves 1 · Prep 1 min · Cook 0 min', [
     'Plate. Set the string cheese and apple together. No heat needed.',
   ], { time: '1 min', done: 'No common miss. This one is ready as soon as it is plated.' }),
