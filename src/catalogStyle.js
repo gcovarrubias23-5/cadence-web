@@ -54,14 +54,6 @@ export const STYLE_MEALS = {
       f('Lemon', 15, 0.2, 1.5, 0.1, 'Produce', { house: '2 lemon wedges' }),
     ],
   },
-  ketoSteakEggs: {
-    id: 'ketoSteakEggs', name: 'Steak and eggs', time: '18 min', slot: 'dinner', style: 'keto',
-    foods: [
-      f('Flank steak', 170, 36, 0, 13, 'Protein', { house: '6 oz steak' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
-    ],
-  },
   ketoPorkBroccoli: {
     id: 'ketoPorkBroccoli', name: 'Pork and broccoli', time: '25 min', slot: 'dinner', style: 'keto',
     foods: [
@@ -217,13 +209,6 @@ export const STYLE_MEALS = {
       f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
-  carnCottage: {
-    id: 'carnCottage', name: 'Cottage and eggs', time: '8 min', slot: 'breakfast', style: 'carnivore',
-    foods: [
-      f('Cottage cheese', 220, 24, 7, 5, 'Dairy', { house: '1 cup cottage cheese' }),
-      f('Eggs', 50, 6.5, 0.5, 5, 'Protein', { house: '1 large egg' }),
-    ],
-  },
   carnTurkeyCheese: {
     id: 'carnTurkeyCheese', name: 'Turkey and cheese', time: '3 min', slot: 'snack', style: 'carnivore',
     foods: [
@@ -262,6 +247,6 @@ export const STYLE_MEALS = {
 export const STYLE_BY_SLOT = {
   breakfast: ['ketoEggsAvocado', 'ketoYogurtCucumber', 'ketoSmokedSalmon', 'ketoCottageBowl', 'ketoHalloumiEggs', 'carnEggs', 'carnYogurt', 'carnSalmonEggs', 'carnCottage'],
   lunch: ['ketoBurgerBowl', 'ketoShrimpCabbage', 'ketoTunaBowl', 'ketoChickenSalad', 'ketoAhiPlate', 'carnShrimpButter'],
-  dinner: ['ketoSalmonGreens', 'ketoSteakEggs', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSalmonButter', 'carnBeefButter', 'carnCodButter'],
+  dinner: ['ketoSalmonGreens', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSalmonButter', 'carnBeefButter', 'carnCodButter'],
   snack: ['ketoCheeseSnack', 'ketoEggSnack', 'ketoOlivesCheese', 'ketoSmokedSnack', 'ketoYogurtSnack', 'carnTurkeyCheese', 'carnEggSnack', 'carnCheeseSnack', 'carnYogurtSnack', 'carnSalmonSnack'],
 }

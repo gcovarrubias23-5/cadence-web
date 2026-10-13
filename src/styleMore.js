@@ -250,14 +250,6 @@ export const MORE_MEALS = {
       f('Butter', 5, 0, 0, 5, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
-  carnPorkEggsBreakfast: {
-    id: 'carnPorkEggsBreakfast', name: 'Pork and eggs breakfast', time: '14 min', slot: 'breakfast', style: 'carnivore',
-    foods: [
-      f('Pork tenderloin', 120, 30, 0, 5, 'Protein', { house: '4 oz pork' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
-    ],
-  },
   carnRibeyeButter: {
     id: 'carnRibeyeButter', name: 'Ribeye and butter', time: '16 min', slot: 'lunch', style: 'carnivore',
     foods: [
@@ -376,7 +368,7 @@ export const MORE_MEALS = {
 }
 
 export const MORE_BY_SLOT = {
-  breakfast: ['ketoSausageEggs', 'ketoFetaEggs', 'ketoTurkeyBreakfast', 'ketoBaconEggs', 'ketoCheddarOmelet', 'ketoSmokedSalmonEggs', 'carnBeefBreakfast', 'carnChickenBreakfast', 'carnSteakBreakfast', 'carnBaconEggs', 'carnPorkEggsBreakfast', 'carnBaconHardEggs', 'carnScramblePack'],
+  breakfast: ['ketoSausageEggs', 'ketoFetaEggs', 'ketoTurkeyBreakfast', 'ketoBaconEggs', 'ketoCheddarOmelet', 'ketoSmokedSalmonEggs', 'carnBeefBreakfast', 'carnChickenBreakfast', 'carnSteakBreakfast', 'carnBaconEggs', 'carnBaconHardEggs', 'carnScramblePack'],
   lunch: ['ketoSteakGreens', 'ketoShrimpAvocado', 'ketoPorkGreens', 'ketoChickenAvocado', 'ketoTunaAvocado', 'ketoLambGreens', 'carnSteakCheese', 'carnRibeyeButter', 'carnRibeyePortion', 'carnSalmonPortion'],
   dinner: ['ketoBisonCauli', 'ketoAhiBroccoli', 'ketoTurkeyCauli', 'ketoRibeyeAsparagus', 'ketoPorkChopsCauli', 'ketoSalmonCauli', 'carnBeefBatch', 'carnChuckRoast', 'carnThighsBatch', 'carnPorkBelly', 'carnLiverBeef', 'carnLambPortion', 'carnTurkeyButter', 'carnChickenButter', 'carnChickenThighButter', 'carnGroundBeefCheese', 'carnPorkButter'],
   snack: ['ketoStringCheese', 'ketoEggsOlives', 'ketoOlivesTurkey', 'ketoCheeseCucumber', 'carnStringCheese', 'carnCottageSnack', 'carnBeefCheese', 'carnBaconCheese', 'carnEggButter', 'carnCottageButter'],
