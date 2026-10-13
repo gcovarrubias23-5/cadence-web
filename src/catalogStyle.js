@@ -182,14 +182,6 @@ export const STYLE_MEALS = {
       f('Butter', 10, 0, 0, 11, 'Dairy', { house: '2 tsp butter' }),
     ],
   },
-  carnPorkEggs: {
-    id: 'carnPorkEggs', name: 'Pork and eggs', time: '18 min', slot: 'dinner', style: 'carnivore',
-    foods: [
-      f('Pork tenderloin', 140, 36, 0, 5.6, 'Protein', { house: '5 oz pork' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
-    ],
-  },
   carnBeefButter: {
     id: 'carnBeefButter', name: 'Ground beef and butter', time: '15 min', slot: 'dinner', style: 'carnivore',
     foods: [
@@ -209,28 +201,6 @@ export const STYLE_MEALS = {
     foods: [
       f('Lean ground beef', 170, 34, 0, 14, 'Protein', { house: '6 oz beef' }),
       f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-    ],
-  },
-  carnChickenEggs: {
-    id: 'carnChickenEggs', name: 'Chicken and eggs', time: '10 min', slot: 'lunch', style: 'carnivore',
-    foods: [
-      f('Rotisserie chicken', 140, 38, 0, 10, 'Protein', { house: '5 oz chicken' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-    ],
-  },
-  carnTurkeyEggs: {
-    id: 'carnTurkeyEggs', name: 'Turkey and eggs', time: '12 min', slot: 'lunch', style: 'carnivore',
-    foods: [
-      f('Ground turkey 93%', 170, 32, 0, 14, 'Protein', { house: '6 oz turkey' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-    ],
-  },
-  carnTunaEggs: {
-    id: 'carnTunaEggs', name: 'Tuna and eggs', time: '8 min', slot: 'lunch', style: 'carnivore',
-    foods: [
-      f('Canned tuna', 113, 25, 0, 1, 'Protein', { house: '1 can tuna' }),
-      f('Eggs', 100, 13, 1, 10, 'Protein', { house: '2 large eggs' }),
-      f('Butter', 7, 0, 0, 8, 'Dairy', { house: '1 tsp butter' }),
     ],
   },
   carnShrimpButter: {
@@ -306,7 +276,7 @@ export const STYLE_MEALS = {
 
 export const STYLE_BY_SLOT = {
   breakfast: ['ketoEggsAvocado', 'ketoYogurtCucumber', 'ketoSmokedSalmon', 'ketoCottageBowl', 'ketoHalloumiEggs', 'carnEggs', 'carnYogurt', 'carnSalmonEggs', 'carnCottage'],
-  lunch: ['ketoBurgerBowl', 'ketoShrimpCabbage', 'ketoTunaBowl', 'ketoChickenSalad', 'ketoAhiPlate', 'carnBeefEggs', 'carnChickenEggs', 'carnTurkeyEggs', 'carnTunaEggs', 'carnShrimpButter'],
-  dinner: ['ketoSalmonGreens', 'ketoSteakEggs', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSteakEggs', 'carnSalmonButter', 'carnPorkEggs', 'carnBeefButter', 'carnCodButter'],
+  lunch: ['ketoBurgerBowl', 'ketoShrimpCabbage', 'ketoTunaBowl', 'ketoChickenSalad', 'ketoAhiPlate', 'carnBeefEggs', 'carnShrimpButter'],
+  dinner: ['ketoSalmonGreens', 'ketoSteakEggs', 'ketoPorkBroccoli', 'ketoCodGreens', 'ketoChickenThigh', 'carnSteakEggs', 'carnSalmonButter', 'carnBeefButter', 'carnCodButter'],
   snack: ['ketoCheeseSnack', 'ketoEggSnack', 'ketoOlivesCheese', 'ketoSmokedSnack', 'ketoYogurtSnack', 'carnTurkeyCheese', 'carnEggSnack', 'carnCheeseSnack', 'carnYogurtSnack', 'carnSalmonSnack'],
 }
