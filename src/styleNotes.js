@@ -222,4 +222,77 @@ export const STYLE_NOTES = {
     'To serve: reheat gently in a skillet or microwave until hot.',
   ], { time: '8 min reheat', done: 'Scramble is hot. Bacon is crisp or warm.' }),
 
+  ketoSmokedSalmon: note('Skillet for the eggs. Salmon stays cold.', [
+    'Heat a lightly oiled nonstick skillet over medium. Cook the eggs until the whites are fully set, about 2–3 minutes.',
+    'Plate with the smoked salmon and spinach.',
+  ], { time: '8 min', done: 'Whites set. Salmon still cool.' }),
+  ketoCottageBowl: note('No heat.', [
+    'Spoon cottage cheese into a bowl.',
+    'Add olives and cucumber.',
+  ], { time: '3 min' }),
+  ketoHalloumiEggs: note('Skillet. Halloumi first.', [
+    'Heat a skillet over medium-high. Cook halloumi 2–3 minutes per side until golden.',
+    'Push aside. Cook the eggs until the whites set.',
+    'Add spinach for the last 20 seconds.',
+  ], { time: '10 min', done: 'Halloumi is golden. Egg whites are set.' }),
+  ketoPorkBroccoli: note('Skillet or sheet pan.', [
+    'Pat the pork dry and salt it. Sear 3–4 minutes per side until browned and cooked through.',
+    'Warm the broccoli with a little oil.',
+    'Slice the pork and plate with the broccoli.',
+  ], { time: '20 min', done: 'Pork is cooked through. Broccoli is hot.' }),
+  ketoCodGreens: note('Skillet. Fast fish.', [
+    'Pat the cod dry and salt it. Cook 3–4 minutes per side over medium until the flesh flakes.',
+    'Warm the green beans. Finish with lemon and oil.',
+  ], { time: '15 min', done: 'Cod flakes easily. Beans are hot.' }),
+  ketoChickenThigh: note('Skillet or sheet pan.', [
+    'Pat the thigh dry and salt it. Cook skin-side down over medium until the skin is crisp, about 6–8 minutes, then flip and finish.',
+    'Warm the cauliflower with oil.',
+    'Plate together.',
+  ], { time: '22 min', done: 'Thigh is cooked through. Skin is crisp if skin-on.' }),
+  ketoTunaBowl: note('No heat.', [
+    'Drain the tuna.',
+    'Plate with cucumber, oil, and lemon.',
+  ], { time: '4 min' }),
+  ketoChickenSalad: note('No heat. Use cold or warm chicken.', [
+    'Plate the chicken over lettuce.',
+    'Add avocado and a drizzle of oil.',
+  ], { time: '5 min' }),
+  ketoAhiPlate: note('No heat if the ahi is seared already. Sear if raw.', [
+    'If raw: pat dry, salt, and sear 30–45 seconds per side over high heat. Rest 1 minute.',
+    'Plate with cucumber, avocado, and oil.',
+  ], { time: '8 min', done: 'Ahi is seared on the outside if you seared it.' }),
+  ketoOlivesCheese: note('No heat.', [
+    'Plate olives and cheese.',
+  ], { time: '1 min' }),
+  ketoSmokedSnack: note('No heat.', [
+    'Plate the smoked salmon with cucumber.',
+  ], { time: '2 min' }),
+  ketoYogurtSnack: note('No heat.', [
+    'Spoon yogurt into a bowl and add cucumber.',
+  ], { time: '2 min' }),
+  carnBeefButter: note('Skillet. Butter at the end.', [
+    'Heat a skillet over medium-high. Brown the beef, breaking it into pieces, until no pink remains.',
+    'Off the heat, stir in butter.',
+  ], { time: '12 min', done: 'Beef is browned. Butter melted in.' }),
+  carnCodButter: note('Skillet. Butter at the end.', [
+    'Pat the cod dry and salt it. Cook 3–4 minutes per side over medium until it flakes.',
+    'Add butter in the last minute so it melts over the fish.',
+  ], { time: '12 min', done: 'Cod flakes. Butter is melted.' }),
+  carnShrimpButter: note('Hot pan. Fast shrimp.', [
+    'Pat the shrimp dry and salt them.',
+    'Heat a skillet over medium-high with butter. Cook shrimp 2 minutes per side until pink and curled.',
+  ], { time: '8 min', done: 'Shrimp are pink and curled.' }),
+  carnSalmonEggs: note('Skillet for the eggs. Salmon stays cold.', [
+    'Cook the eggs in butter over medium until the whites set.',
+    'Plate with the smoked salmon.',
+  ], { time: '8 min', done: 'Whites set. Salmon still cool.' }),
+  carnCheeseSnack: note('Skillet for the eggs if you want them hot.', [
+    'Fry or scramble the eggs in butter. Cheese on top or on the side.',
+  ], { time: '6 min', done: 'Eggs set. Cheese melted if heated.' }),
+  carnYogurtSnack: note('No heat.', [
+    'Yogurt in a bowl.',
+  ], { time: '1 min' }),
+  carnSalmonSnack: note('No heat.', [
+    'Plate the smoked salmon with a little butter.',
+  ], { time: '1 min' }),
 }

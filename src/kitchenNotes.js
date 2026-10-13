@@ -302,6 +302,76 @@ export const KITCHEN = {
   carnEggSnack: note('Nonstick skillet.', [
     'Fry or scramble the eggs on medium until the whites set.',
   ], { time: '6 min', done: 'Whites set.' }),
+  smokedSalmonEggs: note('Skillet for the eggs. Salmon stays cold.', [
+    'Heat a lightly oiled nonstick skillet over medium. Cook the eggs until the whites are fully set, about 2–3 minutes.',
+    'Plate the eggs with the smoked salmon and a handful of spinach.',
+  ], { time: '8 min', done: 'Whites set. Salmon still cool.' }),
+  englishMuffinEgg: note('Toaster and skillet.', [
+    'Toast the English muffin until golden.',
+    'Cook the egg in a nonstick skillet over medium until the white is fully set, about 2–3 minutes.',
+    'Slide the egg onto the muffin and top with cheese.',
+  ], { time: '8 min', done: 'Muffin toasted. Egg white set. Cheese melted.' }),
+  cottageBerryToast: note('Toaster only.', [
+    'Toast the bread until golden.',
+    'Spread cottage cheese on the warm toast.',
+    'Top with berries.',
+  ], { time: '5 min' }),
+  shakeBanana: note('Blender or shaker.', [
+    'Add protein powder and milk to a shaker or blender.',
+    'Shake or blend until smooth.',
+    'Eat the banana on the side or blend it in.',
+  ], { time: '3 min' }),
+  porkRicePlate: note('Skillet or sheet pan for the pork. Rice and beans can be warmed.', [
+    'Pat the pork dry and salt it. Sear 3–4 minutes per side over medium-high until browned and cooked through.',
+    'Warm the rice and green beans.',
+    'Slice the pork and plate with the rice and beans.',
+  ], { time: '20 min', done: 'Pork is browned and cooked through. Rice is hot.' }),
+  chickpeaChicken: note('Skillet or microwave to warm.', [
+    'Warm the chicken, pasta, and broccoli together in a skillet with a splash of water or in the microwave until hot.',
+    'Salt to taste.',
+  ], { time: '10 min', done: 'Everything is hot.' }),
+  hummusPita: note('No heat needed.', [
+    'Warm the pita if you want, or leave it cold.',
+    'Spoon hummus onto the pita.',
+    'Add cucumber and chickpeas.',
+  ], { time: '5 min' }),
+  turkeyPita: note('No heat needed.', [
+    'Warm the pita if you want.',
+    'Fill with turkey, lettuce, and apple slices.',
+  ], { time: '5 min' }),
+  porkSweetPotato: note('Sheet pan or skillet.', [
+    'Pat the pork dry and salt it. Roast or sear until browned and cooked through, about 15–20 minutes.',
+    'Warm the sweet potato and asparagus.',
+    'Slice the pork and plate with the vegetables and a drizzle of oil.',
+  ], { time: '25 min', done: 'Pork is cooked through. Vegetables are hot.' }),
+  codAsparagus: note('Skillet or sheet pan.', [
+    'Pat the cod dry and salt it. Cook 3–4 minutes per side over medium until the flesh flakes.',
+    'Warm the asparagus and rice.',
+    'Plate the cod over the rice with asparagus and a drizzle of oil.',
+  ], { time: '18 min', done: 'Cod flakes easily. Rice is hot.' }),
+  chickenCauliSkillet: note('One skillet.', [
+    'Heat oil in a skillet over medium-high. Brown the ground chicken, breaking it into pieces, about 5–6 minutes.',
+    'Add cauliflower rice and peppers. Cook until the cauliflower is tender and the chicken is cooked through, about 4–5 more minutes.',
+    'Salt to taste.',
+  ], { time: '15 min', done: 'Chicken is browned. Cauliflower is tender.' }),
+  halloumiVeg: note('Skillet. Halloumi first so it browns.', [
+    'Heat oil in a skillet over medium-high. Cook halloumi 2–3 minutes per side until golden.',
+    'Add zucchini and chickpeas. Cook until the zucchini softens, about 3–4 minutes.',
+    'Salt lightly.',
+  ], { time: '12 min', done: 'Halloumi is golden. Zucchini is soft.' }),
+  stringApple: note('No heat.', [
+    'Pair the string cheese with the apple.',
+  ], { time: '1 min' }),
+  celeryAlmond: note('No heat.', [
+    'Fill the celery with almond butter.',
+  ], { time: '2 min' }),
+  shakeSnack: note('Shaker or blender.', [
+    'Shake or blend the protein powder with milk until smooth.',
+  ], { time: '2 min' }),
+  chocolateYogurt: note('Bowl only.', [
+    'Spoon the yogurt into a bowl.',
+    'Add the dark chocolate on top.',
+  ], { time: '2 min' }),
 }
 
 const BY_NAME = {
