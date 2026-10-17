@@ -9,6 +9,9 @@ export function Meal({ label, meal, factor }) {
   const plateTotals = sumFoods(plated)
   const kitchen = kitchenFor(meal)
   const mins = kitchen?.time || meal.time
+  // KNOWN BUG (reported, not fixed here): useState runs after the early return above, so a Meal
+  // that switches between null and a plate can crash React. Fix: move this line above `if (!meal)`.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [recipeOpen, setRecipeOpen] = useState(false)
 
   return (

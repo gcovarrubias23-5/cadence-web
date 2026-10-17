@@ -4,7 +4,6 @@ import {
   WEEK_LABEL,
   SLOTS,
   mealOf,
-  cleanWeek,
   dropCustom,
 } from './plan.js'
 import {
