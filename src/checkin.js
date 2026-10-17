@@ -2,10 +2,20 @@ export const PULSE_STEP = 0.05
 
 export const DEFAULT_MARKS = {
   weekMark: 5,
-  mealsPerDay: 5,
+  mealsPerDay: 6,
   protein: 120,
   carbs: 150,
   fat: 60,
+}
+
+// The app always plans six plates a day. Early builds saved mealsPerDay: 5 as a
+// default (no screen ever let anyone pick it), so a saved 5 is upgraded to 6.
+export function loadMarks(saved) {
+  if (!saved || typeof saved !== 'object') return { ...DEFAULT_MARKS }
+  const next = { ...DEFAULT_MARKS, ...saved }
+  const n = Number(next.mealsPerDay)
+  if (!Number.isFinite(n) || n === 5 || n < 1) next.mealsPerDay = DEFAULT_MARKS.mealsPerDay
+  return next
 }
 
 export function applyPulse(marks, move) {

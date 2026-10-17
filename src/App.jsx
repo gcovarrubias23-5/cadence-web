@@ -4,7 +4,6 @@ import {
   WEEK_LABEL,
   SLOTS,
   mealOf,
-  cleanWeek,
   dropCustom,
 } from './plan.js'
 import {
@@ -13,7 +12,7 @@ import {
   goalFromMarks,
   groceryFromWeek,
 } from './macros.js'
-import { applyPulse } from './checkin.js'
+import { applyPulse, loadMarks } from './checkin.js'
 import { buildShopText } from './shopList.js'
 import { Meal } from './mealView.jsx'
 import { ProgressBars } from './bars.jsx'
@@ -87,8 +86,7 @@ export default function App() {
     return parsed[0]?.snack3 ? parsed : DEFAULT_WEEK
   })
   const [marks, setMarks] = useState(() => {
-    const saved = loadJson('cadence.marks', null)
-    return saved ? { protein: 120, carbs: 150, fat: 60, weekMark: 5, mealsPerDay: 5, ...saved } : { protein: 120, carbs: 150, fat: 60, weekMark: 5, mealsPerDay: 5 }
+    return loadMarks(loadJson('cadence.marks', null))
   })
   const avoid = profile?.avoid || []
 

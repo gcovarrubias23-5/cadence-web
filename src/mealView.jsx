@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { formatG, formatMacro, kcalOf, scaleFood, sumFoods } from './macros.js'
 import { kitchenFor } from './kitchenBridge.js'
 import { formatPortion } from './portion.js'
+import { isWholeEgg } from './foodWords.js'
 
 export function Meal({ label, meal, factor }) {
+  const [recipeOpen, setRecipeOpen] = useState(false)
   if (!meal) return null
   const plated = meal.foods.map((food) => scaleFood(food, factor))
   const plateTotals = sumFoods(plated)
   const kitchen = kitchenFor(meal)
   const mins = kitchen?.time || meal.time
-  const [recipeOpen, setRecipeOpen] = useState(false)
 
   return (
     <div className="meal-row">
@@ -27,7 +28,7 @@ export function Meal({ label, meal, factor }) {
         <ul className="foods">
           {plated.map((food, i) => {
             const base = meal.foods[i]
-            const isEgg = /\begg/i.test(food.name) && !/egg white/i.test(food.name)
+            const isEgg = isWholeEgg(food.name)
             const shown = isEgg ? { ...food, grams: base.grams, baseGrams: base.grams } : food
             const portion = formatPortion(shown)
             return (

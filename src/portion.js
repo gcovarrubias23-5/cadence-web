@@ -1,3 +1,4 @@
+import { isWholeEgg } from './foodWords.js'
 function cleanHouse(house) {
   return String(house || '')
     .replace(/palm[- ]size /i, '')
@@ -26,7 +27,7 @@ export function formatPortion(food) {
 
   if (!g) return house
 
-  if (/\begg/.test(name) && !name.includes('egg white')) {
+  if (isWholeEgg(name)) {
     if (house && /egg/i.test(house)) return house
     const base = Number(food?.baseGrams) || g
     const n = Math.max(1, Math.round(base / 50))
