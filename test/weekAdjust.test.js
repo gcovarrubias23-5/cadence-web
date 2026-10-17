@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { installStorage } from './memoryStorage.js'
 import { adaptWeek } from '../src/adaptWeek.js'
-import { applyPulse, DEFAULT_MARKS } from '../src/checkin.js'
+import { applyPulse, loadMarks, DEFAULT_MARKS } from '../src/checkin.js'
 import { isCheckinDue, daysUntilCheckin } from '../src/weekGate.js'
 
 const DAY = 24 * 60 * 60 * 1000
@@ -74,5 +74,27 @@ describe('applyPulse', () => {
     expect(n.carbs).toBe(143)
     expect(n.weekMark).toBe(4)
     expect(applyPulse({ ...DEFAULT_MARKS, weekMark: 1, carbs: 20 }, 'heavy')).toMatchObject({ weekMark: 1, carbs: 20 })
+  })
+})
+
+describe('saved marks (loadMarks)', () => {
+  it('defaults to six plates a day', () => {
+    expect(DEFAULT_MARKS.mealsPerDay).toBe(6)
+    expect(loadMarks(null)).toEqual(DEFAULT_MARKS)
+  })
+  it('upgrades the old default of 5 and keeps everything else', () => {
+    const old = { protein: 150, carbs: 200, fat: 70, weekMark: 7, mealsPerDay: 5 }
+    expect(loadMarks(old)).toEqual({ ...old, mealsPerDay: 6 })
+  })
+  it('fills fields missing from old saves and backups', () => {
+    expect(loadMarks({ protein: 140 })).toEqual({ ...DEFAULT_MARKS, protein: 140 })
+  })
+  it('a backup file round-trip loads the same marks', () => {
+    const backup = JSON.parse(JSON.stringify({ 'cadence.marks': { protein: 130, carbs: 160, fat: 55, weekMark: 5, mealsPerDay: 5 } }))
+    expect(loadMarks(backup['cadence.marks'])).toMatchObject({ protein: 130, mealsPerDay: 6 })
+  })
+  it('ignores junk', () => {
+    expect(loadMarks('nope')).toEqual(DEFAULT_MARKS)
+    expect(loadMarks({ mealsPerDay: 'x' }).mealsPerDay).toBe(6)
   })
 })

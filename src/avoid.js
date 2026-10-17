@@ -10,10 +10,12 @@ export const AVOIDS = [
   { id: 'sesame', label: 'Sesame', line: 'Hummus and tahini-style dips.' },
 ]
 
+import { DAIRY_BUTTER, EGG } from './foodWords.js'
+
 const RULES = {
   gluten: /sourdough|bread|toast|bagel|english muffin|pita|flour tortilla|pasta|pancake|bun|granola|oat|overnight oats|farro|ezekiel|pretzel|cracker|teriyaki|flour/i,
-  dairy: /yogurt|skyr|cottage|milk|fairlife|cheddar|feta|parmesan|butter|string cheese|babybel|halloumi|cheese/i,
-  egg: /\begg|egg white|eggs\b/i,
+  dairy: [/yogurt|skyr|cottage|milk|fairlife|cheddar|feta|parmesan|string cheese|babybel|halloumi|cheese/i, DAIRY_BUTTER],
+  egg: EGG,
   peanut: /peanut/i,
   treeNut: /almond|cashew/i,
   soy: /tofu|tempeh|edamame|soy|teriyaki/i,
@@ -30,7 +32,7 @@ function blob(meal) {
 export function mealHitsAvoid(meal, avoid = []) {
   if (!meal || !avoid.length) return false
   const text = blob(meal)
-  return avoid.some((id) => RULES[id] && RULES[id].test(text))
+  return avoid.some((id) => [RULES[id] || []].flat().some((rule) => rule.test(text)))
 }
 
 export function foodHitsAvoid(item, avoid = []) {
