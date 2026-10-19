@@ -29,6 +29,9 @@ import { daysUntilCheckin, isCheckinDue } from './weekGate.js'
 import { archiveWeek } from './weekHistory.js'
 import { weekTurned } from './rotateWeek.js'
 import { spinMenus } from './weekSpin.js'
+import { startTrial } from './trial.js'
+import { useAccess } from './useAccess.js'
+import { Paywall } from './Paywall.jsx'
 import {
   WATER_GOAL,
   addGlass,
@@ -89,7 +92,11 @@ export default function App() {
     return loadMarks(loadJson('cadence.marks', null))
   })
   const avoid = profile?.avoid || []
+  const { access, setEntitlement, locked } = useAccess()
+  const [plansOpen, setPlansOpen] = useState(false)
 
+  // Profiles made before the trial clock existed start their two weeks now.
+  useEffect(() => { if (profile?.done) startTrial() }, [profile])
   useEffect(() => { localStorage.setItem('cadence.marks', JSON.stringify(marks)) }, [marks])
   useEffect(() => { localStorage.setItem('cadence.week', JSON.stringify(picks)) }, [picks])
   useEffect(() => { localStorage.setItem('cadence.eaten', JSON.stringify(eaten)) }, [eaten])
@@ -212,8 +219,17 @@ export default function App() {
     copyList(body)
   }
 
+  function entitled(ent) {
+    setEntitlement(ent)
+    setPlansOpen(false)
+  }
+
+  if (plansOpen || (profile?.done && locked)) {
+    return <Paywall locked={!!profile?.done && locked} onEntitled={entitled} onClose={() => setPlansOpen(false)} />
+  }
+
   if (!profile?.done) {
-    return <Start onDone={finishStart} />
+    return <Start onDone={finishStart} onShowPlans={() => setPlansOpen(true)} />
   }
 
   return (
@@ -320,7 +336,7 @@ export default function App() {
       )}
 
       {tab === 'you' && (
-        <Profile profile={profile} onSave={saveProfile} onCheckin={() => setTab('checkin')} onSpinWeek={() => spinWeek()} />
+        <Profile profile={profile} access={access} onShowPlans={() => setPlansOpen(true)} onEntitled={entitled} onSave={saveProfile} onCheckin={() => setTab('checkin')} onSpinWeek={() => spinWeek()} />
       )}
 
       {picking && (

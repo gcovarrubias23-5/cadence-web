@@ -6,6 +6,7 @@ import { SeasonAsk } from './SeasonAsk.jsx'
 import { Adherence } from './Adherence.jsx'
 import { WeightLog } from './WeightLog.jsx'
 import { About } from './About.jsx'
+import { PlanCard } from './PlanCard.jsx'
 import { daysSinceReview, pretendSeasonDue, writeReview } from './seasonGate.js'
 import { isCheckinDue } from './weekGate.js'
 import { archiveWeek } from './weekHistory.js'
@@ -29,7 +30,7 @@ function load(key, fallback) {
   }
 }
 
-export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
+export function Profile({ profile, access, onShowPlans, onEntitled, onSave, onCheckin, onSpinWeek }) {
   const [form, setForm] = useState(() => ({
     units: profile.units || 'us',
     age: profile.age || '',
@@ -226,6 +227,7 @@ export function Profile({ profile, onSave, onCheckin, onSpinWeek }) {
           <input type="file" accept="application/json" hidden onChange={(e) => e.target.files?.[0] && restoreData(e.target.files[0])} />
         </label>
       </section>
+      <PlanCard access={access} onShowPlans={onShowPlans} onEntitled={onEntitled} />
       <About />
       <details className="card">
         <summary className="qty">Preview tools</summary>
