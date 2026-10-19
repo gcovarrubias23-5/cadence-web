@@ -1,5 +1,8 @@
+import { isNative } from './platform.js'
+
 export function registerHomeScreen() {
-  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return
+  // The native app ships its files in the bundle; no service worker there.
+  if (isNative() || typeof window === 'undefined' || !('serviceWorker' in navigator)) return
   const sw = `${import.meta.env.BASE_URL}sw.js`
   window.addEventListener('load', function () {
     navigator.serviceWorker.register(sw).catch(function () {})
@@ -15,6 +18,7 @@ export function isIosSafari() {
 }
 
 export function isStandalone() {
+  if (isNative()) return true
   if (typeof window === 'undefined') return false
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true
 }

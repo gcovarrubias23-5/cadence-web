@@ -1,3 +1,5 @@
+import { privacyUrl, supportUrl } from './links.js'
+
 export function About() {
   return (
     <section className="card" id="about">
@@ -17,7 +19,7 @@ export function About() {
       <p className="note">A list that rounds up to a banana, a jar, a pack. Not 12 tablespoons.</p>
       <p className="note">Skips hide the obvious wrong plate. Cadence does not certify a kitchen or treat an allergy.</p>
       <p className="note">You see plates and water for the week. The goal is a full day, not a perfect month.</p>
-      <p className="note"><a href="/cadence-web/privacy.html">Privacy</a> · <a href="/cadence-web/support.html">Support</a></p>
+      <p className="note"><a href={privacyUrl()}>Privacy</a> · <a href={supportUrl()}>Support</a></p>
     </section>
   )
 }
