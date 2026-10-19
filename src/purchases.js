@@ -8,8 +8,8 @@
 import { isNative } from './platform.js'
 
 // PLACEHOLDERS: these must match the product IDs created in App Store Connect
-// (one auto-renewable subscription group, two products). The 2-week free
-// introductory offer is set on each product in App Store Connect, not here.
+// (one auto-renewable subscription group, two products). The free trial is the
+// 14-day in-app trial; the products carry no introductory offer.
 export const PRODUCTS = {
   monthly: 'cadence.monthly',
   yearly: 'cadence.yearly',

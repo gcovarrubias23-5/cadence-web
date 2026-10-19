@@ -19,13 +19,7 @@ The code side is in `src/purchases.js` (StoreKit 2 via `@capgo/native-purchases`
    | Cadence Yearly | `cadence.yearly` | 1 year |
 
    If you choose different IDs, change `PRODUCTS` to match. Product IDs can never be reused, even after deletion. For each product, set the price, add a display name and description (localization), and add the review screenshot of the paywall.
-7. **Introductory offer (decision needed).** You can add a "Free, 2 weeks" introductory offer on each product. Note:
-   - The app already gives 14 free days with no Apple ID purchase. If you also add a free intro offer, people get the in-app 14 days **plus** 2 more free weeks after the paywall.
-   - Starting an intro offer requires an Apple ID with a payment method, and it renews into the paid plan automatically.
-   - Pick one:
-     - **(a)** Keep the in-app trial and do not add an intro offer. "No card tonight" stays true.
-     - **(b)** Drop the in-app trial and use only Apple's intro offer, with the paywall at sign-up. Then "No card tonight" in `STORE.md` and on the welcome screen has to change.
-   - The paywall shows "Free for 2 weeks, then …" automatically when an intro offer exists and the person is eligible.
+7. **Introductory offer: do not add one.** The app already gives 14 free days on the phone with no card, then shows the paywall. Leave both products without an introductory offer so nobody gets a second free period and "No card tonight" stays true.
 8. **App Privacy.** Fill in the form from the answers in `STORE.md`.
 9. **Sandbox tester.** Users and Access → Sandbox → add a tester with an email that is not a real Apple ID. On the iPhone, sign in under Settings → App Store → Sandbox Account. Sandbox renewals are sped up (1 month ≈ 5 minutes).
 10. **Review submission.** Attach both subscriptions to the first app version ("In-App Purchases and Subscriptions" on the version page). The first subscriptions must be submitted with a binary.
