@@ -17,7 +17,7 @@ Come in. We will build a week that fits you — six plates a day, a way to track
 
 Matches the welcome screen first paragraph.
 
-## Description (1075 / 4000)
+## Description (1074 / 4000)
 Come in. We will build a week that fits you — six plates a day, a way to track your water, and a grocery list you can carry into the store or use to order online.
 
 After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
@@ -55,7 +55,7 @@ Privacy: https://gcovarrubias23-5.github.io/cadence-web/privacy.html
 Support: https://gcovarrubias23-5.github.io/cadence-web/support.html
 Marketing: https://gcovarrubias23-5.github.io/cadence-web/
 
-Before submit: put a real contact email on the privacy page and in App Store Connect.
+Contact email (privacy page, support page, App Store Connect): gcovarrubias23@gmail.com
 
 ## App Privacy answers (today)
 Does this app collect data? Yes — only what they type, stored on device.

@@ -1,5 +1,5 @@
 // Fails if any App Store field in STORE.md is over its limit, or if the
-// "(n / limit)" heading limit is wrong. A stale count only warns.
+// "(n / limit)" heading count or limit does not match the real text.
 import { readFileSync } from 'node:fs'
 
 const FIELDS = [
@@ -37,7 +37,6 @@ function fieldText(lines, multi) {
 }
 
 const errors = []
-const warnings = []
 for (const f of FIELDS) {
   const s = sections[f.heading]
   if (!s) { errors.push(`${f.heading}: section missing`); continue }
@@ -49,10 +48,9 @@ for (const f of FIELDS) {
   if (!text) errors.push(`${f.heading}: empty`)
   if (n > f.limit) errors.push(`${f.heading}: ${n} ${unit}, limit ${f.limit}`)
   if (s.claimedLimit && s.claimedLimit !== f.limit) errors.push(`${f.heading}: heading says limit ${s.claimedLimit}, real limit ${f.limit}`)
-  if (s.claimed != null && s.claimed !== n) warnings.push(`${f.heading}: heading says ${s.claimed}, counted ${n}`)
+  if (s.claimed != null && s.claimed !== n) errors.push(`${f.heading}: heading says ${s.claimed}, counted ${n}`)
 }
 
-if (warnings.length) console.warn('\nwarning (not blocking):\n- ' + warnings.join('\n- '))
 if (errors.length) {
   console.error('\nSTORE.md check failed:\n- ' + errors.join('\n- '))
   process.exit(1)
