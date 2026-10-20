@@ -5,6 +5,7 @@ import {
   SLOTS,
   mealOf,
   dropCustom,
+  dedupeWeek,
 } from './plan.js'
 import {
   dayTotals,
@@ -83,7 +84,8 @@ export default function App() {
   const [water, setWater] = useState(() => loadJson('cadence.water', {}))
   const [picks, setPicks] = useState(() => {
     const parsed = loadJson('cadence.week', DEFAULT_WEEK)
-    return parsed[0]?.snack3 ? parsed : DEFAULT_WEEK
+    // Weeks saved before the no-repeat fix can hold the same meal twice in a day.
+    return dedupeWeek(parsed[0]?.snack3 ? parsed : DEFAULT_WEEK, loadJson('cadence.custom', []), loadJson('cadence.profile', null)?.avoid || [])
   })
   const [marks, setMarks] = useState(() => {
     return loadMarks(loadJson('cadence.marks', null))
@@ -161,7 +163,7 @@ export default function App() {
     setPicks(spinMenus(custom, nextAvoid, nextStyle).picks)
   }
   function choose(dayId, slot, mealId) {
-    setPicks((prev) => prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)))
+    setPicks((prev) => dedupeWeek(prev.map((row) => (row.id === dayId ? { ...row, [slot]: mealId } : row)), custom, avoid, profile?.style || '', slot))
     setPicking(null)
   }
   function savePlate(meal) {
@@ -193,7 +195,7 @@ export default function App() {
     })))
   }
   function repeatSlot(slot, mealId) {
-    setPicks((prev) => prev.map((row) => ({ ...row, [slot]: mealId })))
+    setPicks((prev) => dedupeWeek(prev.map((row) => ({ ...row, [slot]: mealId })), custom, avoid, profile?.style || '', slot))
   }
   function sip(dayId) { setWater((prev) => addGlass(prev, dayId)) }
   function pour(dayId) { setWater((prev) => removeGlass(prev, dayId)) }
@@ -324,7 +326,7 @@ export default function App() {
       )}
 
       {picking && (
-        <ChangeSheet picking={picking} custom={custom} avoid={avoid} onChoose={choose} onInvent={() => { setPicking(null); setInventOpen(true) }} onClose={() => setPicking(null)} />
+        <ChangeSheet picking={picking} custom={custom} avoid={avoid} taken={SLOTS.filter((s) => s.id !== picking.slot).map((s) => picks.find((p) => p.id === picking.dayId)?.[s.id]).filter(Boolean)} onChoose={choose} onInvent={() => { setPicking(null); setInventOpen(true) }} onClose={() => setPicking(null)} />
       )}
 
       {inventOpen && (
