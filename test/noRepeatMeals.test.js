@@ -102,12 +102,40 @@ describe('generated weeks', () => {
       })
     })
 
+  it.each([[['dairy']], [['dairy', 'egg']], [['dairy', 'gluten']], [['dairy', 'egg', 'gluten']]])(
+    'dairy-free (%j) fills all six plates every day with no repeats', (avoid) => {
+      expect(optionsFor('snack1', [], ['dairy'], '').length).toBeGreaterThanOrEqual(6)
+      SEEDS.forEach((seed) => {
+        const week = buildVariedWeek([], avoid, seed, '')
+        week.forEach((row) => expect(filled(row), `${seed} ${row.id}`).toHaveLength(6))
+        expectNoDayRepeats(week)
+        expectWeeklyBound(week, avoid, '')
+      })
+    })
+
   it('runs out gracefully: a short list leaves a slot empty instead of repeating', () => {
-    // Dairy-free has only two snacks for three snack slots.
-    expect(optionsFor('snack1', [], ['dairy'], '').length).toBe(2)
-    const week = buildVariedWeek([], ['dairy'], 1, '')
-    expectNoDayRepeats(week)
-    week.forEach((row) => expect(filled(row).length).toBe(5))
+    // Carnivore and dairy-free: two snacks for three snack slots, no lunches.
+    expect(optionsFor('snack1', [], ['dairy'], 'carnivore').length).toBe(2)
+    expect(optionsFor('lunch', [], ['dairy'], 'carnivore').length).toBe(0)
+    SEEDS.slice(0, 8).forEach((seed) => {
+      const week = buildVariedWeek([], ['dairy'], seed, 'carnivore')
+      expectNoDayRepeats(week)
+      week.forEach((row) => {
+        expect(row.lunch).toBe('')
+        expect([row.snack1, row.snack2, row.snack3].filter(Boolean)).toHaveLength(2)
+      })
+    })
+  })
+
+  it('new dairy-free snacks carry no dairy and are flagged for their real allergens', () => {
+    const flags = (id) => AVOIDS.filter((a) => !optionsFor('snack1', [], [a.id], '').some((m) => m.id === id)).map((a) => a.id)
+    expect(flags('turkeyRollups')).toEqual([])
+    expect(flags('eggsOrange')).toEqual(['egg'])
+    expect(flags('turkeyEggs')).toEqual(['egg'])
+    expect(flags('edamameSnack')).toEqual(['soy'])
+    expect(flags('tunaRiceCakes')).toEqual(['fish'])
+    expect(flags('chickenHummus')).toEqual(['sesame'])
+    expect(flags('applePeanut')).toEqual(['peanut'])
   })
 
   it('spinMenus (sign-up, new week, reset) keeps days unique', () => {
