@@ -17,7 +17,7 @@ Come in. We will build a week that fits you — six plates a day, a way to track
 
 Matches the welcome screen first paragraph.
 
-## Description (1075 / 4000)
+## Description (1432 / 4000)
 Come in. We will build a week that fits you — six plates a day, a way to track your water, and a grocery list you can carry into the store or use to order online.
 
 After seven days we ask if you had enough. Next week gets a little more, stays the same, or eases off.
@@ -39,6 +39,11 @@ Weight when you want it. How the week went. Foods to skip. Every three months we
 Cadence is not a doctor and not an allergy certificate. We hide the obvious wrong plate. You still read a label.
 
 Two weeks on us. No card tonight. Cooking notes come with the paid layer when that ships.
+
+After the two weeks, Cadence continues with a monthly or yearly subscription through your Apple ID. It renews automatically unless you cancel at least 24 hours before the period ends. Manage it in Settings.
+
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy: https://gcovarrubias23-5.github.io/cadence-web/privacy.html
 
 ## Keywords (98 / 100)
 meal plan,macros,grocery list,protein,meal prep,water tracker,calories,nutrition,food planner,diet
@@ -70,9 +75,9 @@ Used for tracking: No
 Third-party ads: No
 Sold to data brokers: No
 
-Not collected: location, contacts, photos, browsing history, search history, identifiers for ads, purchases (until IAP ships)
+Not collected: location, contacts, photos, browsing history, search history, identifiers for ads, purchases
 
-When IAP ships: add Purchases, update this form, update the privacy page first.
+Purchases: subscriptions go through Apple StoreKit. The app reads only whether a Cadence subscription is active, on the device, and sends nothing to a server, so Purchases is not "collected" under Apple's definition. If a server or analytics that sees purchases is ever added, declare Purchases (App Functionality, not linked unless there is an account) and update the privacy page first.
 
 ## What it is not
 Not medical advice. Not a treatment. Not an allergy certificate.

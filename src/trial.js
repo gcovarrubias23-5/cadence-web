@@ -1,6 +1,7 @@
 const START = 'cadence.trialStart'
 const PLAN = 'cadence.plan'
-const DAYS = 14
+export const TRIAL_DAYS = 14
+const DAYS = TRIAL_DAYS
 
 export function startTrial() {
   const now = new Date().toISOString()
@@ -29,4 +30,15 @@ export function setPlan(id) {
 
 export function readPlan() {
   try { return localStorage.getItem(PLAN) || 'trial' } catch { return 'trial' }
+}
+
+// What the person can use right now.
+//   'subscribed' - a current App Store subscription
+//   'trial'      - inside the free two weeks
+//   'expired'    - trial over and no subscription: show the paywall
+export function accessState(entitlement, now = Date.now()) {
+  const daysLeft = trialDaysLeft(now)
+  if (entitlement?.active) return { status: 'subscribed', daysLeft, productId: entitlement.productId }
+  if (daysLeft > 0) return { status: 'trial', daysLeft, productId: null }
+  return { status: 'expired', daysLeft: 0, productId: null }
 }

@@ -3,6 +3,7 @@ import { ACTIVITY, GOALS, buildTargets } from './profile.js'
 import { setPlan, startTrial } from './trial.js'
 import { formatKcalRange } from './kcalRange.js'
 import { InstallHint } from './InstallHint.jsx'
+import { isNative } from './platform.js'
 
 const STEPS = ['welcome', 'age', 'sex', 'size', 'move', 'goal', 'result']
 
@@ -18,7 +19,7 @@ const EMPTY = {
   goal: '',
 }
 
-export function Start({ onDone }) {
+export function Start({ onDone, onShowPlans }) {
   const [step, setStep] = useState(0)
   const [form, setForm] = useState(EMPTY)
   const [pay, setPay] = useState(false)
@@ -82,10 +83,12 @@ export function Start({ onDone }) {
           <section className="card">
             <div className="goal-title" style={{ fontSize: 20 }}>When you are ready</div>
             <p className="note" style={{ marginTop: 8, fontSize: 18, lineHeight: 1.45 }}>
-              Keep going by the month or the year. Cooking notes come with the paid layer. Checkout is still a preview.
+              {isNative()
+                ? 'Keep going by the month or the year through the App Store. Cooking notes come with the paid layer.'
+                : 'Keep going by the month or the year. Cooking notes come with the paid layer. Checkout is still a preview.'}
             </p>
-            <button className="btn btn-ghost" type="button" onClick={() => setPay((v) => !v)}>{pay ? 'Hide plans' : 'See plans'}</button>
-            {pay && (
+            <button className="btn btn-ghost" type="button" onClick={() => (isNative() && onShowPlans ? onShowPlans() : setPay((v) => !v))}>{pay ? 'Hide plans' : 'See plans'}</button>
+            {pay && !isNative() && (
               <>
                 <button className="option" type="button" onClick={() => setPlan('month')}><strong>Month</strong><span>Stay after the two weeks. Price at launch.</span></button>
                 <button className="option" type="button" onClick={() => setPlan('year')}><strong>Year</strong><span>Same kitchen. A better year rate when we publish it.</span></button>
