@@ -28,5 +28,7 @@ mutate "P3 dairy rule loses yogurt" src/avoid.js 's/dairy: \[\/yogurt\|/dairy: [
 mutate "P4 over-target shrink removed" src/macros.js 's/if \(shown > target\) \{/if (shown > target * 1.25) {/' "P4"
 mutate "P5 grocery skips produce" src/macros.js 's/if \(food\.leftover \|\| food\.pantry\) return/if (food.leftover || food.pantry || food.aisle === "Produce") return/' "P5"
 mutate "P5 grocery ignores portion scaling" src/macros.js 's/prev\.grams \+= scaled\.grams/prev.grams += resolved.grams/' "P5"
+mutate "F1 firstSafe falls back to a fixed meal again" src/plan.js "s/return hit \\? hit\\.id : ''/return hit ? hit.id : (slot === 'dinner' ? 'lemonChicken' : 'yogurtBerries')/" "skipped|F1"
+mutate "F1 mealOf turns unknown ids into yogurt again" src/plan.js 's/m\.name === id\) \|\| null/m.name === id) || MEALS.yogurtBerries/' "F1"
 echo "caught $pass, problems $fail"
 [ "$fail" -eq 0 ]

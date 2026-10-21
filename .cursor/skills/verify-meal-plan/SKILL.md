@@ -28,7 +28,7 @@ Quick test: `git diff <sync commit> --stat -- src/rotateWeek.js src/plan.js src/
 ## Run it
 
 ```
-npm run test:properties     # ~3 s, the 8 property tests (also part of npm test / npm run check / CI)
+npm run test:properties     # ~3 s, the 12 property and regression tests (also part of npm test / npm run check / CI)
 npm run verify:mutations    # ~15 s, proves each property can still fail
 ```
 
@@ -46,7 +46,7 @@ It refuses to run while `src/` has uncommitted edits and restores each file.
 | P2a | No meal appears more than ceil(uses / meals in its list) times a week; the 3 snacks share one list. | Same plate all week while others sit unused. | `buildVariedWeek` least-used pick, `poolOf` |
 | P2b | A slot is left empty ("Choose a plate") only when no meal is left for it that day. | Empty plates for no reason. | `buildVariedWeek` `if (!open.length)` |
 | P3a | Generated weeks never contain a skipped food (by the skip rules, and for dairy also by the independent rule "no food in the Dairy aisle") and never a meal outside the chosen style. | Allergy/intolerance exposure; keto/carnivore broken. | `optionsFor`, `safeMeals`, `mealHitsAvoid` (src/avoid.js), `mealFitsStyle` (src/dietStyle.js) |
-| P3b | `cleanWeek` removes every skipped/off-style meal from a stored week. **Currently broken: known finding F1, marked `it.fails`.** | Same as P3a after a person changes skips or style. | `cleanWeek`, `firstSafe` fallback, `mealOf` fallback |
+| P3b | `cleanWeek` removes every skipped/off-style meal from a stored week; when nothing safe is left, or the stored id is unknown, the slot becomes empty. (Was finding F1, fixed; regression tests in the `F1 regressions` block.) | Same as P3a after a person changes skips or style. | `cleanWeek`, `firstSafe` fallback, `mealOf` fallback |
 | P4 | After portion scaling, a day never shows more kcal than the target (`goal.kcal`). The code does not promise to reach the target (factors clamp to 0.35–2.2), only not to exceed it. | Over-eating vs. the plan. | `factorsForDay`, `scaleForSlot`, `dayTotals` in src/macros.js |
 | P5 | Each shopping-list line equals the summed scaled grams of that food (by aisle + name) across the week's plates, with no extra, missing, or duplicate lines; `leftover`/`pantry` foods are excluded. | Buying too little/too much, or missing items. | `groceryFromWeek`, `resolveFood`, `scaleFood` |
 
@@ -55,20 +55,20 @@ Generators: seed in [-100000, 100000]; any subset of the 9 skips in
 fat 15–180 g; stored weeks of 7 days with any catalog meal id or '' per slot.
 300 runs per property (150 for P5).
 
-## Findings (current code breaks the rule)
+## Findings
 
-**F1: `cleanWeek` can put a skipped food back into the week.** When a slot has
-no safe meal at all, `firstSafe` returns a hard-coded fallback without checking
-skips, and one fallback id does not exist:
-1. Person picks Carnivore and skips Dairy. The carnivore lunch list is empty.
-2. `cleanWeek` replaces the lunch via `firstSafe('lunch', …, 'carnivore')`, which returns `'carnBeefEggs'`.
-3. No catalog has `carnBeefEggs`, so `mealOf` falls back to `MEALS.yogurtBerries`: Greek yogurt and berries, dairy and plants on a dairy-free carnivore plan.
-Also: Keto + skip Dairy + Egg breakfast falls back to `ketoEggsAvocado` (eggs);
-Carnivore + skip Dairy + Egg snacks fall back to `carnTurkeyCheese` (cheese).
-`buildVariedWeek` itself is fine here: it leaves the slot empty.
-The test is `it.fails`, so check stays green while the finding is open. When
-the product code is fixed, vitest will report that the `it.fails` test
-unexpectedly passed: change it to `it` then.
+No open findings.
+
+**F1 (fixed on fix/saved-week-skips): `cleanWeek` could put a skipped food back into the week.**
+Before the fix, when a slot had no safe meal, `firstSafe` returned a hard-coded
+fallback without checking skips, and `mealOf` turned unknown ids into
+`MEALS.yogurtBerries`. Counterexamples, now regression tests:
+1. Carnivore, skip Dairy: lunch became `carnBeefEggs`, an id no catalog has, which showed as Yogurt and berries.
+2. Keto, skip Dairy + Egg: breakfast became `ketoEggsAvocado` (eggs).
+3. Carnivore, skip Dairy + Egg: snacks became `carnTurkeyCheese` (cheese).
+Now `firstSafe` returns '' when no safe meal is open, `mealOf` returns null
+for unknown ids, and `cleanWeek` clears unknown ids, so the slot shows
+"Choose a plate", the same as an empty slot from `buildVariedWeek`.
 
 ## Mutation evidence (scripts/mutate-meal-plan.sh, all caught at sync commit)
 
@@ -76,7 +76,10 @@ P1 day check removed from buildVariedWeek; P1 dedupeWeek stops replacing
 repeats; P2 least-used pick replaced by any open meal; P2 Sunday late snack
 dropped although meals remain; P3 optionsFor ignores skips; P3 optionsFor
 ignores diet style; P3 dairy rule loses "yogurt"; P4 over-target shrink
-loosened to 125%; P5 grocery skips produce; P5 grocery ignores portion scaling.
+loosened to 125%; P5 grocery skips produce; P5 grocery ignores portion scaling;
+F1 firstSafe falls back to a fixed meal again; F1 mealOf turns unknown ids into
+yogurt again (12 of 12 caught). Before the F1 fix, P3b and the 4 F1 regression
+tests failed on the old src/plan.js.
 (A mutant removing "cheese" from the dairy rule is equivalent: other words
 still match every cheese in the catalog, so nothing changes.)
 
@@ -104,7 +107,7 @@ by aisle; other skips rely on those regexes).
 Files: src/rotateWeek.js, src/plan.js, src/avoid.js, src/dietStyle.js,
 src/macros.js, src/snacks.js, src/catalog.js, src/catalogExtras.js,
 src/catalogAdd.js, src/catalogStyle.js, src/styleMore.js.
-Sync commit: 454dae5 (verified on branch verify/meal-plan-properties, based on
+Sync commit: 9f8193f (verified on branch fix/saved-week-skips, based on verify/meal-plan-properties, itself based on
 fix/no-repeat-meals cd5aec6). Move the sync commit forward only after running
 both commands above on the new commit and confirming each property still
 describes the code (including the F1 status).
