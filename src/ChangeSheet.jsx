@@ -1,7 +1,8 @@
 import { optionsFor } from './plan.js'
 
-export function ChangeSheet({ picking, custom, avoid = [], onChoose, onInvent, onClose }) {
-  const all = optionsFor(picking.slot, custom, avoid)
+export function ChangeSheet({ picking, custom, avoid = [], taken = [], onChoose, onInvent, onClose }) {
+  // Meals already on this day in another slot are left out, so a day never repeats.
+  const all = optionsFor(picking.slot, custom, avoid).filter((m) => !taken.includes(m.id))
   const yours = all.filter((m) => m.custom)
   const neu = all.filter((m) => m.fresh && !m.custom)
   const rest = all.filter((m) => !m.custom && !m.fresh)

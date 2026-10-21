@@ -76,7 +76,7 @@ export function Build({
                     <div key={slot.id}>
                       <button className="pick-row" type="button" onClick={() => onPick(row.id, slot.id, row[slot.id])}>
                         <span className="meal-label">{slot.label}</span>
-                        <span>{meal.name}</span>
+                        <span>{meal?.name || 'Choose a plate'}</span>
                         <span className="qty">Change</span>
                       </button>
                       <button className="change" type="button" onClick={() => onRepeatSlot(slot.id, row[slot.id])}>
