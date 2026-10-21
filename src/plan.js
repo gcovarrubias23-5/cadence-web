@@ -21,9 +21,11 @@ export const SLOTS = [
 const SNACK_SLOTS = ['snack1', 'snack2', 'snack3']
 
 export function mealOf(id, custom = []) {
-  // An empty slot stays empty (shown as "Choose a plate"), never a stand-in meal.
+  // An empty slot or an unknown id (for example a deleted custom meal) stays
+  // empty (shown as "Choose a plate"), never a stand-in meal that could hold a
+  // skipped food.
   if (!id) return null
-  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || MORE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || MEALS.yogurtBerries
+  return MEALS[id] || EXTRA_MEALS[id] || ADD_MEALS[id] || SNACK_MEALS[id] || STYLE_MEALS[id] || MORE_MEALS[id] || custom.find((m) => m.id === id || m.name === id) || null
 }
 
 export function optionsFor(slot, custom = [], avoid = [], style = readStyle()) {
@@ -52,17 +54,13 @@ export function poolOf(slot) {
 }
 
 // First safe meal for a slot that is not already in `taken` (the other slots
-// of that day). Returns '' when nothing is left, so a day never repeats a meal.
+// of that day). Returns '' when nothing is left, so a day never repeats a meal
+// and never gets a meal that breaks the person's skips or style. This matches
+// buildVariedWeek, which also leaves such a slot empty.
 export function firstSafe(slot, custom = [], avoid = [], style = readStyle(), taken = []) {
   const skip = new Set(taken)
-  const list = optionsFor(slot, custom, avoid, style)
-  const hit = list.find((m) => m.id && !skip.has(m.id))
-  if (hit) return hit.id
-  if (list.length) return ''
-  let id = slot === 'dinner' ? 'lemonChicken' : 'yogurtBerries'
-  if (style === 'carnivore') id = slot === 'dinner' ? 'carnSteakEggs' : slot === 'lunch' ? 'carnBeefEggs' : SNACK_SLOTS.includes(slot) ? 'carnTurkeyCheese' : 'carnEggs'
-  if (style === 'keto') id = slot === 'dinner' ? 'ketoSteakEggs' : slot === 'lunch' ? 'ketoBurgerBowl' : SNACK_SLOTS.includes(slot) ? 'ketoCheeseSnack' : 'ketoEggsAvocado'
-  return skip.has(id) ? '' : id
+  const hit = optionsFor(slot, custom, avoid, style).find((m) => m.id && !skip.has(m.id))
+  return hit ? hit.id : ''
 }
 
 function othersIn(row, slotId) {
@@ -91,6 +89,10 @@ export function cleanWeek(picks, custom = [], avoid = [], style = readStyle()) {
     const next = { ...row }
     SLOTS.forEach((slot) => {
       const meal = mealOf(row[slot.id], custom)
+      if (row[slot.id] && !meal) {
+        next[slot.id] = ''
+        return
+      }
       const taggedOther = Boolean(meal?.style) && meal.style !== style
       if (mealHitsAvoid(meal, avoid) || !mealFitsStyle(meal, style) || taggedOther) {
         next[slot.id] = firstSafe(slot.id, custom, avoid, style, othersIn(next, slot.id))

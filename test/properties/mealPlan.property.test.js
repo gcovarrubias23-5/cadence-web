@@ -116,12 +116,35 @@ describe('P3 skips and diet style never leak', () => {
     }), RUNS)
   })
 
-  // Known finding: see SKILL.md "Findings". cleanWeek falls back to a fixed
-  // meal (firstSafe) when a slot has no safe option, without checking skips.
-  it.fails('cleanWeek removes every skipped food from a stored week (KNOWN FINDING F1)', () => {
+  // Was known finding F1 (fixed): firstSafe used to fall back to a fixed meal
+  // without checking skips, and mealOf turned unknown ids into yogurt.
+  it('cleanWeek removes every skipped food from a stored week', () => {
     fc.assert(fc.property(storedWeekArb, avoidArb, styleArb, (week, avoid, style) => {
       expect(leaks(cleanWeek(week, [], avoid, style), avoid, style)).toEqual([])
     }), RUNS)
+  })
+})
+
+describe('F1 regressions: saved-week repair leaves a slot empty instead of breaking skips', () => {
+  const day = (fields) => [{ ...DEFAULT_WEEK[0], ...fields }]
+  it('carnivore + no dairy: lunch with no safe option is emptied, not swapped to yogurt and berries', () => {
+    const [row] = cleanWeek(day({ lunch: 'turkeySandwich' }), [], ['dairy'], 'carnivore')
+    expect(row.lunch).toBe('')
+    expect(leaks([row], ['dairy'], 'carnivore')).toEqual([])
+  })
+  it('keto + no dairy + no egg: breakfast is emptied, not swapped to eggs and avocado', () => {
+    const [row] = cleanWeek(day({ breakfast: 'eggToast' }), [], ['dairy', 'egg'], 'keto')
+    expect(row.breakfast).toBe('')
+    expect(leaks([row], ['dairy', 'egg'], 'keto')).toEqual([])
+  })
+  it('carnivore + no dairy + no egg: snacks are emptied, not swapped to turkey and cheese', () => {
+    const [row] = cleanWeek(day({}), [], ['dairy', 'egg'], 'carnivore')
+    expect([row.snack1, row.snack2, row.snack3]).toEqual(['', '', ''])
+    expect(leaks([row], ['dairy', 'egg'], 'carnivore')).toEqual([])
+  })
+  it('an unknown meal id shows as an empty plate, never a stand-in meal', () => {
+    expect(mealOf('carnBeefEggs')).toBeNull()
+    expect(cleanWeek(day({ dinner: 'deletedCustomMeal' }), [], [], '')[0].dinner).toBe('')
   })
 })
 
