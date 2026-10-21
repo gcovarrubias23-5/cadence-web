@@ -107,7 +107,7 @@ by aisle; other skips rely on those regexes).
 Files: src/rotateWeek.js, src/plan.js, src/avoid.js, src/dietStyle.js,
 src/macros.js, src/snacks.js, src/catalog.js, src/catalogExtras.js,
 src/catalogAdd.js, src/catalogStyle.js, src/styleMore.js.
-Sync commit: 454dae5 (verified on branch verify/meal-plan-properties, based on
+Sync commit: 9f8193f (verified on branch fix/saved-week-skips, based on verify/meal-plan-properties, itself based on
 fix/no-repeat-meals cd5aec6). Move the sync commit forward only after running
 both commands above on the new commit and confirming each property still
 describes the code (including the F1 status).
